@@ -30,17 +30,12 @@
                         'gradient-x': 'gradient-x 15s ease infinite',
                         'float': 'float 6s ease-in-out infinite',
                         'fadeIn': 'fadeIn 0.3s ease-out forwards',
+                        'slideInRight': 'slideInRight 0.3s ease-out forwards',
                     },
                     keyframes: {
                         'gradient-x': {
-                            '0%, 100%': {
-                                'background-size': '200% 200%',
-                                'background-position': 'left center'
-                            },
-                            '50%': {
-                                'background-size': '200% 200%',
-                                'background-position': 'right center'
-                            }
+                            '0%, 100%': { 'background-size': '200% 200%', 'background-position': 'left center' },
+                            '50%': { 'background-size': '200% 200%', 'background-position': 'right center' }
                         },
                         'float': {
                             '0%, 100%': { transform: 'translateY(0)' },
@@ -49,6 +44,10 @@
                         'fadeIn': {
                             '0%': { opacity: '0', transform: 'scale(0.95)' },
                             '100%': { opacity: '1', transform: 'scale(1)' },
+                        },
+                        'slideInRight': {
+                            '0%': { opacity: '0', transform: 'translateX(100%)' },
+                            '100%': { opacity: '1', transform: 'translateX(0)' },
                         }
                     }
                 }
@@ -118,6 +117,15 @@
             from { opacity: 0; transform: translateY(10px); }
             to { opacity: 1; transform: translateY(0); }
         }
+
+        .toast-exit {
+            animation: slideOutRight 0.3s ease-in forwards;
+        }
+
+        @keyframes slideOutRight {
+            from { opacity: 1; transform: translateX(0); }
+            to { opacity: 0; transform: translateX(100%); }
+        }
         
         ::-webkit-scrollbar { width: 8px; }
         ::-webkit-scrollbar-track { background: #0a0f1c; }
@@ -131,21 +139,30 @@
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between items-center h-20">
                 <div class="flex items-center space-x-3 cursor-pointer" onclick="navigate('home')">
-                    <img src="ChatGPT Image Jul 22, 2026, 03_22_36 PM.png" alt="IEM 2030 B8 Logo" class="h-12 w-12 rounded-full object-cover border-2 border-brand-primary shadow-[0_0_15px_rgba(6,182,212,0.5)]" onerror="this.src='https://placehold.co/100x100/06b6d4/ffffff?text=B8'">
+                    <img src="ChatGPT Image Jul 22, 2026, 03_22_36 PM.png" alt="IEM 2030 B8 Logo" class="h-12 w-12 rounded-full object-cover border-2 border-brand-primary shadow-[0_0_15px_rgba(6,182,212,0.5)]" onerror="this.onerror=null; this.src='https://placehold.co/100x100/06b6d4/ffffff?text=B8'">
                     <span class="font-serif text-2xl font-bold tracking-wider text-white">IEM 2030 <span class="text-gradient">B8</span></span>
                 </div>
                 
-                <nav class="hidden md:flex space-x-8">
+                <nav class="hidden md:flex items-center space-x-8">
                     <button onclick="navigate('home')" class="nav-link text-sm font-semibold hover:text-white uppercase tracking-wide">Home</button>
                     <button onclick="navigate('notices')" class="nav-link text-sm font-semibold hover:text-white uppercase tracking-wide">Notices</button>
                     <button onclick="navigate('study')" class="nav-link text-sm font-semibold hover:text-white uppercase tracking-wide">Study Material</button>
                     <button onclick="navigate('routine')" class="nav-link text-sm font-semibold hover:text-white uppercase tracking-wide">Class Routine</button>
                     <button onclick="navigate('holidays')" class="nav-link text-sm font-semibold hover:text-white uppercase tracking-wide">Holidays</button>
                     <button onclick="navigate('about')" class="nav-link text-sm font-semibold hover:text-white uppercase tracking-wide">About Us</button>
-                    <button onclick="navigate('contact')" class="bg-gradient-to-r from-brand-primary to-brand-secondary text-white px-5 py-2 rounded-full text-sm font-semibold hover:shadow-lg hover:shadow-brand-primary/30 transition-all">Contact Us</button>
+                    <button onclick="navigate('contact')" class="nav-link text-sm font-semibold hover:text-white uppercase tracking-wide">Contact</button>
+                    
+                    <!-- Desktop Auth UI -->
+                    <div id="desktop-auth-ui" class="flex items-center space-x-4 pl-4 border-l border-gray-700">
+                        <button onclick="openAuthModal('login')" class="text-sm font-semibold text-gray-300 hover:text-white transition">Log In</button>
+                        <button onclick="openAuthModal('signup')" class="bg-gradient-to-r from-brand-primary to-brand-secondary text-white px-5 py-2 rounded-full text-sm font-semibold hover:shadow-lg hover:shadow-brand-primary/30 transition-all">Sign Up</button>
+                    </div>
                 </nav>
 
-                <div class="md:hidden flex items-center">
+                <div class="md:hidden flex items-center gap-4">
+                    <button id="mobile-auth-icon" onclick="openAuthModal('login')" class="text-brand-primary hover:text-white transition">
+                        <i class="fas fa-user-circle text-2xl"></i>
+                    </button>
                     <button id="mobile-menu-btn" class="text-gray-300 hover:text-white focus:outline-none">
                         <i class="fas fa-bars text-2xl"></i>
                     </button>
@@ -160,10 +177,17 @@
                 <button onclick="navigate('routine')" class="block px-3 py-2 text-base font-medium">Class Routine</button>
                 <button onclick="navigate('holidays')" class="block px-3 py-2 text-base font-medium">Holidays</button>
                 <button onclick="navigate('about')" class="block px-3 py-2 text-base font-medium">About Us</button>
-                <button onclick="navigate('contact')" class="block px-3 py-2 text-base font-medium text-brand-primary">Contact Us</button>
+                <button onclick="navigate('contact')" class="block px-3 py-2 text-base font-medium">Contact Us</button>
+                <div id="mobile-auth-ui-menu" class="pt-4 mt-2 border-t border-gray-700 space-y-2">
+                    <button onclick="openAuthModal('login')" class="w-full text-center px-3 py-2 text-base font-medium text-gray-300">Log In</button>
+                    <button onclick="openAuthModal('signup')" class="w-full text-center px-3 py-2 text-base font-medium text-brand-primary">Sign Up</button>
+                </div>
             </div>
         </div>
     </header>
+
+    <!-- Toast Notification Container -->
+    <div id="toast-container" class="fixed top-24 right-4 z-[400] flex flex-col gap-3 pointer-events-none"></div>
 
     <main class="flex-grow pt-24 pb-12 relative z-10">
 
@@ -192,7 +216,7 @@
                 </div>
                 <div class="lg:w-1/2 relative w-full flex justify-center">
                     <div class="absolute inset-0 bg-gradient-to-tr from-brand-primary/20 to-brand-secondary/20 rounded-full blur-3xl -z-10 animate-float"></div>
-                    <img src="ChatGPT Image Jul 22, 2026, 03_22_36 PM.png" alt="Hero Logo" class="w-full max-w-md rounded-full shadow-[0_0_40px_rgba(6,182,212,0.3)] border-4 border-white/5 animate-float object-cover" onerror="this.src='https://placehold.co/400x400/06b6d4/ffffff?text=B8'">
+                    <img src="ChatGPT Image Jul 22, 2026, 03_22_36 PM.png" alt="Hero Logo" class="w-full max-w-md rounded-full shadow-[0_0_40px_rgba(6,182,212,0.3)] border-4 border-white/5 animate-float object-cover" onerror="this.onerror=null; this.src='https://placehold.co/400x400/06b6d4/ffffff?text=B8'">
                 </div>
             </div>
             
@@ -359,66 +383,11 @@
                             </tr>
                         </thead>
                         <tbody class="text-sm divide-y divide-gray-800/50 text-gray-300">
-                            <tr class="hover:bg-white/5 transition">
-                                <td class="p-4 font-bold text-white">Monday</td>
-                                <td class="p-4">Engineering Mechanics Essentials</td>
-                                <td class="p-4">Chemistry</td>
-                                <td class="p-4">English</td>
-                                <td class="p-4">Mathematics and Basic Statistics</td>
-                                <td class="p-4 text-gray-500 italic bg-black/20 text-center">BREAK</td>
-                                <td class="p-4">Design Thinking & Innovation - Ideation & Research</td>
-                                <td class="p-4 text-brand-secondary font-medium">Basic Electronics Laboratory</td>
-                                <td class="p-4 text-brand-secondary font-medium">Basic Electronics Laboratory</td>
-                                <td class="p-4 text-brand-secondary font-medium">Basic Electronics Laboratory</td>
-                            </tr>
-                            <tr class="hover:bg-white/5 transition">
-                                <td class="p-4 font-bold text-white">Tuesday</td>
-                                <td class="p-4">Basic Electronics</td>
-                                <td class="p-4">Foreign Language</td>
-                                <td class="p-4">MATLAB</td>
-                                <td class="p-4 text-brand-secondary font-medium">Programming for Problem Solving Laboratory Using C</td>
-                                <td class="p-4 text-gray-500 italic bg-black/20 text-center">BREAK</td>
-                                <td class="p-4 text-brand-secondary font-medium">Programming for Problem Solving Laboratory Using C</td>
-                                <td class="p-4 text-brand-secondary font-medium">Programming for Problem Solving Laboratory Using C</td>
-                                <td class="p-4">Sports</td>
-                                <td class="p-4">Chemistry</td>
-                            </tr>
-                            <tr class="hover:bg-white/5 transition">
-                                <td class="p-4 font-bold text-white">Wednesday</td>
-                                <td class="p-4">Programming for Problem Solving Using C</td>
-                                <td class="p-4">Essential Studies for Professionals-I</td>
-                                <td class="p-4">Mathematics and Basic Statistics</td>
-                                <td class="p-4 text-brand-secondary font-medium">Workshop</td>
-                                <td class="p-4 text-gray-500 italic bg-black/20 text-center">BREAK</td>
-                                <td class="p-4 text-brand-secondary font-medium">Workshop</td>
-                                <td class="p-4 text-brand-secondary font-medium">Workshop</td>
-                                <td class="p-4">Chemistry</td>
-                                <td class="p-4">Soft Skills</td>
-                            </tr>
-                            <tr class="hover:bg-white/5 transition">
-                                <td class="p-4 font-bold text-white">Thursday</td>
-                                <td class="p-4">Chemistry</td>
-                                <td class="p-4">Basic Electronics</td>
-                                <td class="p-4">Mathematics and Basic Statistics</td>
-                                <td class="p-4">Essential Studies for Professionals-I</td>
-                                <td class="p-4 text-gray-500 italic bg-black/20 text-center">BREAK</td>
-                                <td class="p-4">Indian Knowledge System</td>
-                                <td class="p-4 text-brand-secondary font-medium">Language Laboratory</td>
-                                <td class="p-4 text-brand-secondary font-medium">Language Laboratory</td>
-                                <td class="p-4">Programming for Problem Solving Using C</td>
-                            </tr>
-                            <tr class="hover:bg-white/5 transition">
-                                <td class="p-4 font-bold text-white">Friday</td>
-                                <td class="p-4">Basic Electronics</td>
-                                <td class="p-4 text-brand-secondary font-medium">Chemistry</td>
-                                <td class="p-4 text-brand-secondary font-medium">Chemistry</td>
-                                <td class="p-4 text-brand-secondary font-medium">Chemistry</td>
-                                <td class="p-4 text-gray-500 italic bg-black/20 text-center">BREAK</td>
-                                <td class="p-4">Economics, Finance and Entrepreneurship</td>
-                                <td class="p-4">English</td>
-                                <td class="p-4">Mathematics and Basic Statistics</td>
-                                <td class="p-4">Engineering Mechanics Essentials</td>
-                            </tr>
+                            <tr class="hover:bg-white/5 transition"><td class="p-4 font-bold text-white">Monday</td><td class="p-4">Engineering Mechanics Essentials</td><td class="p-4">Chemistry</td><td class="p-4">English</td><td class="p-4">Mathematics and Basic Statistics</td><td class="p-4 text-gray-500 italic bg-black/20 text-center">BREAK</td><td class="p-4">Design Thinking & Innovation - Ideation & Research</td><td class="p-4 text-brand-secondary font-medium">Basic Electronics Laboratory</td><td class="p-4 text-brand-secondary font-medium">Basic Electronics Laboratory</td><td class="p-4 text-brand-secondary font-medium">Basic Electronics Laboratory</td></tr>
+                            <tr class="hover:bg-white/5 transition"><td class="p-4 font-bold text-white">Tuesday</td><td class="p-4">Basic Electronics</td><td class="p-4">Foreign Language</td><td class="p-4">MATLAB</td><td class="p-4 text-brand-secondary font-medium">Programming for Problem Solving Laboratory Using C</td><td class="p-4 text-gray-500 italic bg-black/20 text-center">BREAK</td><td class="p-4 text-brand-secondary font-medium">Programming for Problem Solving Laboratory Using C</td><td class="p-4 text-brand-secondary font-medium">Programming for Problem Solving Laboratory Using C</td><td class="p-4">Sports</td><td class="p-4">Chemistry</td></tr>
+                            <tr class="hover:bg-white/5 transition"><td class="p-4 font-bold text-white">Wednesday</td><td class="p-4">Programming for Problem Solving Using C</td><td class="p-4">Essential Studies for Professionals-I</td><td class="p-4">Mathematics and Basic Statistics</td><td class="p-4 text-brand-secondary font-medium">Workshop</td><td class="p-4 text-gray-500 italic bg-black/20 text-center">BREAK</td><td class="p-4 text-brand-secondary font-medium">Workshop</td><td class="p-4 text-brand-secondary font-medium">Workshop</td><td class="p-4">Chemistry</td><td class="p-4">Soft Skills</td></tr>
+                            <tr class="hover:bg-white/5 transition"><td class="p-4 font-bold text-white">Thursday</td><td class="p-4">Chemistry</td><td class="p-4">Basic Electronics</td><td class="p-4">Mathematics and Basic Statistics</td><td class="p-4">Essential Studies for Professionals-I</td><td class="p-4 text-gray-500 italic bg-black/20 text-center">BREAK</td><td class="p-4">Indian Knowledge System</td><td class="p-4 text-brand-secondary font-medium">Language Laboratory</td><td class="p-4 text-brand-secondary font-medium">Language Laboratory</td><td class="p-4">Programming for Problem Solving Using C</td></tr>
+                            <tr class="hover:bg-white/5 transition"><td class="p-4 font-bold text-white">Friday</td><td class="p-4">Basic Electronics</td><td class="p-4 text-brand-secondary font-medium">Chemistry</td><td class="p-4 text-brand-secondary font-medium">Chemistry</td><td class="p-4 text-brand-secondary font-medium">Chemistry</td><td class="p-4 text-gray-500 italic bg-black/20 text-center">BREAK</td><td class="p-4">Economics, Finance and Entrepreneurship</td><td class="p-4">English</td><td class="p-4">Mathematics and Basic Statistics</td><td class="p-4">Engineering Mechanics Essentials</td></tr>
                         </tbody>
                     </table>
                 </div>
@@ -454,7 +423,7 @@
             <div class="text-center mb-12">
                 <h2 class="text-4xl font-serif font-bold mb-4">Contact <span class="text-gradient">Us</span></h2>
                 <div class="flex items-center justify-center mb-4">
-                    <img src="Srimon Banik.jpg" alt="Srimon Banik" class="w-20 h-20 rounded-full border-2 border-brand-primary object-cover shadow-[0_0_15px_rgba(6,182,212,0.5)]" onerror="this.src='https://placehold.co/100x100/06b6d4/ffffff?text=SB'">
+                    <img src="Srimon Banik.jpg" alt="Srimon Banik" class="w-20 h-20 rounded-full border-2 border-brand-primary object-cover shadow-[0_0_15px_rgba(6,182,212,0.5)]" onerror="this.onerror=null; this.src='https://placehold.co/100x100/06b6d4/ffffff?text=SB'">
                 </div>
                 <p class="text-gray-400">Get in touch with Srimon Banik and the B8 admin team.</p>
             </div>
@@ -545,7 +514,7 @@
                 <div class="lg:w-2/5 relative z-10">
                     <div class="relative group">
                         <div class="absolute -inset-1 bg-gradient-to-r from-brand-primary to-brand-secondary rounded-2xl blur opacity-25 group-hover:opacity-60 transition duration-1000 group-hover:duration-200"></div>
-                        <img src="Srimon Banik.jpg" alt="Srimon Banik" class="relative rounded-2xl object-cover shadow-2xl border border-white/10 w-full max-h-[500px]" onerror="this.src='https://placehold.co/400x500/06b6d4/ffffff?text=Creator'">
+                        <img src="Srimon Banik.jpg" alt="Srimon Banik" class="relative rounded-2xl object-cover shadow-2xl border border-white/10 w-full max-h-[500px]" onerror="this.onerror=null; this.src='https://placehold.co/400x500/06b6d4/ffffff?text=Creator'">
                     </div>
                 </div>
                 
@@ -582,7 +551,7 @@
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10 mb-12">
                 <div class="col-span-1 lg:col-span-1">
                     <div class="flex items-center space-x-3 mb-6">
-                        <img src="ChatGPT Image Jul 22, 2026, 03_22_36 PM.png" alt="Logo" class="h-10 w-10 rounded-full border border-brand-primary" onerror="this.src='https://placehold.co/100x100/06b6d4/ffffff?text=B8'">
+                        <img src="ChatGPT Image Jul 22, 2026, 03_22_36 PM.png" alt="Logo" class="h-10 w-10 rounded-full border border-brand-primary" onerror="this.onerror=null; this.src='https://placehold.co/100x100/06b6d4/ffffff?text=B8'">
                         <span class="font-serif text-xl font-bold text-white">IEM <span class="text-brand-primary">B8</span></span>
                     </div>
                     <p class="text-gray-400 text-sm mb-6">The ultimate academic companion for the future AI/ML engineers of IEM 2030.</p>
@@ -605,10 +574,6 @@
                             <i class="fas fa-envelope text-brand-primary"></i>
                             <a href="mailto:srimonbanik2007@gmail.com" class="hover:text-white transition">srimonbanik2007@gmail.com</a>
                         </li>
-                        <li class="flex items-center gap-3">
-                            <i class="fas fa-phone-alt text-brand-primary"></i>
-                            <a href="tel:+918787785791" class="hover:text-white transition">+91 87877 85791</a>
-                        </li>
                     </ul>
                 </div>
 
@@ -626,6 +591,64 @@
             </div>
         </div>
     </footer>
+
+    <!-- Authentication Modal -->
+    <div id="auth-modal" class="fixed inset-0 bg-black/80 z-[300] hidden items-center justify-center backdrop-blur-sm">
+        <div class="glass-card w-full max-w-md p-8 rounded-2xl m-4 relative animate-fadeIn border border-brand-primary/30 shadow-2xl">
+            <button onclick="closeAuthModal()" class="absolute top-4 right-4 text-gray-400 hover:text-white transition">
+                <i class="fas fa-times text-xl"></i>
+            </button>
+            
+            <div class="text-center mb-8">
+                <div class="w-16 h-16 bg-gradient-to-tr from-brand-primary to-brand-secondary rounded-full flex items-center justify-center text-white text-2xl mx-auto mb-4 shadow-[0_0_15px_rgba(6,182,212,0.5)]">
+                    <i id="auth-icon" class="fas fa-user-lock"></i>
+                </div>
+                <h3 id="auth-title" class="text-2xl font-serif font-bold text-white">Welcome Back</h3>
+                <p id="auth-subtitle" class="text-gray-400 text-sm mt-2">Log in to post updates and share materials.</p>
+            </div>
+
+            <form id="auth-form" onsubmit="handleAuthSubmit(event)" class="space-y-5">
+                <div>
+                    <label class="block text-sm font-medium text-gray-400 mb-1">Email Address</label>
+                    <div class="relative">
+                        <i class="fas fa-envelope absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-500"></i>
+                        <input type="email" id="auth-email" required placeholder="you@example.com" class="w-full bg-gray-900/80 border border-gray-700 rounded-lg pl-11 pr-4 py-3 text-white focus:outline-none focus:border-brand-primary transition">
+                    </div>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-400 mb-1">Password</label>
+                    <div class="relative">
+                        <i class="fas fa-lock absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-500"></i>
+                        <input type="password" id="auth-password" required placeholder="••••••••" class="w-full bg-gray-900/80 border border-gray-700 rounded-lg pl-11 pr-4 py-3 text-white focus:outline-none focus:border-brand-primary transition">
+                    </div>
+                </div>
+                
+                <button type="submit" id="auth-submit-btn" class="w-full bg-gradient-to-r from-brand-primary to-brand-secondary text-white py-3 rounded-lg font-bold hover:shadow-lg hover:shadow-brand-primary/40 transition-all transform hover:-translate-y-0.5 mt-2 flex items-center justify-center gap-2">
+                    Log In
+                </button>
+            </form>
+            
+            <div class="mt-6 text-center text-sm text-gray-400">
+                <span id="auth-toggle-text">Don't have an account?</span> 
+                <button onclick="toggleAuthMode()" id="auth-toggle-btn" class="text-brand-primary hover:text-brand-secondary font-semibold transition ml-1">Sign Up</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Custom Confirm Modal (Replaces Native confirm() alert) -->
+    <div id="confirm-modal" class="fixed inset-0 bg-black/80 z-[500] hidden items-center justify-center backdrop-blur-sm">
+        <div class="glass-card w-full max-w-sm p-6 rounded-2xl m-4 animate-fadeIn border border-brand-primary/30 shadow-2xl text-center relative">
+            <div class="w-16 h-16 bg-red-500/20 rounded-full flex items-center justify-center text-red-500 text-2xl mx-auto mb-4">
+                <i class="fas fa-exclamation-triangle"></i>
+            </div>
+            <h3 class="text-xl font-bold text-white mb-2">Are you sure?</h3>
+            <p id="confirm-message" class="text-gray-400 text-sm mb-6">This action cannot be undone.</p>
+            <div class="flex gap-4">
+                <button onclick="closeConfirmModal(false)" class="flex-1 bg-gray-800 text-white py-2.5 rounded-lg font-semibold hover:bg-gray-700 transition">Cancel</button>
+                <button onclick="closeConfirmModal(true)" class="flex-1 bg-red-500 text-white py-2.5 rounded-lg font-semibold hover:bg-red-600 transition shadow-lg shadow-red-500/30">Delete</button>
+            </div>
+        </div>
+    </div>
 
     <!-- Add Subject Modal -->
     <div id="add-subject-modal" class="fixed inset-0 bg-black/80 z-[200] hidden items-center justify-center backdrop-blur-sm">
@@ -705,6 +728,38 @@
 
 
     <script>
+        // --- Safe Local Storage Wrappers (Prevents iframe sandbox Script Errors) ---
+        function getSafeStorage(key, defaultVal) {
+            try {
+                const val = localStorage.getItem(key);
+                if (val) return JSON.parse(val);
+            } catch(e) {
+                console.warn("Storage access restricted by environment.");
+            }
+            return defaultVal;
+        }
+        
+        function setSafeStorage(key, val) {
+            try {
+                localStorage.setItem(key, JSON.stringify(val));
+            } catch(e) {
+                console.warn("Storage write restricted by environment.");
+            }
+        }
+
+        function getSafeString(key) {
+            try { return localStorage.getItem(key); } catch(e) { return null; }
+        }
+        
+        function setSafeString(key, val) {
+            try { localStorage.setItem(key, val); } catch(e) { }
+        }
+        
+        function removeSafeString(key) {
+            try { localStorage.removeItem(key); } catch(e) { }
+        }
+
+        // --- Navigation Logic ---
         function navigate(sectionId) {
             document.querySelectorAll('.page-section').forEach(el => {
                 el.classList.remove('active');
@@ -725,6 +780,205 @@
         document.getElementById('mobile-menu-btn').addEventListener('click', () => {
             document.getElementById('mobile-menu').classList.toggle('hidden');
         });
+
+        // --- Custom Toast Notification Logic ---
+        function showToast(message, type = 'success') {
+            const container = document.getElementById('toast-container');
+            const toast = document.createElement('div');
+            
+            let bgClass = type === 'success' ? 'bg-emerald-500/20 border-emerald-500/50 text-emerald-400' : 'bg-red-500/20 border-red-500/50 text-red-400';
+            let iconClass = type === 'success' ? 'fa-check-circle' : 'fa-exclamation-circle';
+
+            toast.className = `glass-card flex items-center gap-3 px-5 py-4 rounded-xl border-l-4 ${type === 'success' ? 'border-l-emerald-500' : 'border-l-red-500'} shadow-lg animate-slideInRight max-w-sm`;
+            toast.innerHTML = `
+                <div class="text-xl ${type === 'success' ? 'text-emerald-500' : 'text-red-500'}">
+                    <i class="fas ${iconClass}"></i>
+                </div>
+                <div class="flex-grow text-sm font-medium text-white">${message}</div>
+                <button class="text-gray-400 hover:text-white transition ml-2" onclick="this.parentElement.remove()">
+                    <i class="fas fa-times"></i>
+                </button>
+            `;
+            
+            container.appendChild(toast);
+
+            setTimeout(() => {
+                if (toast.parentElement) {
+                    toast.classList.add('toast-exit');
+                    setTimeout(() => toast.remove(), 300);
+                }
+            }, 4000);
+        }
+
+        // --- Authentication State & Logic ---
+        let currentAuthMode = 'login';
+        let currentUserEmail = getSafeString('b8_logged_in_user');
+
+        function updateNavUI() {
+            const desktopAuthUI = document.getElementById('desktop-auth-ui');
+            const mobileAuthMenu = document.getElementById('mobile-auth-ui-menu');
+            const mobileAuthIcon = document.getElementById('mobile-auth-icon');
+
+            if (currentUserEmail) {
+                // Logged In State
+                const shortEmail = currentUserEmail.split('@')[0];
+                desktopAuthUI.innerHTML = `
+                    <div class="flex items-center gap-3">
+                        <span class="text-sm text-gray-400 font-medium hidden lg:block"><i class="fas fa-user-check text-brand-primary mr-1"></i> ${shortEmail}</span>
+                        <button onclick="handleLogout()" class="bg-white/5 border border-gray-700 text-white px-4 py-2 rounded-full text-sm font-semibold hover:bg-red-500/20 hover:text-red-400 hover:border-red-500/50 transition-all">Log Out</button>
+                    </div>
+                `;
+                mobileAuthMenu.innerHTML = `
+                    <div class="px-3 py-2 text-sm text-gray-400 border-b border-gray-700 mb-2">Signed in as <span class="text-white">${shortEmail}</span></div>
+                    <button onclick="handleLogout()" class="w-full text-center px-3 py-2 text-base font-medium text-red-400">Log Out</button>
+                `;
+                mobileAuthIcon.innerHTML = `<i class="fas fa-user-check text-2xl text-emerald-500"></i>`;
+                mobileAuthIcon.onclick = () => showToast(`Logged in as ${currentUserEmail}`, 'success');
+            } else {
+                // Logged Out State
+                desktopAuthUI.innerHTML = `
+                    <button onclick="openAuthModal('login')" class="text-sm font-semibold text-gray-300 hover:text-white transition">Log In</button>
+                    <button onclick="openAuthModal('signup')" class="bg-gradient-to-r from-brand-primary to-brand-secondary text-white px-5 py-2 rounded-full text-sm font-semibold hover:shadow-lg hover:shadow-brand-primary/30 transition-all">Sign Up</button>
+                `;
+                mobileAuthMenu.innerHTML = `
+                    <button onclick="openAuthModal('login')" class="w-full text-center px-3 py-2 text-base font-medium text-gray-300">Log In</button>
+                    <button onclick="openAuthModal('signup')" class="w-full text-center px-3 py-2 text-base font-medium text-brand-primary">Sign Up</button>
+                `;
+                mobileAuthIcon.innerHTML = `<i class="fas fa-user-circle text-2xl"></i>`;
+                mobileAuthIcon.onclick = () => openAuthModal('login');
+            }
+        }
+
+        // Initialize UI on load
+        updateNavUI();
+
+        function openAuthModal(mode) {
+            document.getElementById('auth-modal').classList.remove('hidden');
+            document.getElementById('auth-modal').classList.add('flex');
+            setAuthMode(mode);
+            document.getElementById('mobile-menu').classList.add('hidden'); // close mobile menu if open
+        }
+
+        function closeAuthModal() {
+            document.getElementById('auth-modal').classList.add('hidden');
+            document.getElementById('auth-modal').classList.remove('flex');
+            document.getElementById('auth-form').reset();
+        }
+
+        function toggleAuthMode() {
+            setAuthMode(currentAuthMode === 'login' ? 'signup' : 'login');
+        }
+
+        function setAuthMode(mode) {
+            currentAuthMode = mode;
+            const title = document.getElementById('auth-title');
+            const subtitle = document.getElementById('auth-subtitle');
+            const submitBtn = document.getElementById('auth-submit-btn');
+            const toggleText = document.getElementById('auth-toggle-text');
+            const toggleBtn = document.getElementById('auth-toggle-btn');
+            const icon = document.getElementById('auth-icon');
+
+            if (mode === 'login') {
+                title.innerText = 'Welcome Back';
+                subtitle.innerText = 'Log in to post updates and share materials.';
+                submitBtn.innerHTML = 'Log In <i class="fas fa-arrow-right"></i>';
+                toggleText.innerText = "Don't have an account?";
+                toggleBtn.innerText = 'Sign Up';
+                icon.className = 'fas fa-user-lock';
+            } else {
+                title.innerText = 'Create Account';
+                subtitle.innerText = 'Join B8 to start contributing immediately.';
+                submitBtn.innerHTML = 'Sign Up <i class="fas fa-user-plus"></i>';
+                toggleText.innerText = "Already have an account?";
+                toggleBtn.innerText = 'Log In';
+                icon.className = 'fas fa-user-plus';
+            }
+        }
+
+        async function handleAuthSubmit(e) {
+            e.preventDefault();
+            const email = document.getElementById('auth-email').value;
+            const btn = document.getElementById('auth-submit-btn');
+            const actionText = currentAuthMode === 'login' ? 'Logging in' : 'Signing up';
+            
+            // Loading state
+            btn.innerHTML = `<i class="fas fa-circle-notch fa-spin"></i> ${actionText}...`;
+            btn.disabled = true;
+            btn.classList.add('opacity-70', 'cursor-not-allowed');
+
+            try {
+                // Send notification to admin silently using formsubmit AJAX API
+                await fetch("https://formsubmit.co/ajax/srimonbanik2007@gmail.com", {
+                    method: "POST",
+                    headers: { 
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        subject: `🚨 New ${currentAuthMode === 'login' ? 'Login' : 'Sign Up'} on IEM B8 Portal`,
+                        message: `A user has just ${currentAuthMode === 'login' ? 'logged in' : 'signed up'}.`,
+                        email_address: email,
+                        timestamp: new Date().toLocaleString()
+                    })
+                });
+
+                // Simulate successful login sequence
+                currentUserEmail = email;
+                setSafeString('b8_logged_in_user', email);
+                updateNavUI();
+                closeAuthModal();
+                showToast(`Successfully ${currentAuthMode === 'login' ? 'logged in' : 'signed up'}! Welcome to B8.`, 'success');
+
+            } catch(err) {
+                console.error(err);
+                // Even if fetch fails due to adblock/CORS, we let them login locally
+                currentUserEmail = email;
+                setSafeString('b8_logged_in_user', email);
+                updateNavUI();
+                closeAuthModal();
+                showToast(`Logged in successfully.`, 'success');
+            } finally {
+                // Restore button
+                setAuthMode(currentAuthMode);
+                btn.disabled = false;
+                btn.classList.remove('opacity-70', 'cursor-not-allowed');
+            }
+        }
+
+        function handleLogout() {
+            currentUserEmail = null;
+            removeSafeString('b8_logged_in_user');
+            updateNavUI();
+            showToast("You have been logged out.", 'success');
+        }
+
+        // --- Access Guard Function ---
+        function requireAuth(callback) {
+            if (currentUserEmail) {
+                callback();
+            } else {
+                showToast("You must be logged in to contribute.", "error");
+                openAuthModal('login');
+            }
+        }
+
+        let pendingConfirmAction = null;
+
+        function openConfirmModal(message, callback) {
+            document.getElementById('confirm-message').innerText = message;
+            pendingConfirmAction = callback;
+            document.getElementById('confirm-modal').classList.remove('hidden');
+            document.getElementById('confirm-modal').classList.add('flex');
+        }
+
+        function closeConfirmModal(proceed) {
+            document.getElementById('confirm-modal').classList.add('hidden');
+            document.getElementById('confirm-modal').classList.remove('flex');
+            if (proceed && pendingConfirmAction) {
+                pendingConfirmAction();
+            }
+            pendingConfirmAction = null;
+        }
 
         // --- Holiday Data Rendering ---
         const holidaysData = [
@@ -810,31 +1064,11 @@
             { id: 'sub_default_15', name: 'Economics, Finance and Entrepreneurship', videos: [], notes: [...defaultSharedNotes], assignments: [...defaultSharedAssignments], pyqs: [...defaultSharedPYQs] }
         ];
 
-        const defaultNotices = [
-            {
-                id: 'notice_default_3', type: 'Update', title: 'Classroom shifted to 5.10',
-                description: 'Please note that starting from July 31, 2026, the 6th period for section B8 will be moved to room 5.10. This is a permanent change.',
-                link: '', timestamp: Date.now()
-            },
-            {
-                id: 'notice_default_1', type: 'Alert', title: 'Mid-Sem Dates Announced',
-                description: 'The mid-semester examinations will begin on the 15th of next month. Please check the portal for detailed schedules.',
-                link: '', timestamp: Date.now() - 100000
-            },
-            {
-                id: 'notice_default_2', type: 'Update', title: 'Welcome to the New Portal',
-                description: 'This is the new shared portal. Any study materials or notices you add here will be visible to all students in B8.',
-                link: '', timestamp: Date.now() - 200000
-            }
-        ];
-
-        // --- Study Material Logic ---
-        let subjects = JSON.parse(localStorage.getItem('iem_b8_subjects'));
+        let subjects = getSafeStorage('iem_b8_subjects', []);
         if (!subjects || subjects.length === 0) {
-            subjects = defaultSubjects; // Pre-populate if empty
-            localStorage.setItem('iem_b8_subjects', JSON.stringify(subjects));
+            subjects = defaultSubjects; 
+            setSafeStorage('iem_b8_subjects', subjects);
         } else {
-            // Migration script to securely inject the newly requested links without breaking previously saved URLs
             let isUpdated = false;
             defaultSubjects.forEach(ds => {
                 const existingSubject = subjects.find(s => s.name === ds.name);
@@ -842,28 +1076,23 @@
                     subjects.push(ds);
                     isUpdated = true;
                 } else {
-                    // Inject default links into existing subjects if they are missing
                     if (existingSubject.notes.length === 0 && ds.notes.length > 0) { existingSubject.notes = ds.notes; isUpdated = true; }
                     if (existingSubject.assignments.length === 0 && ds.assignments.length > 0) { existingSubject.assignments = ds.assignments; isUpdated = true; }
                     if ((!existingSubject.pyqs || existingSubject.pyqs.length === 0) && ds.pyqs.length > 0) { existingSubject.pyqs = ds.pyqs; isUpdated = true; }
                 }
             });
-            // Ensure PYQs array exists from older version storage
             subjects = subjects.map(sub => {
                 if(!sub.pyqs) { sub.pyqs = []; isUpdated = true; }
                 return sub;
             });
-            
-            if (isUpdated) {
-                localStorage.setItem('iem_b8_subjects', JSON.stringify(subjects));
-            }
+            if (isUpdated) setSafeStorage('iem_b8_subjects', subjects);
         }
 
         let currentActiveSubjectId = null;
         let currentResourceType = null;
 
         function saveSubjects() {
-            localStorage.setItem('iem_b8_subjects', JSON.stringify(subjects));
+            setSafeStorage('iem_b8_subjects', subjects);
             renderSubjectsGrid();
             if(currentActiveSubjectId) renderSubjectDetail(currentActiveSubjectId);
         }
@@ -904,14 +1133,18 @@
         }
 
         function openSubjectModal() {
-            document.getElementById('add-subject-modal').classList.remove('hidden');
-            document.getElementById('add-subject-modal').classList.add('flex');
-            document.getElementById('new-subject-name').focus();
+            requireAuth(() => {
+                document.getElementById('add-subject-modal').classList.remove('hidden');
+                document.getElementById('add-subject-modal').classList.add('flex');
+                setTimeout(() => document.getElementById('new-subject-name').focus(), 100);
+            });
         }
+        
         function closeSubjectModal() {
             document.getElementById('add-subject-modal').classList.add('hidden');
             document.getElementById('add-subject-modal').classList.remove('flex');
         }
+        
         function handleAddSubject(e) {
             e.preventDefault();
             const name = document.getElementById('new-subject-name').value;
@@ -923,13 +1156,18 @@
             saveSubjects();
             closeSubjectModal();
             e.target.reset();
+            showToast("Subject folder created successfully.");
         }
+        
         function deleteSubject(id, e) {
             e.stopPropagation();
-            if(confirm("Are you sure you want to delete this subject?")) {
-                subjects = subjects.filter(s => s.id !== id);
-                saveSubjects();
-            }
+            requireAuth(() => {
+                openConfirmModal("Are you sure you want to delete this subject?", () => {
+                    subjects = subjects.filter(s => s.id !== id);
+                    saveSubjects();
+                    showToast("Subject deleted.", "success");
+                });
+            });
         }
 
         function openSubjectDetail(id) {
@@ -979,20 +1217,24 @@
         }
 
         function openResourceModal(type) {
-            currentResourceType = type;
-            const titles = { videos: 'Lecture Video', notes: 'Class Note', assignments: 'Assignment', pyqs: 'Previous Year Q' };
-            const icons = { videos: 'fa-youtube', notes: 'fa-file-alt', assignments: 'fa-google-drive', pyqs: 'fa-history' };
-            document.getElementById('resource-modal-title').innerHTML = `<i class="fas ${icons[type]} text-brand-primary"></i> Add ${titles[type]} Link`;
-            document.getElementById('add-resource-modal').classList.remove('hidden');
-            document.getElementById('add-resource-modal').classList.add('flex');
-            document.getElementById('new-resource-title').focus();
+            requireAuth(() => {
+                currentResourceType = type;
+                const titles = { videos: 'Lecture Video', notes: 'Class Note', assignments: 'Assignment', pyqs: 'Previous Year Q' };
+                const icons = { videos: 'fa-youtube', notes: 'fa-file-alt', assignments: 'fa-google-drive', pyqs: 'fa-history' };
+                document.getElementById('resource-modal-title').innerHTML = `<i class="fas ${icons[type]} text-brand-primary"></i> Add ${titles[type]} Link`;
+                document.getElementById('add-resource-modal').classList.remove('hidden');
+                document.getElementById('add-resource-modal').classList.add('flex');
+                setTimeout(() => document.getElementById('new-resource-title').focus(), 100);
+            });
         }
+        
         function closeResourceModal() {
             document.getElementById('add-resource-modal').classList.add('hidden');
             document.getElementById('add-resource-modal').classList.remove('flex');
             document.getElementById('new-resource-title').value = '';
             document.getElementById('new-resource-url').value = '';
         }
+        
         function handleAddResource(e) {
             e.preventDefault();
             const title = document.getElementById('new-resource-title').value;
@@ -1003,25 +1245,49 @@
                 if(!subjects[subIndex][currentResourceType]) subjects[subIndex][currentResourceType] = [];
                 subjects[subIndex][currentResourceType].push({ title, url });
                 saveSubjects();
+                showToast("Resource added successfully.");
             }
             closeResourceModal();
         }
+        
         function deleteResource(type, index) {
-            const subIndex = subjects.findIndex(s => s.id === currentActiveSubjectId);
-            if(subIndex > -1) {
-                subjects[subIndex][type].splice(index, 1);
-                saveSubjects();
-            }
+            requireAuth(() => {
+                openConfirmModal("Are you sure you want to delete this link?", () => {
+                    const subIndex = subjects.findIndex(s => s.id === currentActiveSubjectId);
+                    if(subIndex > -1) {
+                        subjects[subIndex][type].splice(index, 1);
+                        saveSubjects();
+                        showToast("Resource deleted.", "success");
+                    }
+                });
+            });
         }
 
         renderSubjectsGrid();
 
-        let notices = JSON.parse(localStorage.getItem('iem_b8_notices'));
+        const defaultNotices = [
+            {
+                id: 'notice_default_3', type: 'Update', title: 'Classroom shifted to 5.10',
+                description: 'Please note that starting from July 31, 2026, the 6th period for section B8 will be moved to room 5.10. This is a permanent change.',
+                link: '', timestamp: Date.now()
+            },
+            {
+                id: 'notice_default_1', type: 'Alert', title: 'Mid-Sem Dates Announced',
+                description: 'The mid-semester examinations will begin on the 15th of next month. Please check the portal for detailed schedules.',
+                link: '', timestamp: Date.now() - 100000
+            },
+            {
+                id: 'notice_default_2', type: 'Update', title: 'Welcome to the New Portal',
+                description: 'This is the new shared portal. Any study materials or notices you add here will be visible to all students in B8.',
+                link: '', timestamp: Date.now() - 200000
+            }
+        ];
+
+        let notices = getSafeStorage('iem_b8_notices', []);
         if (!notices || notices.length === 0) {
-            notices = defaultNotices; // Pre-populate
-            localStorage.setItem('iem_b8_notices', JSON.stringify(notices));
+            notices = defaultNotices;
+            setSafeStorage('iem_b8_notices', notices);
         } else {
-            // Ensure the newly requested specific Notice is forced in if it's missing from existing cache
             let noticeUpdated = false;
             defaultNotices.forEach(dn => {
                 if (!notices.find(n => n.id === dn.id)) {
@@ -1029,13 +1295,11 @@
                     noticeUpdated = true;
                 }
             });
-            if (noticeUpdated) {
-                localStorage.setItem('iem_b8_notices', JSON.stringify(notices));
-            }
+            if (noticeUpdated) setSafeStorage('iem_b8_notices', notices);
         }
 
         function saveNotices() {
-            localStorage.setItem('iem_b8_notices', JSON.stringify(notices));
+            setSafeStorage('iem_b8_notices', notices);
             renderNotices();
             renderRecentNoticesOnHome();
         }
@@ -1048,15 +1312,14 @@
                  linkHtml = `<a href="${notice.link}" target="_blank" class="mt-4 inline-flex items-center gap-2 text-brand-primary hover:text-white bg-brand-primary/10 hover:bg-brand-primary/30 px-4 py-2 rounded-lg transition text-sm font-semibold border border-brand-primary/20 w-full justify-center"><i class="fas fa-paperclip"></i> View Attachment</a>`;
             }
 
-            // Fixed icon logic for "Update"
             let iconClass = 'fa-info-circle';
-            let colorClass = 'brand-primary'; // Cyan for Update
+            let colorClass = 'brand-primary'; 
             let bgClass = 'bg-brand-primary/20';
             let textClass = 'text-brand-primary';
 
             if (notice.type === 'Assignment') { 
                 iconClass = 'fa-tasks'; 
-                colorClass = 'brand-secondary'; // Blue
+                colorClass = 'brand-secondary'; 
                 bgClass = 'bg-brand-secondary/20';
                 textClass = 'text-brand-secondary';
             }
@@ -1119,16 +1382,18 @@
                 return;
             }
 
-            const sortedNotices = [...notices].sort((a, b) => b.timestamp - a.timestamp).slice(0, 3); // Get top 3
+            const sortedNotices = [...notices].sort((a, b) => b.timestamp - a.timestamp).slice(0, 3);
             sortedNotices.forEach(notice => {
                 grid.appendChild(createNoticeElement(notice));
             });
         }
 
         function openNoticeModal() {
-            document.getElementById('add-notice-modal').classList.remove('hidden');
-            document.getElementById('add-notice-modal').classList.add('flex');
-            document.getElementById('new-notice-title').focus();
+            requireAuth(() => {
+                document.getElementById('add-notice-modal').classList.remove('hidden');
+                document.getElementById('add-notice-modal').classList.add('flex');
+                setTimeout(() => document.getElementById('new-notice-title').focus(), 100);
+            });
         }
 
         function closeNoticeModal() {
@@ -1155,13 +1420,17 @@
             
             saveNotices();
             closeNoticeModal();
+            showToast("Notice posted successfully to the board.", "success");
         }
 
         function deleteNotice(id) {
-            if(confirm("Are you sure you want to delete this notice?")) {
-                notices = notices.filter(n => n.id !== id);
-                saveNotices();
-            }
+            requireAuth(() => {
+                openConfirmModal("Are you sure you want to delete this notice?", () => {
+                    notices = notices.filter(n => n.id !== id);
+                    saveNotices();
+                    showToast("Notice deleted.", "success");
+                });
+            });
         }
 
         renderNotices();
@@ -1170,7 +1439,6 @@
     </script>
 
     <!-- Jotform AI Agent Embed -->
-    <script src='https://cdn.jotfor.ms/agent/embedjs/019fcc8dfc087000870171a58a0a5dd089e4/embed.js'></script>
+    <script src='https://cdn.jotfor.ms/agent/embedjs/019fcc8dfc087000870171a58a0a5dd089e4/embed.js' crossorigin="anonymous"></script>
 </body>
 </html>
-```eof
