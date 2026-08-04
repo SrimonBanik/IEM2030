@@ -757,7 +757,6 @@
 
 
     <script>
-        //        // --- Navigation Logic ---
         function navigate(sectionId) {
             document.querySelectorAll('.page-section').forEach(el => {
                 el.classList.remove('active');
@@ -839,26 +838,36 @@
             e.target.reset();
         }
 
-        // --- Default Data Initialization for "Global" simulation ---
+        // Reusable arrays for all subjects
+        const defaultSharedNotes = [{ title: 'Class Note', url: 'https://drive.google.com/drive/folders/1XZXBlyb51roY0vPF-Y-T-vk4bjcI3cXg?usp=drive_link' }];
+        const defaultSharedAssignments = [{ title: 'Assignments', url: 'https://drive.google.com/drive/folders/1uI8P-rbILPQ5LBQ00RRYisilQWn2RmJN?usp=drive_link' }];
+        const defaultSharedPYQs = [{ title: 'Previous Year Qs', url: 'https://drive.google.com/drive/folders/1keXEUv6DW4a1tr6AIm02W_arBsvEbzj-?usp=drive_link' }];
+
+        // Default Data Initialization for "Global" simulation
         const defaultSubjects = [
-            { id: 'sub_default_1', name: 'Engineering Mechanics Essentials', videos: [], notes: [], assignments: [], pyqs: [] },
-            { id: 'sub_default_2', name: 'Chemistry', videos: [], notes: [], assignments: [], pyqs: [] },
-            { id: 'sub_default_3', name: 'English', videos: [], notes: [], assignments: [], pyqs: [] },
-            { id: 'sub_default_4', name: 'Mathematics and Basic Statistics', videos: [], notes: [], assignments: [], pyqs: [] },
-            { id: 'sub_default_5', name: 'Design Thinking & Innovation - Ideation & Research', videos: [], notes: [], assignments: [], pyqs: [] },
-            { id: 'sub_default_6', name: 'Basic Electronics', videos: [], notes: [], assignments: [], pyqs: [] },
-            { id: 'sub_default_7', name: 'French', videos: [], notes: [], assignments: [], pyqs: [] },
-            { id: 'sub_default_8', name: 'MATLAB', videos: [], notes: [], assignments: [], pyqs: [] },
-            { id: 'sub_default_9', name: 'Programming for Problem Solving Using C', videos: [], notes: [], assignments: [], pyqs: [] },
-            { id: 'sub_default_10', name: 'Sports', videos: [], notes: [], assignments: [], pyqs: [] },
-            { id: 'sub_default_11', name: 'Essential Studies for Professionals-I', videos: [], notes: [], assignments: [], pyqs: [] },
-            { id: 'sub_default_12', name: 'Workshop', videos: [], notes: [], assignments: [], pyqs: [] },
-            { id: 'sub_default_13', name: 'Soft Skills', videos: [], notes: [], assignments: [], pyqs: [] },
-            { id: 'sub_default_14', name: 'Indian Knowledge System', videos: [], notes: [], assignments: [], pyqs: [] },
-            { id: 'sub_default_15', name: 'Economics, Finance and Entrepreneurship', videos: [], notes: [], assignments: [], pyqs: [] }
+            { id: 'sub_default_1', name: 'Engineering Mechanics Essentials', videos: [], notes: [...defaultSharedNotes], assignments: [...defaultSharedAssignments], pyqs: [...defaultSharedPYQs] },
+            { id: 'sub_default_2', name: 'Chemistry', videos: [], notes: [...defaultSharedNotes], assignments: [...defaultSharedAssignments], pyqs: [...defaultSharedPYQs] },
+            { id: 'sub_default_3', name: 'English', videos: [], notes: [...defaultSharedNotes], assignments: [...defaultSharedAssignments], pyqs: [...defaultSharedPYQs] },
+            { id: 'sub_default_4', name: 'Mathematics and Basic Statistics', videos: [], notes: [...defaultSharedNotes], assignments: [...defaultSharedAssignments], pyqs: [...defaultSharedPYQs] },
+            { id: 'sub_default_5', name: 'Design Thinking & Innovation - Ideation & Research', videos: [], notes: [...defaultSharedNotes], assignments: [...defaultSharedAssignments], pyqs: [...defaultSharedPYQs] },
+            { id: 'sub_default_6', name: 'Basic Electronics', videos: [], notes: [...defaultSharedNotes], assignments: [...defaultSharedAssignments], pyqs: [...defaultSharedPYQs] },
+            { id: 'sub_default_7', name: 'Foreign Language', videos: [], notes: [...defaultSharedNotes], assignments: [...defaultSharedAssignments], pyqs: [...defaultSharedPYQs] },
+            { id: 'sub_default_8', name: 'MATLAB', videos: [], notes: [...defaultSharedNotes], assignments: [...defaultSharedAssignments], pyqs: [...defaultSharedPYQs] },
+            { id: 'sub_default_9', name: 'Programming for Problem Solving Using C', videos: [], notes: [...defaultSharedNotes], assignments: [...defaultSharedAssignments], pyqs: [...defaultSharedPYQs] },
+            { id: 'sub_default_10', name: 'Sports', videos: [], notes: [...defaultSharedNotes], assignments: [...defaultSharedAssignments], pyqs: [...defaultSharedPYQs] },
+            { id: 'sub_default_11', name: 'Essential Studies for Professionals-I', videos: [], notes: [...defaultSharedNotes], assignments: [...defaultSharedAssignments], pyqs: [...defaultSharedPYQs] },
+            { id: 'sub_default_12', name: 'Workshop', videos: [], notes: [...defaultSharedNotes], assignments: [...defaultSharedAssignments], pyqs: [...defaultSharedPYQs] },
+            { id: 'sub_default_13', name: 'Soft Skills', videos: [], notes: [...defaultSharedNotes], assignments: [...defaultSharedAssignments], pyqs: [...defaultSharedPYQs] },
+            { id: 'sub_default_14', name: 'Indian Knowledge System', videos: [], notes: [...defaultSharedNotes], assignments: [...defaultSharedAssignments], pyqs: [...defaultSharedPYQs] },
+            { id: 'sub_default_15', name: 'Economics, Finance and Entrepreneurship', videos: [], notes: [...defaultSharedNotes], assignments: [...defaultSharedAssignments], pyqs: [...defaultSharedPYQs] }
         ];
 
         const defaultNotices = [
+            {
+                id: 'notice_default_3', type: 'Update', title: 'Classroom shifted to 5.10',
+                description: 'Please note that starting from July 31, 2026, the 6th period for section B8 will be moved to room 5.10. This is a permanent change.',
+                link: '', timestamp: Date.now()
+            },
             {
                 id: 'notice_default_1', type: 'Alert', title: 'Mid-Sem Dates Announced',
                 description: 'The mid-semester examinations will begin on the 15th of next month. Please check the portal for detailed schedules.',
@@ -877,13 +886,18 @@
             subjects = defaultSubjects; // Pre-populate if empty
             localStorage.setItem('iem_b8_subjects', JSON.stringify(subjects));
         } else {
-            // Migration script to securely inject the user requested subjects without breaking any previously saved URLs
+            // Migration script to securely inject the newly requested links without breaking previously saved URLs
             let isUpdated = false;
             defaultSubjects.forEach(ds => {
                 const existingSubject = subjects.find(s => s.name === ds.name);
                 if (!existingSubject) {
                     subjects.push(ds);
                     isUpdated = true;
+                } else {
+                    // Inject default links into existing subjects if they are missing
+                    if (existingSubject.notes.length === 0 && ds.notes.length > 0) { existingSubject.notes = ds.notes; isUpdated = true; }
+                    if (existingSubject.assignments.length === 0 && ds.assignments.length > 0) { existingSubject.assignments = ds.assignments; isUpdated = true; }
+                    if ((!existingSubject.pyqs || existingSubject.pyqs.length === 0) && ds.pyqs.length > 0) { existingSubject.pyqs = ds.pyqs; isUpdated = true; }
                 }
             });
             // Ensure PYQs array exists from older version storage
@@ -1013,7 +1027,7 @@
             renderList(sub.videos, 'detail-videos-list', 'videos');
             renderList(sub.notes, 'detail-notes-list', 'notes');
             renderList(sub.assignments, 'detail-assignments-list', 'assignments');
-            renderList(sub.pyqs, 'detail-pyqs-list', 'pyqs'); // Render PYQs
+            renderList(sub.pyqs, 'detail-pyqs-list', 'pyqs'); 
         }
 
         function openResourceModal(type) {
@@ -1058,6 +1072,18 @@
         if (!notices || notices.length === 0) {
             notices = defaultNotices; // Pre-populate
             localStorage.setItem('iem_b8_notices', JSON.stringify(notices));
+        } else {
+            // Ensure the newly requested specific Notice is forced in if it's missing from existing cache
+            let noticeUpdated = false;
+            defaultNotices.forEach(dn => {
+                if (!notices.find(n => n.id === dn.id)) {
+                    notices.push(dn);
+                    noticeUpdated = true;
+                }
+            });
+            if (noticeUpdated) {
+                localStorage.setItem('iem_b8_notices', JSON.stringify(notices));
+            }
         }
 
         function saveNotices() {
