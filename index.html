@@ -21,9 +21,9 @@
                         brand: {
                             dark: '#0a0f1c',
                             card: '#111827',
-                            primary: '#06b6d4', // Cyan
-                            secondary: '#3b82f6', // Blue
-                            accent: '#8b5cf6', // Violet
+                            primary: '#06b6d4',
+                            secondary: '#3b82f6',
+                            accent: '#8b5cf6',
                         }
                     },
                     animation: {
@@ -57,7 +57,8 @@
 
     <style>
         body {
-            background-color: #0a0f1c;
+            /* Background color set via canvas now, but keep fallback */
+            background-color: #0a0f1c; 
             color: #f8fafc;
             overflow-x: hidden;
             scroll-behavior: smooth;
@@ -133,7 +134,10 @@
         ::-webkit-scrollbar-thumb:hover { background: #3b82f6; }
     </style>
 </head>
-<body class="antialiased min-h-screen flex flex-col">
+<body class="antialiased min-h-screen flex flex-col relative">
+
+    <!-- Animated Galaxy/Stars Background -->
+    <canvas id="starfield" class="fixed inset-0 z-[-1] pointer-events-none w-full h-full"></canvas>
 
     <header class="glass fixed w-full top-0 z-50">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -152,10 +156,8 @@
                     <button onclick="navigate('about')" class="nav-link text-sm font-semibold hover:text-white uppercase tracking-wide">About Us</button>
                     <button onclick="navigate('contact')" class="nav-link text-sm font-semibold hover:text-white uppercase tracking-wide">Contact</button>
                     
-                    <!-- Desktop Auth UI -->
                     <div id="desktop-auth-ui" class="flex items-center space-x-4 pl-4 border-l border-gray-700">
-                        <button onclick="openAuthModal('login')" class="text-sm font-semibold text-gray-300 hover:text-white transition">Log In</button>
-                        <button onclick="openAuthModal('signup')" class="bg-gradient-to-r from-brand-primary to-brand-secondary text-white px-5 py-2 rounded-full text-sm font-semibold hover:shadow-lg hover:shadow-brand-primary/30 transition-all">Sign Up</button>
+                        <!-- Replaced dynamically by JS -->
                     </div>
                 </nav>
 
@@ -179,14 +181,12 @@
                 <button onclick="navigate('about')" class="block px-3 py-2 text-base font-medium">About Us</button>
                 <button onclick="navigate('contact')" class="block px-3 py-2 text-base font-medium">Contact Us</button>
                 <div id="mobile-auth-ui-menu" class="pt-4 mt-2 border-t border-gray-700 space-y-2">
-                    <button onclick="openAuthModal('login')" class="w-full text-center px-3 py-2 text-base font-medium text-gray-300">Log In</button>
-                    <button onclick="openAuthModal('signup')" class="w-full text-center px-3 py-2 text-base font-medium text-brand-primary">Sign Up</button>
+                    <!-- Replaced dynamically by JS -->
                 </div>
             </div>
         </div>
     </header>
 
-    <!-- Toast Notification Container -->
     <div id="toast-container" class="fixed top-24 right-4 z-[400] flex flex-col gap-3 pointer-events-none"></div>
 
     <main class="flex-grow pt-24 pb-12 relative z-10">
@@ -227,9 +227,7 @@
                         See All <i class="fas fa-arrow-right"></i>
                     </button>
                 </div>
-                <div id="home-recent-notices" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                    <!-- Dynamic recent notices will be injected here -->
-                </div>
+                <div id="home-recent-notices" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"></div>
             </div>
             
             <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
@@ -268,9 +266,7 @@
                 </button>
             </div>
 
-            <div id="notices-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                <!-- Dynamic Notices will be injected here -->
-            </div>
+            <div id="notices-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"></div>
             
             <div id="no-notices-msg" class="hidden text-center py-20 bg-gray-900/30 rounded-2xl border border-gray-800 border-dashed">
                 <div class="w-20 h-20 mx-auto bg-gray-800 rounded-full flex items-center justify-center text-gray-500 text-3xl mb-4">
@@ -287,7 +283,6 @@
                 <p class="text-gray-400 max-w-2xl mx-auto">A shared repository for all subjects. Add resources to make them visible to everyone.</p>
             </div>
 
-            <!-- Subject Grid View -->
             <div id="subjects-view">
                 <div class="flex flex-col md:flex-row justify-between items-center mb-8 gap-4">
                     <h3 class="text-2xl font-bold text-white flex items-center gap-2">
@@ -298,61 +293,69 @@
                     </button>
                 </div>
                 
-                <div id="subjects-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                    <!-- Dynamic Subjects will be injected here -->
-                </div>
+                <div id="subjects-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"></div>
                 <div id="no-subjects-msg" class="hidden text-center py-16 bg-gray-900/30 rounded-2xl border border-gray-800 border-dashed text-gray-500">
                     <i class="fas fa-folder-open text-5xl mb-4 text-gray-700"></i>
                     <p class="text-lg">No subjects created yet. Click "Create Subject Folder" to start sharing.</p>
                 </div>
             </div>
 
-            <!-- Single Subject Detail View -->
             <div id="subject-detail-view" class="hidden">
                 <button onclick="closeSubjectDetail()" class="text-brand-primary hover:text-brand-secondary mb-6 flex items-center gap-2 transition font-medium bg-brand-primary/10 px-4 py-2 rounded-lg w-fit">
                     <i class="fas fa-arrow-left"></i> Back to Directory
                 </button>
                 <div class="glass-card p-6 md:p-10 rounded-2xl relative overflow-hidden border border-gray-700/50">
                     <div class="absolute top-0 right-0 w-64 h-64 bg-brand-primary/10 rounded-full blur-3xl -mt-20 -mr-20 pointer-events-none"></div>
-                    <h2 id="detail-subject-title" class="text-3xl md:text-4xl font-bold mb-8 text-white flex items-center gap-3">
-                        <i class="fas fa-book-open text-brand-primary"></i> <span>Subject Name</span>
-                    </h2>
+                    <h2 id="detail-subject-title" class="text-3xl md:text-4xl font-bold mb-8 text-white flex items-center gap-3"></h2>
                     
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        <!-- Videos Column -->
-                        <div class="bg-gray-900/60 p-6 rounded-xl border border-gray-700/50 hover:border-brand-primary/30 transition-colors">
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                        
+                        <div class="bg-gray-900/60 p-6 rounded-xl border border-gray-700/50 hover:border-red-500/30 transition-colors flex flex-col">
                             <div class="flex justify-between items-center mb-4 pb-3 border-b border-gray-700">
                                 <h4 class="font-bold text-lg flex items-center gap-2 text-white"><i class="fab fa-youtube text-red-500 text-xl"></i> Lecture Videos</h4>
-                                <button onclick="openResourceModal('videos')" class="text-xs bg-brand-primary/20 hover:bg-brand-primary text-brand-primary hover:text-white px-3 py-1.5 rounded transition font-medium"><i class="fas fa-plus mr-1"></i> Add</button>
+                                <button onclick="openResourceModal('videos')" class="text-xs bg-red-500/20 hover:bg-red-500 text-red-500 hover:text-white px-3 py-1.5 rounded transition font-medium"><i class="fas fa-plus mr-1"></i> Add</button>
                             </div>
-                            <ul id="detail-videos-list" class="space-y-3 text-sm max-h-64 overflow-y-auto custom-scrollbar pr-2"></ul>
+                            <ul id="detail-videos-list" class="space-y-3 text-sm flex-grow overflow-y-auto custom-scrollbar pr-2 min-h-[16rem] max-h-96"></ul>
+                        </div>
+
+                        <div class="bg-gray-900/60 p-6 rounded-xl border border-gray-700/50 hover:border-purple-500/30 transition-colors flex flex-col">
+                            <div class="flex justify-between items-center mb-4 pb-3 border-b border-gray-700">
+                                <h4 class="font-bold text-lg flex items-center gap-2 text-white"><i class="fas fa-book text-purple-500 text-xl"></i> Extra Books</h4>
+                                <button onclick="openResourceModal('extrabooks')" class="text-xs bg-purple-500/20 hover:bg-purple-500 text-purple-500 hover:text-white px-3 py-1.5 rounded transition font-medium"><i class="fas fa-plus mr-1"></i> Add</button>
+                            </div>
+                            <ul id="detail-extrabooks-list" class="space-y-3 text-sm flex-grow overflow-y-auto custom-scrollbar pr-2 min-h-[16rem] max-h-96"></ul>
                         </div>
                         
-                        <!-- Notes Column -->
-                        <div class="bg-gray-900/60 p-6 rounded-xl border border-gray-700/50 hover:border-brand-secondary/30 transition-colors">
+                        <div class="bg-gray-900/60 p-6 rounded-xl border border-gray-700/50 hover:border-brand-secondary/30 transition-colors flex flex-col">
                             <div class="flex justify-between items-center mb-4 pb-3 border-b border-gray-700">
                                 <h4 class="font-bold text-lg flex items-center gap-2 text-white"><i class="fas fa-file-alt text-brand-secondary text-xl"></i> Class Notes</h4>
                                 <button onclick="openResourceModal('notes')" class="text-xs bg-brand-secondary/20 hover:bg-brand-secondary text-brand-secondary hover:text-white px-3 py-1.5 rounded transition font-medium"><i class="fas fa-plus mr-1"></i> Add</button>
                             </div>
-                            <ul id="detail-notes-list" class="space-y-3 text-sm max-h-64 overflow-y-auto custom-scrollbar pr-2"></ul>
+                            <ul id="detail-notes-list" class="space-y-3 text-sm flex-grow overflow-y-auto custom-scrollbar pr-2 min-h-[16rem] max-h-96"></ul>
+                        </div>
+
+                        <div class="bg-gray-900/60 p-6 rounded-xl border border-gray-700/50 hover:border-orange-500/30 transition-colors flex flex-col">
+                            <div class="flex justify-between items-center mb-4 pb-3 border-b border-gray-700">
+                                <h4 class="font-bold text-lg flex items-center gap-2 text-white"><i class="fas fa-pencil-ruler text-orange-500 text-xl"></i> Homework</h4>
+                                <button onclick="openResourceModal('homework')" class="text-xs bg-orange-500/20 hover:bg-orange-500 text-orange-500 hover:text-white px-3 py-1.5 rounded transition font-medium"><i class="fas fa-plus mr-1"></i> Add</button>
+                            </div>
+                            <ul id="detail-homework-list" class="space-y-3 text-sm flex-grow overflow-y-auto custom-scrollbar pr-2 min-h-[16rem] max-h-96"></ul>
                         </div>
                         
-                        <!-- Assignments Column -->
-                        <div class="bg-gray-900/60 p-6 rounded-xl border border-gray-700/50 hover:border-green-500/30 transition-colors">
+                        <div class="bg-gray-900/60 p-6 rounded-xl border border-gray-700/50 hover:border-green-500/30 transition-colors flex flex-col">
                             <div class="flex justify-between items-center mb-4 pb-3 border-b border-gray-700">
                                 <h4 class="font-bold text-lg flex items-center gap-2 text-white"><i class="fab fa-google-drive text-green-500 text-xl"></i> Assignments</h4>
                                 <button onclick="openResourceModal('assignments')" class="text-xs bg-green-500/20 hover:bg-green-500 text-green-500 hover:text-white px-3 py-1.5 rounded transition font-medium"><i class="fas fa-plus mr-1"></i> Add</button>
                             </div>
-                            <ul id="detail-assignments-list" class="space-y-3 text-sm max-h-64 overflow-y-auto custom-scrollbar pr-2"></ul>
+                            <ul id="detail-assignments-list" class="space-y-3 text-sm flex-grow overflow-y-auto custom-scrollbar pr-2 min-h-[16rem] max-h-96"></ul>
                         </div>
 
-                        <!-- PYQs Column -->
-                        <div class="bg-gray-900/60 p-6 rounded-xl border border-gray-700/50 hover:border-yellow-500/30 transition-colors">
+                        <div class="bg-gray-900/60 p-6 rounded-xl border border-gray-700/50 hover:border-yellow-500/30 transition-colors flex flex-col">
                             <div class="flex justify-between items-center mb-4 pb-3 border-b border-gray-700">
                                 <h4 class="font-bold text-lg flex items-center gap-2 text-white"><i class="fas fa-history text-yellow-500 text-xl"></i> Previous Year Qs</h4>
                                 <button onclick="openResourceModal('pyqs')" class="text-xs bg-yellow-500/20 hover:bg-yellow-500 text-yellow-500 hover:text-gray-900 px-3 py-1.5 rounded transition font-bold"><i class="fas fa-plus mr-1"></i> Add</button>
                             </div>
-                            <ul id="detail-pyqs-list" class="space-y-3 text-sm max-h-64 overflow-y-auto custom-scrollbar pr-2"></ul>
+                            <ul id="detail-pyqs-list" class="space-y-3 text-sm flex-grow overflow-y-auto custom-scrollbar pr-2 min-h-[16rem] max-h-96"></ul>
                         </div>
                     </div>
                 </div>
@@ -411,9 +414,7 @@
                                 <th class="p-4 border-b border-gray-700 font-semibold bg-gray-900">Occasion</th>
                             </tr>
                         </thead>
-                        <tbody id="holidays-tbody" class="text-sm text-gray-300 divide-y divide-gray-800/50">
-                            <!-- Populated via JS -->
-                        </tbody>
+                        <tbody id="holidays-tbody" class="text-sm text-gray-300 divide-y divide-gray-800/50"></tbody>
                     </table>
                 </div>
             </div>
@@ -546,7 +547,7 @@
 
     </main>
 
-    <footer class="bg-[#050811] border-t border-gray-800 pt-16 pb-8 relative z-10">
+    <footer class="bg-gray-900/80 border-t border-gray-800 pt-16 pb-8 relative z-10 backdrop-blur-md">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10 mb-12">
                 <div class="col-span-1 lg:col-span-1">
@@ -592,7 +593,37 @@
         </div>
     </footer>
 
-    <!-- Authentication Modal -->
+    <div id="payment-modal" class="fixed inset-0 bg-black/80 z-[600] hidden items-center justify-center backdrop-blur-sm">
+        <div class="glass-card w-full max-w-sm p-8 rounded-2xl m-4 relative animate-fadeIn border border-brand-primary/30 shadow-2xl text-center">
+            <button onclick="closePaymentModal()" class="absolute top-4 right-4 text-gray-400 hover:text-white transition">
+                <i class="fas fa-times text-xl"></i>
+            </button>
+            
+            <div class="w-16 h-16 bg-gradient-to-tr from-brand-primary to-brand-secondary rounded-full flex items-center justify-center text-white text-2xl mx-auto mb-4 shadow-[0_0_15px_rgba(6,182,212,0.5)]">
+                <i class="fas fa-wallet"></i>
+            </div>
+            
+            <h3 class="text-2xl font-serif font-bold text-white mb-1">Premium Access</h3>
+            <p class="text-gray-400 text-sm mb-6">Pay to unlock <span id="payment-resource-type" class="font-bold text-white uppercase"></span></p>
+            
+            <div class="bg-gray-900/80 p-4 rounded-xl border border-gray-700 mb-6">
+                <p class="text-sm text-gray-400 mb-2">Amount to Pay</p>
+                <div id="payment-amount" class="text-3xl font-bold text-brand-primary mb-4">Rs. 0</div>
+                
+                <img src="image_ca9d6d.jpg" alt="UPI QR Code" class="w-48 h-48 mx-auto rounded-lg mb-4 border border-gray-700 object-contain bg-white">
+                
+                <p class="text-xs text-gray-400">UPI ID</p>
+                <p class="text-sm font-mono font-bold text-white tracking-wider cursor-pointer hover:text-brand-primary transition flex justify-center items-center gap-2" onclick="copyUPI()">
+                    srimonbanik2007@okicici <i class="far fa-copy"></i>
+                </p>
+            </div>
+            
+            <button onclick="confirmPayment()" class="w-full bg-gradient-to-r from-brand-primary to-brand-secondary text-white py-3 rounded-lg font-bold hover:shadow-lg hover:shadow-brand-primary/40 transition-all transform hover:-translate-y-0.5">
+                I have paid, unlock now <i class="fas fa-unlock ml-2"></i>
+            </button>
+        </div>
+    </div>
+
     <div id="auth-modal" class="fixed inset-0 bg-black/80 z-[300] hidden items-center justify-center backdrop-blur-sm">
         <div class="glass-card w-full max-w-md p-8 rounded-2xl m-4 relative animate-fadeIn border border-brand-primary/30 shadow-2xl">
             <button onclick="closeAuthModal()" class="absolute top-4 right-4 text-gray-400 hover:text-white transition">
@@ -635,7 +666,6 @@
         </div>
     </div>
 
-    <!-- Custom Confirm Modal (Replaces Native confirm() alert) -->
     <div id="confirm-modal" class="fixed inset-0 bg-black/80 z-[500] hidden items-center justify-center backdrop-blur-sm">
         <div class="glass-card w-full max-w-sm p-6 rounded-2xl m-4 animate-fadeIn border border-brand-primary/30 shadow-2xl text-center relative">
             <div class="w-16 h-16 bg-red-500/20 rounded-full flex items-center justify-center text-red-500 text-2xl mx-auto mb-4">
@@ -650,7 +680,6 @@
         </div>
     </div>
 
-    <!-- Add Subject Modal -->
     <div id="add-subject-modal" class="fixed inset-0 bg-black/80 z-[200] hidden items-center justify-center backdrop-blur-sm">
         <div class="glass-card w-full max-w-md p-6 rounded-2xl m-4 animate-fadeIn border border-brand-primary/30 shadow-2xl">
             <div class="flex justify-between items-center mb-6">
@@ -668,7 +697,6 @@
         </div>
     </div>
 
-    <!-- Add Resource Modal -->
     <div id="add-resource-modal" class="fixed inset-0 bg-black/80 z-[200] hidden items-center justify-center backdrop-blur-sm">
         <div class="glass-card w-full max-w-md p-6 rounded-2xl m-4 animate-fadeIn border border-brand-primary/30 shadow-2xl">
             <div class="flex justify-between items-center mb-6">
@@ -690,7 +718,6 @@
         </div>
     </div>
 
-    <!-- Add Notice Modal -->
     <div id="add-notice-modal" class="fixed inset-0 bg-black/80 z-[200] hidden items-center justify-center backdrop-blur-sm">
         <div class="glass-card w-full max-w-lg p-6 md:p-8 rounded-2xl m-4 animate-fadeIn max-h-[90vh] overflow-y-auto custom-scrollbar border border-brand-primary/30 shadow-2xl">
             <div class="flex justify-between items-center mb-6">
@@ -704,6 +731,7 @@
                     <select id="new-notice-type" class="w-full bg-gray-900/80 border border-gray-700 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-brand-primary appearance-none cursor-pointer">
                         <option value="Update">General Update</option>
                         <option value="Assignment">Assignment</option>
+                        <option value="Homework">Homework</option>
                         <option value="Alert">Important Alert</option>
                     </select>
                 </div>
@@ -728,23 +756,151 @@
 
 
     <script>
-        // --- Safe Local Storage Wrappers (Prevents iframe sandbox Script Errors) ---
+        
+        // Starfield & Galaxy Canvas Animation Initialization
+        function initStarfield() {
+            const canvas = document.getElementById('starfield');
+            if (!canvas) return;
+            const ctx = canvas.getContext('2d');
+            
+            let width, height;
+            let stars = [];
+            const numStars = 250; // Density of stars
+
+            function resizeCanvas() {
+                width = canvas.width = window.innerWidth;
+                height = canvas.height = window.innerHeight;
+            }
+
+            window.addEventListener('resize', resizeCanvas);
+            resizeCanvas();
+
+            // Populate initial stars
+            for (let i = 0; i < numStars; i++) {
+                stars.push({
+                    x: Math.random() * width,
+                    y: Math.random() * height,
+                    radius: Math.random() * 1.5,
+                    speed: Math.random() * 0.2 + 0.05,
+                    alpha: Math.random() * 0.5 + 0.3,
+                    alphaChange: (Math.random() * 0.01) - 0.005,
+                    color: Math.random() > 0.8 ? '#8b5cf6' : Math.random() > 0.5 ? '#06b6d4' : '#ffffff' 
+                });
+            }
+
+            function drawFrame() {
+                // Background clear
+                ctx.clearRect(0, 0, width, height);
+                
+                // Base background color
+                ctx.fillStyle = '#0a0f1c';
+                ctx.fillRect(0, 0, width, height);
+
+                // Subtle Nebula / Galaxy Effect Gradients
+                const gradient1 = ctx.createRadialGradient(width * 0.3, height * 0.3, 0, width * 0.3, height * 0.3, width * 0.5);
+                gradient1.addColorStop(0, 'rgba(6, 182, 212, 0.05)'); // Brand primary
+                gradient1.addColorStop(1, 'transparent');
+                
+                const gradient2 = ctx.createRadialGradient(width * 0.7, height * 0.7, 0, width * 0.7, height * 0.7, width * 0.5);
+                gradient2.addColorStop(0, 'rgba(139, 92, 246, 0.05)'); // Brand accent (purple)
+                gradient2.addColorStop(1, 'transparent');
+
+                ctx.fillStyle = gradient1;
+                ctx.fillRect(0, 0, width, height);
+                ctx.fillStyle = gradient2;
+                ctx.fillRect(0, 0, width, height);
+
+                // Update and draw stars
+                stars.forEach(star => {
+                    // Drift
+                    star.y -= star.speed;
+                    star.x += (star.x - width/2) * 0.0003; // Slight outward warp
+
+                    // Twinkle
+                    star.alpha += star.alphaChange;
+                    if(star.alpha <= 0.1 || star.alpha >= 0.8) star.alphaChange *= -1;
+
+                    // Screen wrap
+                    if (star.y < 0) {
+                        star.y = height;
+                        star.x = Math.random() * width;
+                    }
+                    if (star.x < 0) star.x = width;
+                    if (star.x > width) star.x = 0;
+
+                    // Draw
+                    ctx.beginPath();
+                    ctx.arc(star.x, star.y, star.radius, 0, Math.PI * 2);
+                    
+                    // Apply opacity to star color
+                    let fill = star.color;
+                    if(fill === '#ffffff') {
+                        ctx.fillStyle = `rgba(255, 255, 255, ${star.alpha})`;
+                    } else if (fill === '#06b6d4') {
+                        ctx.fillStyle = `rgba(6, 182, 212, ${star.alpha})`;
+                    } else {
+                        ctx.fillStyle = `rgba(139, 92, 246, ${star.alpha})`;
+                    }
+                    
+                    ctx.fill();
+                });
+
+                requestAnimationFrame(drawFrame);
+            }
+            
+            drawFrame();
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            try {
+                // Initialize Animated Background
+                initStarfield();
+
+                const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+                if(mobileMenuBtn) {
+                    mobileMenuBtn.addEventListener('click', () => {
+                        document.getElementById('mobile-menu').classList.toggle('hidden');
+                    });
+                }
+                
+                updateNavUI();
+                renderSubjectsGrid();
+                renderNotices();
+                renderRecentNoticesOnHome();
+
+                const holidaysTbody = document.getElementById('holidays-tbody');
+                if (holidaysTbody) {
+                    holidaysData.forEach(h => {
+                        const tr = document.createElement('tr');
+                        tr.className = 'hover:bg-gray-800/50 transition border-b border-gray-800/50';
+                        tr.innerHTML = `
+                            <td class="p-4 text-white">${h.date}</td>
+                            <td class="p-4 font-medium text-gray-400">${h.day}</td>
+                            <td class="p-4 text-center">
+                                <span class="inline-block w-6 h-6 rounded-full ${h.days > 0 ? 'bg-green-500/20 text-green-400' : 'bg-gray-700 text-gray-400'} flex items-center justify-center text-xs mx-auto">
+                                    ${h.days}
+                                </span>
+                            </td>
+                            <td class="p-4 font-medium text-white">${h.occasion}</td>
+                        `;
+                        holidaysTbody.appendChild(tr);
+                    });
+                }
+            } catch (err) {
+                console.error("Initialization Error: ", err);
+            }
+        });
+
         function getSafeStorage(key, defaultVal) {
             try {
                 const val = localStorage.getItem(key);
                 if (val) return JSON.parse(val);
-            } catch(e) {
-                console.warn("Storage access restricted by environment.");
-            }
+            } catch(e) { console.warn("Storage restricted."); }
             return defaultVal;
         }
         
         function setSafeStorage(key, val) {
-            try {
-                localStorage.setItem(key, JSON.stringify(val));
-            } catch(e) {
-                console.warn("Storage write restricted by environment.");
-            }
+            try { localStorage.setItem(key, JSON.stringify(val)); } catch(e) {}
         }
 
         function getSafeString(key) {
@@ -759,58 +915,34 @@
             try { localStorage.removeItem(key); } catch(e) { }
         }
 
-        // --- Navigation Logic ---
         function navigate(sectionId) {
-            document.querySelectorAll('.page-section').forEach(el => {
-                el.classList.remove('active');
-            });
+            document.querySelectorAll('.page-section').forEach(el => el.classList.remove('active'));
             document.getElementById(sectionId).classList.add('active');
             
             document.querySelectorAll('.nav-link').forEach(el => {
                 el.classList.remove('active');
-                if(el.getAttribute('onclick').includes(sectionId)) {
-                    el.classList.add('active');
-                }
+                if(el.getAttribute('onclick').includes(sectionId)) el.classList.add('active');
             });
 
             document.getElementById('mobile-menu').classList.add('hidden');
             window.scrollTo(0,0);
         }
 
-        document.getElementById('mobile-menu-btn').addEventListener('click', () => {
-            document.getElementById('mobile-menu').classList.toggle('hidden');
-        });
-
-        // --- Custom Toast Notification Logic ---
         function showToast(message, type = 'success') {
             const container = document.getElementById('toast-container');
             const toast = document.createElement('div');
             
-            let bgClass = type === 'success' ? 'bg-emerald-500/20 border-emerald-500/50 text-emerald-400' : 'bg-red-500/20 border-red-500/50 text-red-400';
             let iconClass = type === 'success' ? 'fa-check-circle' : 'fa-exclamation-circle';
-
             toast.className = `glass-card flex items-center gap-3 px-5 py-4 rounded-xl border-l-4 ${type === 'success' ? 'border-l-emerald-500' : 'border-l-red-500'} shadow-lg animate-slideInRight max-w-sm`;
             toast.innerHTML = `
-                <div class="text-xl ${type === 'success' ? 'text-emerald-500' : 'text-red-500'}">
-                    <i class="fas ${iconClass}"></i>
-                </div>
+                <div class="text-xl ${type === 'success' ? 'text-emerald-500' : 'text-red-500'}"><i class="fas ${iconClass}"></i></div>
                 <div class="flex-grow text-sm font-medium text-white">${message}</div>
-                <button class="text-gray-400 hover:text-white transition ml-2" onclick="this.parentElement.remove()">
-                    <i class="fas fa-times"></i>
-                </button>
+                <button class="text-gray-400 hover:text-white transition ml-2" onclick="this.parentElement.remove()"><i class="fas fa-times"></i></button>
             `;
-            
             container.appendChild(toast);
-
-            setTimeout(() => {
-                if (toast.parentElement) {
-                    toast.classList.add('toast-exit');
-                    setTimeout(() => toast.remove(), 300);
-                }
-            }, 4000);
+            setTimeout(() => { if (toast.parentElement) { toast.classList.add('toast-exit'); setTimeout(() => toast.remove(), 300); } }, 4000);
         }
 
-        // --- Authentication State & Logic ---
         let currentAuthMode = 'login';
         let currentUserEmail = getSafeString('b8_logged_in_user');
 
@@ -820,43 +952,22 @@
             const mobileAuthIcon = document.getElementById('mobile-auth-icon');
 
             if (currentUserEmail) {
-                // Logged In State
                 const shortEmail = currentUserEmail.split('@')[0];
-                desktopAuthUI.innerHTML = `
-                    <div class="flex items-center gap-3">
-                        <span class="text-sm text-gray-400 font-medium hidden lg:block"><i class="fas fa-user-check text-brand-primary mr-1"></i> ${shortEmail}</span>
-                        <button onclick="handleLogout()" class="bg-white/5 border border-gray-700 text-white px-4 py-2 rounded-full text-sm font-semibold hover:bg-red-500/20 hover:text-red-400 hover:border-red-500/50 transition-all">Log Out</button>
-                    </div>
-                `;
-                mobileAuthMenu.innerHTML = `
-                    <div class="px-3 py-2 text-sm text-gray-400 border-b border-gray-700 mb-2">Signed in as <span class="text-white">${shortEmail}</span></div>
-                    <button onclick="handleLogout()" class="w-full text-center px-3 py-2 text-base font-medium text-red-400">Log Out</button>
-                `;
-                mobileAuthIcon.innerHTML = `<i class="fas fa-user-check text-2xl text-emerald-500"></i>`;
-                mobileAuthIcon.onclick = () => showToast(`Logged in as ${currentUserEmail}`, 'success');
+                if(desktopAuthUI) desktopAuthUI.innerHTML = `<div class="flex items-center gap-3"><span class="text-sm text-gray-400 font-medium hidden lg:block"><i class="fas fa-user-check text-brand-primary mr-1"></i> ${shortEmail}</span><button onclick="handleLogout()" class="bg-white/5 border border-gray-700 text-white px-4 py-2 rounded-full text-sm font-semibold hover:bg-red-500/20 hover:text-red-400 hover:border-red-500/50 transition-all">Log Out</button></div>`;
+                if(mobileAuthMenu) mobileAuthMenu.innerHTML = `<div class="px-3 py-2 text-sm text-gray-400 border-b border-gray-700 mb-2">Signed in as <span class="text-white">${shortEmail}</span></div><button onclick="handleLogout()" class="w-full text-center px-3 py-2 text-base font-medium text-red-400">Log Out</button>`;
+                if(mobileAuthIcon) { mobileAuthIcon.innerHTML = `<i class="fas fa-user-check text-2xl text-emerald-500"></i>`; mobileAuthIcon.onclick = () => showToast(`Logged in as ${currentUserEmail}`, 'success'); }
             } else {
-                // Logged Out State
-                desktopAuthUI.innerHTML = `
-                    <button onclick="openAuthModal('login')" class="text-sm font-semibold text-gray-300 hover:text-white transition">Log In</button>
-                    <button onclick="openAuthModal('signup')" class="bg-gradient-to-r from-brand-primary to-brand-secondary text-white px-5 py-2 rounded-full text-sm font-semibold hover:shadow-lg hover:shadow-brand-primary/30 transition-all">Sign Up</button>
-                `;
-                mobileAuthMenu.innerHTML = `
-                    <button onclick="openAuthModal('login')" class="w-full text-center px-3 py-2 text-base font-medium text-gray-300">Log In</button>
-                    <button onclick="openAuthModal('signup')" class="w-full text-center px-3 py-2 text-base font-medium text-brand-primary">Sign Up</button>
-                `;
-                mobileAuthIcon.innerHTML = `<i class="fas fa-user-circle text-2xl"></i>`;
-                mobileAuthIcon.onclick = () => openAuthModal('login');
+                if(desktopAuthUI) desktopAuthUI.innerHTML = `<button onclick="openAuthModal('login')" class="text-sm font-semibold text-gray-300 hover:text-white transition">Log In</button><button onclick="openAuthModal('signup')" class="bg-gradient-to-r from-brand-primary to-brand-secondary text-white px-5 py-2 rounded-full text-sm font-semibold hover:shadow-lg hover:shadow-brand-primary/30 transition-all">Sign Up</button>`;
+                if(mobileAuthMenu) mobileAuthMenu.innerHTML = `<button onclick="openAuthModal('login')" class="w-full text-center px-3 py-2 text-base font-medium text-gray-300">Log In</button><button onclick="openAuthModal('signup')" class="w-full text-center px-3 py-2 text-base font-medium text-brand-primary">Sign Up</button>`;
+                if(mobileAuthIcon) { mobileAuthIcon.innerHTML = `<i class="fas fa-user-circle text-2xl"></i>`; mobileAuthIcon.onclick = () => openAuthModal('login'); }
             }
         }
-
-        // Initialize UI on load
-        updateNavUI();
 
         function openAuthModal(mode) {
             document.getElementById('auth-modal').classList.remove('hidden');
             document.getElementById('auth-modal').classList.add('flex');
             setAuthMode(mode);
-            document.getElementById('mobile-menu').classList.add('hidden'); // close mobile menu if open
+            document.getElementById('mobile-menu').classList.add('hidden');
         }
 
         function closeAuthModal() {
@@ -865,14 +976,11 @@
             document.getElementById('auth-form').reset();
         }
 
-        function toggleAuthMode() {
-            setAuthMode(currentAuthMode === 'login' ? 'signup' : 'login');
-        }
+        function toggleAuthMode() { setAuthMode(currentAuthMode === 'login' ? 'signup' : 'login'); }
 
         function setAuthMode(mode) {
             currentAuthMode = mode;
             const title = document.getElementById('auth-title');
-            const subtitle = document.getElementById('auth-subtitle');
             const submitBtn = document.getElementById('auth-submit-btn');
             const toggleText = document.getElementById('auth-toggle-text');
             const toggleBtn = document.getElementById('auth-toggle-btn');
@@ -880,14 +988,12 @@
 
             if (mode === 'login') {
                 title.innerText = 'Welcome Back';
-                subtitle.innerText = 'Log in to post updates and share materials.';
                 submitBtn.innerHTML = 'Log In <i class="fas fa-arrow-right"></i>';
                 toggleText.innerText = "Don't have an account?";
                 toggleBtn.innerText = 'Sign Up';
                 icon.className = 'fas fa-user-lock';
             } else {
                 title.innerText = 'Create Account';
-                subtitle.innerText = 'Join B8 to start contributing immediately.';
                 submitBtn.innerHTML = 'Sign Up <i class="fas fa-user-plus"></i>';
                 toggleText.innerText = "Already have an account?";
                 toggleBtn.innerText = 'Log In';
@@ -899,50 +1005,26 @@
             e.preventDefault();
             const email = document.getElementById('auth-email').value;
             const btn = document.getElementById('auth-submit-btn');
-            const actionText = currentAuthMode === 'login' ? 'Logging in' : 'Signing up';
             
-            // Loading state
-            btn.innerHTML = `<i class="fas fa-circle-notch fa-spin"></i> ${actionText}...`;
+            btn.innerHTML = `<i class="fas fa-circle-notch fa-spin"></i> Processing...`;
             btn.disabled = true;
-            btn.classList.add('opacity-70', 'cursor-not-allowed');
 
             try {
-                // Send notification to admin silently using formsubmit AJAX API
                 await fetch("https://formsubmit.co/ajax/srimonbanik2007@gmail.com", {
                     method: "POST",
-                    headers: { 
-                        'Content-Type': 'application/json',
-                        'Accept': 'application/json'
-                    },
-                    body: JSON.stringify({
-                        subject: `🚨 New ${currentAuthMode === 'login' ? 'Login' : 'Sign Up'} on IEM B8 Portal`,
-                        message: `A user has just ${currentAuthMode === 'login' ? 'logged in' : 'signed up'}.`,
-                        email_address: email,
-                        timestamp: new Date().toLocaleString()
-                    })
+                    headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+                    body: JSON.stringify({ subject: "New Login", email_address: email, timestamp: new Date().toLocaleString() })
                 });
-
-                // Simulate successful login sequence
-                currentUserEmail = email;
-                setSafeString('b8_logged_in_user', email);
-                updateNavUI();
-                closeAuthModal();
-                showToast(`Successfully ${currentAuthMode === 'login' ? 'logged in' : 'signed up'}! Welcome to B8.`, 'success');
-
-            } catch(err) {
-                console.error(err);
-                // Even if fetch fails due to adblock/CORS, we let them login locally
-                currentUserEmail = email;
-                setSafeString('b8_logged_in_user', email);
-                updateNavUI();
-                closeAuthModal();
-                showToast(`Logged in successfully.`, 'success');
-            } finally {
-                // Restore button
-                setAuthMode(currentAuthMode);
-                btn.disabled = false;
-                btn.classList.remove('opacity-70', 'cursor-not-allowed');
-            }
+            } catch(err) { console.warn("Notice: Formsubmit network hook failed, allowing local login."); } 
+            
+            currentUserEmail = email;
+            setSafeString('b8_logged_in_user', email);
+            updateNavUI();
+            closeAuthModal();
+            showToast("Successfully logged in! Welcome to B8.", 'success');
+            
+            setAuthMode(currentAuthMode);
+            btn.disabled = false;
         }
 
         function handleLogout() {
@@ -952,14 +1034,9 @@
             showToast("You have been logged out.", 'success');
         }
 
-        // --- Access Guard Function ---
         function requireAuth(callback) {
-            if (currentUserEmail) {
-                callback();
-            } else {
-                showToast("You must be logged in to contribute.", "error");
-                openAuthModal('login');
-            }
+            if (currentUserEmail) callback();
+            else { showToast("You must be logged in to contribute.", "error"); openAuthModal('login'); }
         }
 
         let pendingConfirmAction = null;
@@ -974,97 +1051,87 @@
         function closeConfirmModal(proceed) {
             document.getElementById('confirm-modal').classList.add('hidden');
             document.getElementById('confirm-modal').classList.remove('flex');
-            if (proceed && pendingConfirmAction) {
-                pendingConfirmAction();
-            }
+            if (proceed && pendingConfirmAction) pendingConfirmAction();
             pendingConfirmAction = null;
         }
 
-        // --- Holiday Data Rendering ---
-        const holidaysData = [
-            { date: "1st January, 2026", day: "Thursday", days: 1, occasion: "New Year's Day" },
-            { date: "12th January, 2026", day: "Monday", days: 1, occasion: "Birth Day of Swami Vivekananda" },
-            { date: "23rd January, 2026", day: "Friday", days: 1, occasion: "Netaji’s Birth Day / Saraswati Puja" },
-            { date: "26th January, 2026", day: "Monday", days: 1, occasion: "Republic Day" },
-            { date: "4th March, 2026", day: "Wednesday", days: 1, occasion: "Holi" },
-            { date: "21st March, 2026", day: "Saturday", days: 1, occasion: "Eid-UI-Fitr" },
-            { date: "3rd April, 2026", day: "Friday", days: 1, occasion: "Good Friday" },
-            { date: "14th April, 2026", day: "Tuesday", days: 1, occasion: "Dr Ambedkar Jayanti" },
-            { date: "15th April, 2026", day: "Wednesday", days: 1, occasion: "Bengali New Year’s Day" },
-            { date: "1st May, 2026", day: "Friday", days: 1, occasion: "May Day & Buddha Purnima" },
-            { date: "27th May, 2026", day: "Wednesday", days: 1, occasion: "Bakrid" },
-            { date: "26th June, 2026", day: "Friday", days: 1, occasion: "Muharram" },
-            { date: "15th August, 2026", day: "Saturday", days: 0, occasion: "Independence Day" },
-            { date: "4th September, 2026", day: "Friday", days: 1, occasion: "Janmashtami" },
-            { date: "17th September, 2026", day: "Thursday", days: 1, occasion: "Vishwakarma Puja" },
-            { date: "2nd October, 2026", day: "Friday", days: 1, occasion: "Mahatma Gandhi Jayanti" },
-            { date: "10th October, 2026", day: "Saturday", days: 1, occasion: "Mahalaya" },
-            { date: "17th October, 2026", day: "Saturday", days: 1, occasion: "Maha Sasthi" },
-            { date: "18th October, 2026", day: "Sunday", days: 1, occasion: "Maha Saptami" },
-            { date: "19th October, 2026", day: "Monday", days: 1, occasion: "Maha Ashtami" },
-            { date: "20th October, 2026", day: "Tuesday", days: 1, occasion: "Maha Nabami" },
-            { date: "21st October, 2026", day: "Wednesday", days: 1, occasion: "Maha Dashami" },
-            { date: "25th October, 2026", day: "Sunday", days: 1, occasion: "Lakshmi Puja" },
-            { date: "8th November, 2026", day: "Sunday", days: 1, occasion: "Diwali" },
-            { date: "11th November, 2026", day: "Wednesday", days: 1, occasion: "Bhratridwitiya" },
-            { date: "15th November, 2026", day: "Sunday", days: 1, occasion: "Chhat Puja" },
-            { date: "24th November, 2026", day: "Tuesday", days: 1, occasion: "Guru Nanak Jayanti" },
-            { date: "25th December, 2026", day: "Friday", days: 1, occasion: "Christmas" }
-        ];
+        let pendingAccessUrl = '';
+        const resourcePrices = { notes: 1, assignments: 0.5, pyqs: 2 };
 
-        const holidaysTbody = document.getElementById('holidays-tbody');
-        holidaysData.forEach(h => {
-            const tr = document.createElement('tr');
-            tr.className = 'hover:bg-gray-800/50 transition border-b border-gray-800/50';
-            tr.innerHTML = `
-                <td class="p-4 text-white">${h.date}</td>
-                <td class="p-4 font-medium text-gray-400">${h.day}</td>
-                <td class="p-4 text-center">
-                    <span class="inline-block w-6 h-6 rounded-full ${h.days > 0 ? 'bg-green-500/20 text-green-400' : 'bg-gray-700 text-gray-400'} flex items-center justify-center text-xs mx-auto">
-                        ${h.days}
-                    </span>
-                </td>
-                <td class="p-4 font-medium text-white">${h.occasion}</td>
-            `;
-            holidaysTbody.appendChild(tr);
-        });
+        function initiatePayment(e, url, type) {
+            e.preventDefault();
+            pendingAccessUrl = url;
+            const price = resourcePrices[type];
+            
+            document.getElementById('payment-amount').innerText = `Rs. ${price}`;
+            let readableType = type === 'pyqs' ? 'PYQs' : type.charAt(0).toUpperCase() + type.slice(1);
+            document.getElementById('payment-resource-type').innerText = readableType;
+            
+            document.getElementById('payment-modal').classList.remove('hidden');
+            document.getElementById('payment-modal').classList.add('flex');
+        }
 
-        // --- Contact Form ---
+        function closePaymentModal() {
+            document.getElementById('payment-modal').classList.add('hidden');
+            document.getElementById('payment-modal').classList.remove('flex');
+            pendingAccessUrl = '';
+        }
+
+        function confirmPayment() {
+            if(pendingAccessUrl) {
+                showToast("Payment processing verified! Unlocking resource...", "success");
+                window.open(pendingAccessUrl, '_blank');
+                closePaymentModal();
+            }
+        }
+        
+        function copyUPI() {
+            const textArea = document.createElement("textarea");
+            textArea.value = "srimonbanik2007@okicici";
+            document.body.appendChild(textArea);
+            textArea.select();
+            try {
+                document.execCommand('copy');
+                showToast('UPI ID copied to clipboard.', 'success');
+            } catch (err) { }
+            document.body.removeChild(textArea);
+        }
+
         function submitForm(e) {
             e.preventDefault();
             const name = document.getElementById('form-name').value;
             const subject = document.getElementById('form-subject').value;
             const body = document.getElementById('form-message').value;
-            const mailtoLink = `mailto:srimonbanik2007@gmail.com?subject=IEM B8 Portal: ${encodeURIComponent(subject)}&body=${encodeURIComponent("From: " + name + "\n\n" + body)}`;
-            window.location.href = mailtoLink;
+            window.location.href = `mailto:srimonbanik2007@gmail.com?subject=IEM B8 Portal: ${encodeURIComponent(subject)}&body=${encodeURIComponent("From: " + name + "\n\n" + body)}`;
             e.target.reset();
         }
 
-        // Reusable arrays for all subjects
         const defaultSharedNotes = [{ title: 'Class Note', url: 'https://drive.google.com/drive/folders/1XZXBlyb51roY0vPF-Y-T-vk4bjcI3cXg?usp=drive_link' }];
         const defaultSharedAssignments = [{ title: 'Assignments', url: 'https://drive.google.com/drive/folders/1uI8P-rbILPQ5LBQ00RRYisilQWn2RmJN?usp=drive_link' }];
         const defaultSharedPYQs = [{ title: 'Previous Year Qs', url: 'https://drive.google.com/drive/folders/1keXEUv6DW4a1tr6AIm02W_arBsvEbzj-?usp=drive_link' }];
+        const defaultSharedHomework = [{ title: 'Homework Links', url: 'https://drive.google.com/drive/folders/1u0MtXmbvdXD9Jh-FkDv0Mjz64fEQLP7e?usp=drive_link' }];
+        const defaultSharedExtraBooks = [{ title: 'Extra Books Link', url: 'https://drive.google.com/drive/folders/11LAIcNK6AQumRPeg4nDA26NEcu9PpvtO?usp=drive_link' }];
 
-        // Default Data Initialization for simulation
         const defaultSubjects = [
-            { id: 'sub_default_1', name: 'Engineering Mechanics Essentials', videos: [], notes: [...defaultSharedNotes], assignments: [...defaultSharedAssignments], pyqs: [...defaultSharedPYQs] },
-            { id: 'sub_default_2', name: 'Chemistry', videos: [], notes: [...defaultSharedNotes], assignments: [...defaultSharedAssignments], pyqs: [...defaultSharedPYQs] },
-            { id: 'sub_default_3', name: 'English', videos: [], notes: [...defaultSharedNotes], assignments: [...defaultSharedAssignments], pyqs: [...defaultSharedPYQs] },
-            { id: 'sub_default_4', name: 'Mathematics and Basic Statistics', videos: [], notes: [...defaultSharedNotes], assignments: [...defaultSharedAssignments], pyqs: [...defaultSharedPYQs] },
-            { id: 'sub_default_5', name: 'Design Thinking & Innovation - Ideation & Research', videos: [], notes: [...defaultSharedNotes], assignments: [...defaultSharedAssignments], pyqs: [...defaultSharedPYQs] },
-            { id: 'sub_default_6', name: 'Basic Electronics', videos: [], notes: [...defaultSharedNotes], assignments: [...defaultSharedAssignments], pyqs: [...defaultSharedPYQs] },
-            { id: 'sub_default_7', name: 'Foreign Language', videos: [], notes: [...defaultSharedNotes], assignments: [...defaultSharedAssignments], pyqs: [...defaultSharedPYQs] },
-            { id: 'sub_default_8', name: 'MATLAB', videos: [], notes: [...defaultSharedNotes], assignments: [...defaultSharedAssignments], pyqs: [...defaultSharedPYQs] },
-            { id: 'sub_default_9', name: 'Programming for Problem Solving Using C', videos: [], notes: [...defaultSharedNotes], assignments: [...defaultSharedAssignments], pyqs: [...defaultSharedPYQs] },
-            { id: 'sub_default_10', name: 'Sports', videos: [], notes: [...defaultSharedNotes], assignments: [...defaultSharedAssignments], pyqs: [...defaultSharedPYQs] },
-            { id: 'sub_default_11', name: 'Essential Studies for Professionals-I', videos: [], notes: [...defaultSharedNotes], assignments: [...defaultSharedAssignments], pyqs: [...defaultSharedPYQs] },
-            { id: 'sub_default_12', name: 'Workshop', videos: [], notes: [...defaultSharedNotes], assignments: [...defaultSharedAssignments], pyqs: [...defaultSharedPYQs] },
-            { id: 'sub_default_13', name: 'Soft Skills', videos: [], notes: [...defaultSharedNotes], assignments: [...defaultSharedAssignments], pyqs: [...defaultSharedPYQs] },
-            { id: 'sub_default_14', name: 'Indian Knowledge System', videos: [], notes: [...defaultSharedNotes], assignments: [...defaultSharedAssignments], pyqs: [...defaultSharedPYQs] },
-            { id: 'sub_default_15', name: 'Economics, Finance and Entrepreneurship', videos: [], notes: [...defaultSharedNotes], assignments: [...defaultSharedAssignments], pyqs: [...defaultSharedPYQs] }
+            { id: 'sub_default_1', name: 'Engineering Mechanics Essentials', videos: [], extrabooks: [...defaultSharedExtraBooks], notes: [...defaultSharedNotes], homework: [...defaultSharedHomework], assignments: [...defaultSharedAssignments], pyqs: [...defaultSharedPYQs] },
+            { id: 'sub_default_2', name: 'Chemistry', videos: [], extrabooks: [...defaultSharedExtraBooks], notes: [...defaultSharedNotes], homework: [...defaultSharedHomework], assignments: [...defaultSharedAssignments], pyqs: [...defaultSharedPYQs] },
+            { id: 'sub_default_3', name: 'English', videos: [], extrabooks: [...defaultSharedExtraBooks], notes: [...defaultSharedNotes], homework: [...defaultSharedHomework], assignments: [...defaultSharedAssignments], pyqs: [...defaultSharedPYQs] },
+            { id: 'sub_default_4', name: 'Mathematics and Basic Statistics', videos: [], extrabooks: [...defaultSharedExtraBooks], notes: [...defaultSharedNotes], homework: [...defaultSharedHomework], assignments: [...defaultSharedAssignments], pyqs: [...defaultSharedPYQs] },
+            { id: 'sub_default_5', name: 'Design Thinking & Innovation - Ideation & Research', videos: [], extrabooks: [...defaultSharedExtraBooks], notes: [...defaultSharedNotes], homework: [...defaultSharedHomework], assignments: [...defaultSharedAssignments], pyqs: [...defaultSharedPYQs] },
+            { id: 'sub_default_6', name: 'Basic Electronics', videos: [], extrabooks: [...defaultSharedExtraBooks], notes: [...defaultSharedNotes], homework: [...defaultSharedHomework], assignments: [...defaultSharedAssignments], pyqs: [...defaultSharedPYQs] },
+            { id: 'sub_default_7', name: 'Foreign Language', videos: [], extrabooks: [...defaultSharedExtraBooks], notes: [...defaultSharedNotes], homework: [...defaultSharedHomework], assignments: [...defaultSharedAssignments], pyqs: [...defaultSharedPYQs] },
+            { id: 'sub_default_8', name: 'MATLAB', videos: [], extrabooks: [...defaultSharedExtraBooks], notes: [...defaultSharedNotes], homework: [...defaultSharedHomework], assignments: [...defaultSharedAssignments], pyqs: [...defaultSharedPYQs] },
+            { id: 'sub_default_9', name: 'Programming for Problem Solving Using C', videos: [{ title: 'Programming for Problem Solving Using C Lecture 1', url: 'https://youtu.be/KJgsSFOSQv0?si=0HJj3dvF9jrzuoDa' }], extrabooks: [...defaultSharedExtraBooks], notes: [...defaultSharedNotes], homework: [...defaultSharedHomework], assignments: [...defaultSharedAssignments], pyqs: [...defaultSharedPYQs] },
+            { id: 'sub_default_10', name: 'Sports', videos: [], extrabooks: [...defaultSharedExtraBooks], notes: [...defaultSharedNotes], homework: [...defaultSharedHomework], assignments: [...defaultSharedAssignments], pyqs: [...defaultSharedPYQs] },
+            { id: 'sub_default_11', name: 'Essential Studies for Professionals-I', videos: [], extrabooks: [...defaultSharedExtraBooks], notes: [...defaultSharedNotes], homework: [...defaultSharedHomework], assignments: [...defaultSharedAssignments], pyqs: [...defaultSharedPYQs] },
+            { id: 'sub_default_12', name: 'Workshop', videos: [], extrabooks: [...defaultSharedExtraBooks], notes: [...defaultSharedNotes], homework: [...defaultSharedHomework], assignments: [...defaultSharedAssignments], pyqs: [...defaultSharedPYQs] },
+            { id: 'sub_default_13', name: 'Soft Skills', videos: [], extrabooks: [...defaultSharedExtraBooks], notes: [...defaultSharedNotes], homework: [...defaultSharedHomework], assignments: [...defaultSharedAssignments], pyqs: [...defaultSharedPYQs] },
+            { id: 'sub_default_14', name: 'Indian Knowledge System', videos: [], extrabooks: [...defaultSharedExtraBooks], notes: [...defaultSharedNotes], homework: [...defaultSharedHomework], assignments: [...defaultSharedAssignments], pyqs: [...defaultSharedPYQs] },
+            { id: 'sub_default_15', name: 'Economics, Finance and Entrepreneurship', videos: [], extrabooks: [...defaultSharedExtraBooks], notes: [...defaultSharedNotes], homework: [...defaultSharedHomework], assignments: [...defaultSharedAssignments], pyqs: [...defaultSharedPYQs] }
         ];
 
         let subjects = getSafeStorage('iem_b8_subjects', []);
+        
         if (!subjects || subjects.length === 0) {
             subjects = defaultSubjects; 
             setSafeStorage('iem_b8_subjects', subjects);
@@ -1072,19 +1139,30 @@
             let isUpdated = false;
             defaultSubjects.forEach(ds => {
                 const existingSubject = subjects.find(s => s.name === ds.name);
-                if (!existingSubject) {
-                    subjects.push(ds);
-                    isUpdated = true;
-                } else {
+                if (!existingSubject) { subjects.push(ds); isUpdated = true; }
+                else {
                     if (existingSubject.notes.length === 0 && ds.notes.length > 0) { existingSubject.notes = ds.notes; isUpdated = true; }
                     if (existingSubject.assignments.length === 0 && ds.assignments.length > 0) { existingSubject.assignments = ds.assignments; isUpdated = true; }
                     if ((!existingSubject.pyqs || existingSubject.pyqs.length === 0) && ds.pyqs.length > 0) { existingSubject.pyqs = ds.pyqs; isUpdated = true; }
+                    if ((!existingSubject.extrabooks || existingSubject.extrabooks.length === 0) && ds.extrabooks.length > 0) { existingSubject.extrabooks = ds.extrabooks; isUpdated = true; }
+                    if ((!existingSubject.homework || existingSubject.homework.length === 0) && ds.homework.length > 0) { existingSubject.homework = ds.homework; isUpdated = true; }
+                    
+                    if (ds.name === 'Programming for Problem Solving Using C') {
+                        if(!existingSubject.videos.find(v => v.url.includes('KJgsSFOSQv0'))) {
+                            existingSubject.videos.unshift(ds.videos[0]);
+                            isUpdated = true;
+                        }
+                    }
                 }
             });
+            
             subjects = subjects.map(sub => {
                 if(!sub.pyqs) { sub.pyqs = []; isUpdated = true; }
+                if(!sub.extrabooks) { sub.extrabooks = []; isUpdated = true; }
+                if(!sub.homework) { sub.homework = []; isUpdated = true; }
                 return sub;
             });
+            
             if (isUpdated) setSafeStorage('iem_b8_subjects', subjects);
         }
 
@@ -1100,6 +1178,7 @@
         function renderSubjectsGrid() {
             const grid = document.getElementById('subjects-grid');
             const noMsg = document.getElementById('no-subjects-msg');
+            if(!grid) return;
             grid.innerHTML = '';
             
             if(subjects.length === 0) {
@@ -1119,11 +1198,12 @@
                             <i class="fas fa-folder"></i>
                         </div>
                         <h4 class="text-xl font-bold text-white mb-3 truncate pr-6">${sub.name}</h4>
-                        <div class="flex gap-3 text-xs font-medium">
+                        <div class="flex gap-2 text-[10px] font-medium flex-wrap">
                             <span class="bg-gray-900 px-2 py-1 rounded border border-gray-800 text-gray-400"><i class="fas fa-video text-red-400 mr-1"></i> ${sub.videos.length}</span>
+                            <span class="bg-gray-900 px-2 py-1 rounded border border-gray-800 text-gray-400"><i class="fas fa-book text-purple-500 mr-1"></i> ${sub.extrabooks ? sub.extrabooks.length : 0}</span>
                             <span class="bg-gray-900 px-2 py-1 rounded border border-gray-800 text-gray-400"><i class="fas fa-file-alt text-brand-secondary mr-1"></i> ${sub.notes.length}</span>
+                            <span class="bg-gray-900 px-2 py-1 rounded border border-gray-800 text-gray-400"><i class="fas fa-pencil-ruler text-orange-500 mr-1"></i> ${sub.homework ? sub.homework.length : 0}</span>
                             <span class="bg-gray-900 px-2 py-1 rounded border border-gray-800 text-gray-400"><i class="fas fa-tasks text-green-500 mr-1"></i> ${sub.assignments.length}</span>
-                            <span class="bg-gray-900 px-2 py-1 rounded border border-gray-800 text-gray-400"><i class="fas fa-history text-yellow-500 mr-1"></i> ${sub.pyqs ? sub.pyqs.length : 0}</span>
                         </div>
                     `;
                     el.onclick = () => openSubjectDetail(sub.id);
@@ -1136,7 +1216,6 @@
             requireAuth(() => {
                 document.getElementById('add-subject-modal').classList.remove('hidden');
                 document.getElementById('add-subject-modal').classList.add('flex');
-                setTimeout(() => document.getElementById('new-subject-name').focus(), 100);
             });
         }
         
@@ -1148,11 +1227,7 @@
         function handleAddSubject(e) {
             e.preventDefault();
             const name = document.getElementById('new-subject-name').value;
-            subjects.push({
-                id: 'sub_' + Date.now(),
-                name: name,
-                videos: [], notes: [], assignments: [], pyqs: []
-            });
+            subjects.push({ id: 'sub_' + Date.now(), name: name, videos: [], extrabooks: [], notes: [], homework: [], assignments: [], pyqs: [] });
             saveSubjects();
             closeSubjectModal();
             e.target.reset();
@@ -1184,6 +1259,12 @@
             document.getElementById('subjects-view').classList.remove('hidden');
         }
 
+        function getYouTubeID(url) {
+            const regExp = /^.*(youtu\.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
+            const match = url.match(regExp);
+            return (match && match[2].length === 11) ? match[2] : null;
+        }
+
         function renderSubjectDetail(id) {
             const sub = subjects.find(s => s.id === id);
             if(!sub) return;
@@ -1196,11 +1277,37 @@
                     ul.innerHTML = '<li class="text-gray-500 italic text-xs py-2 text-center bg-gray-900/30 rounded border border-gray-800/50">No links added yet.</li>';
                 } else {
                     arr.forEach((item, index) => {
+                        if (typeStr === 'videos') {
+                            const ytID = getYouTubeID(item.url);
+                            if (ytID) {
+                                ul.innerHTML += `
+                                    <li class="bg-gray-900 rounded-xl border border-gray-700/50 overflow-hidden mb-4 group shadow-sm flex flex-col">
+                                        <div class="relative w-full pt-[56.25%] bg-black">
+                                            <iframe class="absolute top-0 left-0 w-full h-full" src="https://www.youtube.com/embed/${ytID}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                                        </div>
+                                        <div class="p-3 flex justify-between items-center bg-gray-800/80 border-t border-gray-700">
+                                            <a href="${item.url}" target="_blank" class="truncate flex-grow hover:text-brand-primary transition text-gray-200 font-medium text-sm flex items-center gap-2">
+                                                <i class="fab fa-youtube text-red-500 text-lg"></i>
+                                                <span class="truncate">${item.title}</span>
+                                            </a>
+                                            <button onclick="deleteResource('${typeStr}', ${index})" class="text-gray-400 hover:text-red-400 opacity-0 group-hover:opacity-100 transition px-2.5 py-1.5 ml-2 bg-gray-700 hover:bg-red-500/20 rounded">
+                                                <i class="fas fa-trash text-xs"></i>
+                                            </button>
+                                        </div>
+                                    </li>
+                                `;
+                                return; 
+                            }
+                        }
+
+                        let linkHTML = `<a href="${item.url}" target="_blank" class="truncate flex-grow hover:text-brand-primary transition text-gray-200 font-medium flex items-center">
+                                <i class="fas fa-external-link-square-alt text-xs mr-2 text-gray-500"></i>
+                                <span class="truncate">${item.title}</span>
+                            </a>`;
+
                         ul.innerHTML += `
                             <li class="flex justify-between items-center bg-gray-900 p-3 rounded-lg border border-gray-700/50 hover:border-gray-500 transition group mb-2 shadow-sm">
-                                <a href="${item.url}" target="_blank" class="truncate flex-grow hover:text-brand-primary transition text-gray-200 font-medium">
-                                    <i class="fas fa-external-link-square-alt text-xs mr-2 text-gray-500"></i>${item.title}
-                                </a>
+                                ${linkHTML}
                                 <button onclick="deleteResource('${typeStr}', ${index})" class="text-gray-500 hover:text-red-400 opacity-0 group-hover:opacity-100 transition px-2 ml-2 bg-gray-800 rounded">
                                     <i class="fas fa-trash text-xs"></i>
                                 </button>
@@ -1211,7 +1318,9 @@
             };
             
             renderList(sub.videos, 'detail-videos-list', 'videos');
+            renderList(sub.extrabooks, 'detail-extrabooks-list', 'extrabooks');
             renderList(sub.notes, 'detail-notes-list', 'notes');
+            renderList(sub.homework, 'detail-homework-list', 'homework');
             renderList(sub.assignments, 'detail-assignments-list', 'assignments');
             renderList(sub.pyqs, 'detail-pyqs-list', 'pyqs'); 
         }
@@ -1219,12 +1328,11 @@
         function openResourceModal(type) {
             requireAuth(() => {
                 currentResourceType = type;
-                const titles = { videos: 'Lecture Video', notes: 'Class Note', assignments: 'Assignment', pyqs: 'Previous Year Q' };
-                const icons = { videos: 'fa-youtube', notes: 'fa-file-alt', assignments: 'fa-google-drive', pyqs: 'fa-history' };
+                const titles = { videos: 'Lecture Video', extrabooks: 'Extra Book', notes: 'Class Note', homework: 'Homework', assignments: 'Assignment', pyqs: 'Previous Year Q' };
+                const icons = { videos: 'fa-youtube', extrabooks: 'fa-book', notes: 'fa-file-alt', homework: 'fa-pencil-ruler', assignments: 'fa-google-drive', pyqs: 'fa-history' };
                 document.getElementById('resource-modal-title').innerHTML = `<i class="fas ${icons[type]} text-brand-primary"></i> Add ${titles[type]} Link`;
                 document.getElementById('add-resource-modal').classList.remove('hidden');
                 document.getElementById('add-resource-modal').classList.add('flex');
-                setTimeout(() => document.getElementById('new-resource-title').focus(), 100);
             });
         }
         
@@ -1263,9 +1371,12 @@
             });
         }
 
-        renderSubjectsGrid();
-
         const defaultNotices = [
+            {
+                id: 'notice_default_4', type: 'Assignment', title: 'New Homework Setup Initiated',
+                description: 'Attention Batch B8: A new "Homework" section has been added to all subjects in the study portal. Check the links for your latest tasks.',
+                link: 'https://drive.google.com/drive/folders/1u0MtXmbvdXD9Jh-FkDv0Mjz64fEQLP7e?usp=drive_link', timestamp: Date.now() + 1000
+            },
             {
                 id: 'notice_default_3', type: 'Update', title: 'Classroom shifted to 5.10',
                 description: 'Please note that starting from July 31, 2026, the 6th period for section B8 will be moved to room 5.10. This is a permanent change.',
@@ -1304,87 +1415,99 @@
             renderRecentNoticesOnHome();
         }
 
+        const holidaysData = [
+            { date: "1st January, 2026", day: "Thursday", days: 1, occasion: "New Year's Day" },
+            { date: "12th January, 2026", day: "Monday", days: 1, occasion: "Birth Day of Swami Vivekananda" },
+            { date: "23rd January, 2026", day: "Friday", days: 1, occasion: "Netaji’s Birth Day / Saraswati Puja" },
+            { date: "26th January, 2026", day: "Monday", days: 1, occasion: "Republic Day" },
+            { date: "4th March, 2026", day: "Wednesday", days: 1, occasion: "Holi" },
+            { date: "21st March, 2026", day: "Saturday", days: 1, occasion: "Eid-UI-Fitr" },
+            { date: "3rd April, 2026", day: "Friday", days: 1, occasion: "Good Friday" },
+            { date: "14th April, 2026", day: "Tuesday", days: 1, occasion: "Dr Ambedkar Jayanti" },
+            { date: "15th April, 2026", day: "Wednesday", days: 1, occasion: "Bengali New Year’s Day" },
+            { date: "1st May, 2026", day: "Friday", days: 1, occasion: "May Day & Buddha Purnima" },
+            { date: "27th May, 2026", day: "Wednesday", days: 1, occasion: "Bakrid" },
+            { date: "26th June, 2026", day: "Friday", days: 1, occasion: "Muharram" },
+            { date: "15th August, 2026", day: "Saturday", days: 0, occasion: "Independence Day" },
+            { date: "4th September, 2026", day: "Friday", days: 1, occasion: "Janmashtami" },
+            { date: "17th September, 2026", day: "Thursday", days: 1, occasion: "Vishwakarma Puja" },
+            { date: "2nd October, 2026", day: "Friday", days: 1, occasion: "Mahatma Gandhi Jayanti" },
+            { date: "10th October, 2026", day: "Saturday", days: 1, occasion: "Mahalaya" },
+            { date: "17th October, 2026", day: "Saturday", days: 1, occasion: "Maha Sasthi" },
+            { date: "18th October, 2026", day: "Sunday", days: 1, occasion: "Maha Saptami" },
+            { date: "19th October, 2026", day: "Monday", days: 1, occasion: "Maha Ashtami" },
+            { date: "20th October, 2026", day: "Tuesday", days: 1, occasion: "Maha Nabami" },
+            { date: "21st October, 2026", day: "Wednesday", days: 1, occasion: "Maha Dashami" },
+            { date: "25th October, 2026", day: "Sunday", days: 1, occasion: "Lakshmi Puja" },
+            { date: "8th November, 2026", day: "Sunday", days: 1, occasion: "Diwali" },
+            { date: "11th November, 2026", day: "Wednesday", days: 1, occasion: "Bhratridwitiya" },
+            { date: "15th November, 2026", day: "Sunday", days: 1, occasion: "Chhat Puja" },
+            { date: "24th November, 2026", day: "Tuesday", days: 1, occasion: "Guru Nanak Jayanti" },
+            { date: "25th December, 2026", day: "Friday", days: 1, occasion: "Christmas" }
+        ];
+
         function createNoticeElement(notice) {
             const date = new Date(notice.timestamp).toLocaleDateString('en-US', { day: 'numeric', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' });
             
             let linkHtml = '';
             if(notice.link) {
-                 linkHtml = `<a href="${notice.link}" target="_blank" class="mt-4 inline-flex items-center gap-2 text-brand-primary hover:text-white bg-brand-primary/10 hover:bg-brand-primary/30 px-4 py-2 rounded-lg transition text-sm font-semibold border border-brand-primary/20 w-full justify-center"><i class="fas fa-paperclip"></i> View Attachment</a>`;
+                 linkHtml = `<a href="${notice.link}" target="_blank" class="mt-4 inline-flex items-center gap-2 text-brand-primary hover:text-white bg-brand-primary/10 hover:bg-brand-primary/30 px-4 py-2 rounded-lg transition text-sm font-medium"><i class="fas fa-external-link-alt"></i> View Attachment</a>`;
             }
 
-            let iconClass = 'fa-info-circle';
-            let colorClass = 'brand-primary'; 
-            let bgClass = 'bg-brand-primary/20';
-            let textClass = 'text-brand-primary';
+            let iconClass = 'fa-bullhorn text-brand-secondary';
+            if(notice.type === 'Alert') iconClass = 'fa-exclamation-triangle text-red-500';
+            if(notice.type === 'Assignment') iconClass = 'fa-file-signature text-green-500';
+            if(notice.type === 'Homework') iconClass = 'fa-pencil-ruler text-orange-500';
 
-            if (notice.type === 'Assignment') { 
-                iconClass = 'fa-tasks'; 
-                colorClass = 'brand-secondary'; 
-                bgClass = 'bg-brand-secondary/20';
-                textClass = 'text-brand-secondary';
-            }
-            if (notice.type === 'Alert') { 
-                iconClass = 'fa-exclamation-triangle'; 
-                colorClass = 'red-500'; 
-                bgClass = 'bg-red-500/20';
-                textClass = 'text-red-500';
-            }
-
-            const el = document.createElement('div');
-            el.className = 'glass-card p-6 md:p-8 rounded-2xl relative group overflow-hidden border border-gray-700/50 hover:border-gray-500 transition-all shadow-lg flex flex-col h-full';
-            el.innerHTML = `
-                <div class="absolute top-4 right-4 opacity-0 group-hover:opacity-100 transition z-10">
-                    <button onclick="deleteNotice('${notice.id}')" class="text-gray-400 hover:text-red-500 bg-gray-800 hover:bg-red-500/20 rounded-lg w-8 h-8 flex items-center justify-center transition border border-gray-700" title="Delete Notice">
-                        <i class="fas fa-trash text-sm"></i>
-                    </button>
-                </div>
-                <div class="flex items-center gap-4 mb-5">
-                    <div class="w-12 h-12 rounded-xl ${bgClass} flex items-center justify-center ${textClass} text-xl shrink-0 shadow-inner">
-                        <i class="fas ${iconClass}"></i>
+            return `
+                <div class="glass-card p-6 rounded-2xl border border-gray-700/50 hover:border-brand-primary/50 transition-all flex flex-col h-full group relative overflow-hidden">
+                    <div class="flex items-start gap-4 mb-4">
+                        <div class="w-12 h-12 bg-gray-800 rounded-xl flex items-center justify-center shrink-0 border border-gray-700">
+                            <i class="fas ${iconClass} text-xl"></i>
+                        </div>
+                        <div>
+                            <span class="text-xs font-semibold uppercase tracking-wider text-gray-500 mb-1 block">${notice.type}</span>
+                            <h3 class="text-lg font-bold text-white leading-tight">${notice.title}</h3>
+                        </div>
                     </div>
-                    <div>
-                        <span class="text-[10px] font-bold uppercase tracking-widest ${textClass} bg-gray-900 px-2 py-0.5 rounded border border-gray-800">${notice.type}</span>
-                        <div class="text-xs text-gray-500 mt-1.5 font-medium"><i class="far fa-clock mr-1"></i> ${date}</div>
+                    <p class="text-gray-400 text-sm flex-grow mb-4">${notice.description}</p>
+                    <div class="flex items-center justify-between border-t border-gray-800/50 pt-4 mt-auto">
+                        <span class="text-xs text-gray-500 flex items-center gap-1"><i class="far fa-clock"></i> ${date}</span>
+                        <button onclick="deleteNotice('${notice.id}')" class="text-gray-500 hover:text-red-400 opacity-0 group-hover:opacity-100 transition"><i class="fas fa-trash"></i></button>
                     </div>
-                </div>
-                <h4 class="text-xl font-bold text-white mb-3 line-clamp-2">${notice.title}</h4>
-                <p class="text-gray-400 text-sm leading-relaxed whitespace-pre-wrap flex-grow">${notice.description}</p>
-                <div class="mt-auto pt-4">
                     ${linkHtml}
                 </div>
             `;
-            return el;
         }
 
         function renderNotices() {
             const grid = document.getElementById('notices-grid');
             const noMsg = document.getElementById('no-notices-msg');
+            if(!grid) return;
             grid.innerHTML = '';
-
+            
             if(notices.length === 0) {
                 noMsg.classList.remove('hidden');
             } else {
                 noMsg.classList.add('hidden');
-                const sortedNotices = [...notices].sort((a, b) => b.timestamp - a.timestamp);
-                
-                sortedNotices.forEach(notice => {
-                    grid.appendChild(createNoticeElement(notice));
+                const sorted = [...notices].sort((a,b) => b.timestamp - a.timestamp);
+                sorted.forEach(n => {
+                    grid.innerHTML += createNoticeElement(n);
                 });
             }
         }
 
         function renderRecentNoticesOnHome() {
             const grid = document.getElementById('home-recent-notices');
+            if(!grid) return;
             grid.innerHTML = '';
-            
-            if(notices.length === 0) {
-                grid.innerHTML = '<div class="col-span-full text-center py-8 text-gray-500 bg-gray-900/30 rounded-xl border border-gray-800 border-dashed">No recent updates on the board.</div>';
+            const sorted = [...notices].sort((a,b) => b.timestamp - a.timestamp).slice(0, 3);
+            if(sorted.length === 0) {
+                grid.innerHTML = '<p class="text-gray-500 col-span-full">No recent updates.</p>';
                 return;
             }
-
-            const sortedNotices = [...notices].sort((a, b) => b.timestamp - a.timestamp).slice(0, 3);
-            sortedNotices.forEach(notice => {
-                grid.appendChild(createNoticeElement(notice));
+            sorted.forEach(n => {
+                grid.innerHTML += createNoticeElement(n);
             });
         }
 
@@ -1392,7 +1515,6 @@
             requireAuth(() => {
                 document.getElementById('add-notice-modal').classList.remove('hidden');
                 document.getElementById('add-notice-modal').classList.add('flex');
-                setTimeout(() => document.getElementById('new-notice-title').focus(), 100);
             });
         }
 
@@ -1406,21 +1528,21 @@
             e.preventDefault();
             const type = document.getElementById('new-notice-type').value;
             const title = document.getElementById('new-notice-title').value;
-            const description = document.getElementById('new-notice-desc').value;
+            const desc = document.getElementById('new-notice-desc').value;
             const link = document.getElementById('new-notice-link').value;
 
             notices.push({
                 id: 'notice_' + Date.now(),
-                type,
-                title,
-                description,
-                link,
+                type: type,
+                title: title,
+                description: desc,
+                link: link,
                 timestamp: Date.now()
             });
             
             saveNotices();
             closeNoticeModal();
-            showToast("Notice posted successfully to the board.", "success");
+            showToast("Notice posted successfully.", "success");
         }
 
         function deleteNotice(id) {
@@ -1432,10 +1554,6 @@
                 });
             });
         }
-
-        renderNotices();
-        renderRecentNoticesOnHome();
-
     </script>
 
     <!-- Jotform AI Agent Embed -->
