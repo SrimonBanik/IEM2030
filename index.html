@@ -57,7 +57,6 @@
 
     <style>
         body {
-            /* Background color set via canvas now, but keep fallback */
             background-color: #0a0f1c; 
             color: #f8fafc;
             overflow-x: hidden;
@@ -593,6 +592,7 @@
         </div>
     </footer>
 
+    <!-- Payment Modal -->
     <div id="payment-modal" class="fixed inset-0 bg-black/80 z-[600] hidden items-center justify-center backdrop-blur-sm">
         <div class="glass-card w-full max-w-sm p-8 rounded-2xl m-4 relative animate-fadeIn border border-brand-primary/30 shadow-2xl text-center">
             <button onclick="closePaymentModal()" class="absolute top-4 right-4 text-gray-400 hover:text-white transition">
@@ -604,7 +604,7 @@
             </div>
             
             <h3 class="text-2xl font-serif font-bold text-white mb-1">Premium Access</h3>
-            <p class="text-gray-400 text-sm mb-6">Pay to unlock <span id="payment-resource-type" class="font-bold text-white uppercase"></span></p>
+            <p class="text-gray-400 text-sm mb-6">Pay to unlock <span id="payment-resource-type" class="font-bold text-white"></span></p>
             
             <div class="bg-gray-900/80 p-4 rounded-xl border border-gray-700 mb-6">
                 <p class="text-sm text-gray-400 mb-2">Amount to Pay</p>
@@ -624,6 +624,7 @@
         </div>
     </div>
 
+    <!-- Auth Modal -->
     <div id="auth-modal" class="fixed inset-0 bg-black/80 z-[300] hidden items-center justify-center backdrop-blur-sm">
         <div class="glass-card w-full max-w-md p-8 rounded-2xl m-4 relative animate-fadeIn border border-brand-primary/30 shadow-2xl">
             <button onclick="closeAuthModal()" class="absolute top-4 right-4 text-gray-400 hover:text-white transition">
@@ -666,6 +667,7 @@
         </div>
     </div>
 
+    <!-- Confirm Modal -->
     <div id="confirm-modal" class="fixed inset-0 bg-black/80 z-[500] hidden items-center justify-center backdrop-blur-sm">
         <div class="glass-card w-full max-w-sm p-6 rounded-2xl m-4 animate-fadeIn border border-brand-primary/30 shadow-2xl text-center relative">
             <div class="w-16 h-16 bg-red-500/20 rounded-full flex items-center justify-center text-red-500 text-2xl mx-auto mb-4">
@@ -680,6 +682,7 @@
         </div>
     </div>
 
+    <!-- Modals for adding resources and notices -->
     <div id="add-subject-modal" class="fixed inset-0 bg-black/80 z-[200] hidden items-center justify-center backdrop-blur-sm">
         <div class="glass-card w-full max-w-md p-6 rounded-2xl m-4 animate-fadeIn border border-brand-primary/30 shadow-2xl">
             <div class="flex justify-between items-center mb-6">
@@ -754,7 +757,6 @@
         </div>
     </div>
 
-
     <script>
         
         // Starfield & Galaxy Canvas Animation Initialization
@@ -765,7 +767,7 @@
             
             let width, height;
             let stars = [];
-            const numStars = 250; // Density of stars
+            const numStars = 250; 
 
             function resizeCanvas() {
                 width = canvas.width = window.innerWidth;
@@ -775,7 +777,6 @@
             window.addEventListener('resize', resizeCanvas);
             resizeCanvas();
 
-            // Populate initial stars
             for (let i = 0; i < numStars; i++) {
                 stars.push({
                     x: Math.random() * width,
@@ -789,20 +790,16 @@
             }
 
             function drawFrame() {
-                // Background clear
                 ctx.clearRect(0, 0, width, height);
-                
-                // Base background color
                 ctx.fillStyle = '#0a0f1c';
                 ctx.fillRect(0, 0, width, height);
 
-                // Subtle Nebula / Galaxy Effect Gradients
                 const gradient1 = ctx.createRadialGradient(width * 0.3, height * 0.3, 0, width * 0.3, height * 0.3, width * 0.5);
-                gradient1.addColorStop(0, 'rgba(6, 182, 212, 0.05)'); // Brand primary
+                gradient1.addColorStop(0, 'rgba(6, 182, 212, 0.05)'); 
                 gradient1.addColorStop(1, 'transparent');
                 
                 const gradient2 = ctx.createRadialGradient(width * 0.7, height * 0.7, 0, width * 0.7, height * 0.7, width * 0.5);
-                gradient2.addColorStop(0, 'rgba(139, 92, 246, 0.05)'); // Brand accent (purple)
+                gradient2.addColorStop(0, 'rgba(139, 92, 246, 0.05)'); 
                 gradient2.addColorStop(1, 'transparent');
 
                 ctx.fillStyle = gradient1;
@@ -810,17 +807,13 @@
                 ctx.fillStyle = gradient2;
                 ctx.fillRect(0, 0, width, height);
 
-                // Update and draw stars
                 stars.forEach(star => {
-                    // Drift
                     star.y -= star.speed;
-                    star.x += (star.x - width/2) * 0.0003; // Slight outward warp
+                    star.x += (star.x - width/2) * 0.0003; 
 
-                    // Twinkle
                     star.alpha += star.alphaChange;
                     if(star.alpha <= 0.1 || star.alpha >= 0.8) star.alphaChange *= -1;
 
-                    // Screen wrap
                     if (star.y < 0) {
                         star.y = height;
                         star.x = Math.random() * width;
@@ -828,11 +821,9 @@
                     if (star.x < 0) star.x = width;
                     if (star.x > width) star.x = 0;
 
-                    // Draw
                     ctx.beginPath();
                     ctx.arc(star.x, star.y, star.radius, 0, Math.PI * 2);
                     
-                    // Apply opacity to star color
                     let fill = star.color;
                     if(fill === '#ffffff') {
                         ctx.fillStyle = `rgba(255, 255, 255, ${star.alpha})`;
@@ -841,7 +832,6 @@
                     } else {
                         ctx.fillStyle = `rgba(139, 92, 246, ${star.alpha})`;
                     }
-                    
                     ctx.fill();
                 });
 
@@ -853,7 +843,6 @@
 
         document.addEventListener('DOMContentLoaded', () => {
             try {
-                // Initialize Animated Background
                 initStarfield();
 
                 const mobileMenuBtn = document.getElementById('mobile-menu-btn');
@@ -1056,16 +1045,13 @@
         }
 
         let pendingAccessUrl = '';
-        const resourcePrices = { notes: 1, assignments: 0.5, pyqs: 2 };
 
-        function initiatePayment(e, url, type) {
+        function initiatePayment(e, url, title, price) {
             e.preventDefault();
             pendingAccessUrl = url;
-            const price = resourcePrices[type];
             
-            document.getElementById('payment-amount').innerText = `Rs. ${price}`;
-            let readableType = type === 'pyqs' ? 'PYQs' : type.charAt(0).toUpperCase() + type.slice(1);
-            document.getElementById('payment-resource-type').innerText = readableType;
+            document.getElementById('payment-amount').innerText = `₹${price}`;
+            document.getElementById('payment-resource-type').innerText = title;
             
             document.getElementById('payment-modal').classList.remove('hidden');
             document.getElementById('payment-modal').classList.add('flex');
@@ -1112,13 +1098,21 @@
         const defaultSharedHomework = [{ title: 'Homework Links', url: 'https://drive.google.com/drive/folders/1u0MtXmbvdXD9Jh-FkDv0Mjz64fEQLP7e?usp=drive_link' }];
         const defaultSharedExtraBooks = [{ title: 'Extra Books Link', url: 'https://drive.google.com/drive/folders/11LAIcNK6AQumRPeg4nDA26NEcu9PpvtO?usp=drive_link' }];
 
+        // The requested premium book object
+        const premiumElectronicsBook = {
+            title: 'Basic Electronics Premium Book (₹5)',
+            url: 'https://drive.google.com/file/d/1DISUfeRcHWKD3KbZy7oJJfnD90lOSD5B/view?usp=drive_link',
+            requiresPayment: true,
+            price: 5
+        };
+
         const defaultSubjects = [
             { id: 'sub_default_1', name: 'Engineering Mechanics Essentials', videos: [], extrabooks: [...defaultSharedExtraBooks], notes: [...defaultSharedNotes], homework: [...defaultSharedHomework], assignments: [...defaultSharedAssignments], pyqs: [...defaultSharedPYQs] },
             { id: 'sub_default_2', name: 'Chemistry', videos: [], extrabooks: [...defaultSharedExtraBooks], notes: [...defaultSharedNotes], homework: [...defaultSharedHomework], assignments: [...defaultSharedAssignments], pyqs: [...defaultSharedPYQs] },
             { id: 'sub_default_3', name: 'English', videos: [], extrabooks: [...defaultSharedExtraBooks], notes: [...defaultSharedNotes], homework: [...defaultSharedHomework], assignments: [...defaultSharedAssignments], pyqs: [...defaultSharedPYQs] },
             { id: 'sub_default_4', name: 'Mathematics and Basic Statistics', videos: [], extrabooks: [...defaultSharedExtraBooks], notes: [...defaultSharedNotes], homework: [...defaultSharedHomework], assignments: [...defaultSharedAssignments], pyqs: [...defaultSharedPYQs] },
             { id: 'sub_default_5', name: 'Design Thinking & Innovation - Ideation & Research', videos: [], extrabooks: [...defaultSharedExtraBooks], notes: [...defaultSharedNotes], homework: [...defaultSharedHomework], assignments: [...defaultSharedAssignments], pyqs: [...defaultSharedPYQs] },
-            { id: 'sub_default_6', name: 'Basic Electronics', videos: [], extrabooks: [...defaultSharedExtraBooks], notes: [...defaultSharedNotes], homework: [...defaultSharedHomework], assignments: [...defaultSharedAssignments], pyqs: [...defaultSharedPYQs] },
+            { id: 'sub_default_6', name: 'Basic Electronics', videos: [], extrabooks: [...defaultSharedExtraBooks, premiumElectronicsBook], notes: [...defaultSharedNotes], homework: [...defaultSharedHomework], assignments: [...defaultSharedAssignments], pyqs: [...defaultSharedPYQs] },
             { id: 'sub_default_7', name: 'Foreign Language', videos: [], extrabooks: [...defaultSharedExtraBooks], notes: [...defaultSharedNotes], homework: [...defaultSharedHomework], assignments: [...defaultSharedAssignments], pyqs: [...defaultSharedPYQs] },
             { id: 'sub_default_8', name: 'MATLAB', videos: [], extrabooks: [...defaultSharedExtraBooks], notes: [...defaultSharedNotes], homework: [...defaultSharedHomework], assignments: [...defaultSharedAssignments], pyqs: [...defaultSharedPYQs] },
             { id: 'sub_default_9', name: 'Programming for Problem Solving Using C', videos: [{ title: 'Programming for Problem Solving Using C Lecture 1', url: 'https://youtu.be/KJgsSFOSQv0?si=0HJj3dvF9jrzuoDa' }], extrabooks: [...defaultSharedExtraBooks], notes: [...defaultSharedNotes], homework: [...defaultSharedHomework], assignments: [...defaultSharedAssignments], pyqs: [...defaultSharedPYQs] },
@@ -1150,6 +1144,14 @@
                     if (ds.name === 'Programming for Problem Solving Using C') {
                         if(!existingSubject.videos.find(v => v.url.includes('KJgsSFOSQv0'))) {
                             existingSubject.videos.unshift(ds.videos[0]);
+                            isUpdated = true;
+                        }
+                    }
+
+                    // Force push the premium book if it was cleared out of local storage
+                    if (ds.name === 'Basic Electronics') {
+                        if (!existingSubject.extrabooks.find(b => b.url.includes('1DISUfeRcHWKD3KbZy7oJJfnD90lOSD5B'))) {
+                            existingSubject.extrabooks.push(premiumElectronicsBook);
                             isUpdated = true;
                         }
                     }
@@ -1300,10 +1302,19 @@
                             }
                         }
 
-                        let linkHTML = `<a href="${item.url}" target="_blank" class="truncate flex-grow hover:text-brand-primary transition text-gray-200 font-medium flex items-center">
-                                <i class="fas fa-external-link-square-alt text-xs mr-2 text-gray-500"></i>
-                                <span class="truncate">${item.title}</span>
-                            </a>`;
+                        let linkHTML;
+                        if (item.requiresPayment) {
+                            const escapedTitle = item.title.replace(/'/g, "\\'");
+                            linkHTML = `<a href="#" onclick="initiatePayment(event, '${item.url}', '${escapedTitle}', ${item.price})" class="truncate flex-grow hover:text-brand-primary transition text-brand-secondary font-medium flex items-center">
+                                    <i class="fas fa-lock text-xs mr-2 text-brand-secondary"></i>
+                                    <span class="truncate">${item.title}</span>
+                                </a>`;
+                        } else {
+                            linkHTML = `<a href="${item.url}" target="_blank" class="truncate flex-grow hover:text-brand-primary transition text-gray-200 font-medium flex items-center">
+                                    <i class="fas fa-external-link-square-alt text-xs mr-2 text-gray-500"></i>
+                                    <span class="truncate">${item.title}</span>
+                                </a>`;
+                        }
 
                         ul.innerHTML += `
                             <li class="flex justify-between items-center bg-gray-900 p-3 rounded-lg border border-gray-700/50 hover:border-gray-500 transition group mb-2 shadow-sm">
