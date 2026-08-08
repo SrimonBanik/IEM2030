@@ -31,6 +31,7 @@
                         'float': 'float 6s ease-in-out infinite',
                         'fadeIn': 'fadeIn 0.3s ease-out forwards',
                         'slideInRight': 'slideInRight 0.3s ease-out forwards',
+                        'pulse-slow': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
                     },
                     keyframes: {
                         'gradient-x': {
@@ -131,6 +132,17 @@
         ::-webkit-scrollbar-track { background: #0a0f1c; }
         ::-webkit-scrollbar-thumb { background: #1e293b; border-radius: 4px; }
         ::-webkit-scrollbar-thumb:hover { background: #3b82f6; }
+        
+        .active-period-glow {
+            box-shadow: inset 0 0 15px rgba(6, 182, 212, 0.3), 0 0 10px rgba(6, 182, 212, 0.2);
+            animation: borderPulse 2s infinite;
+        }
+
+        @keyframes borderPulse {
+            0% { border-color: rgba(6, 182, 212, 0.4); }
+            50% { border-color: rgba(6, 182, 212, 1); }
+            100% { border-color: rgba(6, 182, 212, 0.4); }
+        }
     </style>
 </head>
 <body class="antialiased min-h-screen flex flex-col relative">
@@ -190,67 +202,55 @@
 
     <main class="flex-grow pt-24 pb-12 relative z-10">
 
-        <section id="home" class="page-section active max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 lg:py-24">
-            <div class="flex flex-col lg:flex-row items-center gap-12 mb-20">
+        <section id="home" class="page-section active max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 lg:py-16">
+            <div class="flex flex-col lg:flex-row items-center gap-12 mb-16">
                 <div class="lg:w-1/2 space-y-8">
                     <div class="inline-flex items-center space-x-2 glass px-4 py-2 rounded-full text-brand-primary text-sm font-semibold">
-                        <i class="fas fa-globe"></i>
-                        <span>Hub for B.Tech CSE (AI/ML)</span>
+                        <i class="fas fa-globe animate-pulse"></i>
+                        <span>Live Hub for B.Tech CSE (AI/ML)</span>
                     </div>
                     <h1 class="text-5xl lg:text-7xl font-serif font-bold leading-tight">
                         Welcome to <br>
                         <span class="text-gradient">Batch B8</span>
                     </h1>
                     <p class="text-gray-400 text-lg md:text-xl max-w-lg leading-relaxed">
-                        Code. Learn. Innovate. Impact. This platform connects everyone. Add subjects, share notes, and post notices visible to the entire batch.
+                        Code. Learn. Innovate. Impact. This platform connects everyone. Add subjects, share notes, and stay up to date with live routines.
                     </p>
                     <div class="flex flex-wrap gap-4">
-                        <button onclick="navigate('study')" class="bg-gradient-to-r from-brand-primary to-brand-secondary text-white px-8 py-3 rounded-full font-semibold hover:shadow-lg hover:shadow-brand-primary/40 transition-all transform hover:-translate-y-1">
-                            Explore Study Materials <i class="fas fa-arrow-right ml-2"></i>
+                        <button onclick="navigate('study')" class="bg-gradient-to-r from-brand-primary to-brand-secondary text-white px-8 py-3 rounded-full font-semibold hover:shadow-lg hover:shadow-brand-primary/40 transition-all transform hover:-translate-y-1 flex items-center">
+                            Explore Materials <i class="fas fa-arrow-right ml-2"></i>
                         </button>
                         <button onclick="navigate('notices')" class="glass px-8 py-3 rounded-full font-semibold hover:bg-white/10 transition-all">
-                            View Notice Board
+                            Notice Board
                         </button>
                     </div>
                 </div>
                 <div class="lg:w-1/2 relative w-full flex justify-center">
                     <div class="absolute inset-0 bg-gradient-to-tr from-brand-primary/20 to-brand-secondary/20 rounded-full blur-3xl -z-10 animate-float"></div>
-                    <img src="ChatGPT Image Jul 22, 2026, 03_22_36 PM.png" alt="Hero Logo" class="w-full max-w-md rounded-full shadow-[0_0_40px_rgba(6,182,212,0.3)] border-4 border-white/5 animate-float object-cover" onerror="this.onerror=null; this.src='https://placehold.co/400x400/06b6d4/ffffff?text=B8'">
+                    <img src="ChatGPT Image Jul 22, 2026, 03_22_36 PM.png" alt="Hero Logo" class="w-full max-w-sm rounded-full shadow-[0_0_40px_rgba(6,182,212,0.3)] border-4 border-white/5 animate-float object-cover" onerror="this.onerror=null; this.src='https://placehold.co/400x400/06b6d4/ffffff?text=B8'">
                 </div>
             </div>
             
+            <!-- Live Dashboard Section -->
+            <div class="mb-20">
+                <h3 class="text-xl font-bold font-serif mb-6 text-white flex items-center gap-2">
+                    <i class="fas fa-chart-pie text-brand-primary"></i> Live Dashboard Overview
+                </h3>
+                <div id="live-dashboard-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                    <!-- Cards injected by JS -->
+                </div>
+            </div>
+
             <div class="mb-24">
                 <div class="flex justify-between items-center mb-6">
-                    <h3 class="text-2xl font-bold font-serif border-b-2 border-brand-primary pb-2">Recent Updates</h3>
+                    <h3 class="text-2xl font-bold font-serif border-b-2 border-brand-primary pb-2 flex items-center gap-2">
+                        <i class="fas fa-bolt text-yellow-400"></i> Recent Updates
+                    </h3>
                     <button onclick="navigate('notices')" class="text-sm text-brand-primary hover:text-brand-secondary transition flex items-center gap-2">
                         See All <i class="fas fa-arrow-right"></i>
                     </button>
                 </div>
                 <div id="home-recent-notices" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"></div>
-            </div>
-            
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-                <div class="glass-card p-8 rounded-2xl text-center transform hover:-translate-y-2 transition-all border border-gray-700/50">
-                    <div class="w-16 h-16 mx-auto bg-brand-primary/20 rounded-full flex items-center justify-center text-brand-primary text-2xl mb-4">
-                        <i class="fas fa-share-nodes"></i>
-                    </div>
-                    <h3 class="text-xl font-bold mb-2">Shared</h3>
-                    <p class="text-gray-400 text-sm">Anything you add—notes, videos, PYQs—becomes visible to everyone in Batch B8 instantly.</p>
-                </div>
-                <div class="glass-card p-8 rounded-2xl text-center transform hover:-translate-y-2 transition-all border border-gray-700/50">
-                    <div class="w-16 h-16 mx-auto bg-brand-secondary/20 rounded-full flex items-center justify-center text-brand-secondary text-2xl mb-4">
-                        <i class="fas fa-bullhorn"></i>
-                    </div>
-                    <h3 class="text-xl font-bold mb-2">Live Notices</h3>
-                    <p class="text-gray-400 text-sm">Post and view real-time updates, alerts, and assignments on the community board.</p>
-                </div>
-                <div class="glass-card p-8 rounded-2xl text-center transform hover:-translate-y-2 transition-all border border-gray-700/50">
-                    <div class="w-16 h-16 mx-auto bg-brand-accent/20 rounded-full flex items-center justify-center text-brand-accent text-2xl mb-4">
-                        <i class="fas fa-robot"></i>
-                    </div>
-                    <h3 class="text-xl font-bold mb-2">AI Guide</h3>
-                    <p class="text-gray-400 text-sm">Powered by AI. Get instant help with your studies, routine, or doubts anytime.</p>
-                </div>
             </div>
         </section>
 
@@ -362,44 +362,44 @@
         </section>
 
         <section id="routine" class="page-section max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-            <div class="text-center mb-12">
-                <h2 class="text-4xl font-serif font-bold mb-4">Class <span class="text-gradient">Routine</span></h2>
-                <p class="text-gray-400">Weekly schedule for Batch B8.</p>
+            <div class="text-center mb-10">
+                <h2 class="text-4xl font-serif font-bold mb-4">Live Class <span class="text-gradient">Routine</span></h2>
+                <p class="text-gray-400">Automatically syncs with the current day and time to highlight ongoing classes.</p>
             </div>
             
             <div class="glass-card rounded-2xl overflow-hidden border border-gray-700 shadow-xl">
                 <div class="overflow-x-auto custom-scrollbar">
-                    <table class="w-full text-left border-collapse min-w-[800px]">
+                    <table class="w-full text-left border-collapse min-w-[1000px]">
                         <thead class="bg-gray-800 text-brand-primary border-b border-gray-700">
                             <tr class="whitespace-nowrap">
-                                <th class="p-4 font-semibold">Day</th>
-                                <th class="p-4 font-semibold">09:30 - 10:15</th>
-                                <th class="p-4 font-semibold">10:15 - 11:00</th>
-                                <th class="p-4 font-semibold">11:00 - 11:45</th>
-                                <th class="p-4 font-semibold">11:45 - 12:30</th>
-                                <th class="p-4 font-semibold">12:30 - 01:15</th>
-                                <th class="p-4 font-semibold">01:15 - 02:00</th>
-                                <th class="p-4 font-semibold">02:00 - 02:45</th>
-                                <th class="p-4 font-semibold">02:45 - 03:30</th>
-                                <th class="p-4 font-semibold">03:30 - 04:15</th>
+                                <th class="p-4 font-semibold w-24">Day</th>
+                                <th class="p-4 font-semibold text-center text-xs w-32 border-l border-gray-700">Period 1<br><span class="text-gray-400 font-normal">09:30 - 10:15</span></th>
+                                <th class="p-4 font-semibold text-center text-xs w-32 border-l border-gray-700">Period 2<br><span class="text-gray-400 font-normal">10:15 - 11:00</span></th>
+                                <th class="p-4 font-semibold text-center text-xs w-32 border-l border-gray-700">Period 3<br><span class="text-gray-400 font-normal">11:00 - 11:45</span></th>
+                                <th class="p-4 font-semibold text-center text-xs w-32 border-l border-gray-700">Period 4<br><span class="text-gray-400 font-normal">11:45 - 12:30</span></th>
+                                <th class="p-4 font-semibold text-center text-xs w-24 border-l border-gray-700 text-gray-500">Break<br><span class="font-normal text-[10px]">12:30 - 01:15</span></th>
+                                <th class="p-4 font-semibold text-center text-xs w-32 border-l border-gray-700">Period 6<br><span class="text-gray-400 font-normal">01:15 - 02:00</span></th>
+                                <th class="p-4 font-semibold text-center text-xs w-32 border-l border-gray-700">Period 7<br><span class="text-gray-400 font-normal">02:00 - 02:45</span></th>
+                                <th class="p-4 font-semibold text-center text-xs w-32 border-l border-gray-700">Period 8<br><span class="text-gray-400 font-normal">02:45 - 03:30</span></th>
+                                <th class="p-4 font-semibold text-center text-xs w-32 border-l border-gray-700">Period 9<br><span class="text-gray-400 font-normal">03:30 - 04:15</span></th>
                             </tr>
                         </thead>
-                        <tbody class="text-sm divide-y divide-gray-800/50 text-gray-300">
-                            <tr class="hover:bg-white/5 transition"><td class="p-4 font-bold text-white">Monday</td><td class="p-4">Engineering Mechanics Essentials</td><td class="p-4">Chemistry</td><td class="p-4">English</td><td class="p-4">Mathematics and Basic Statistics</td><td class="p-4 text-gray-500 italic bg-black/20 text-center">BREAK</td><td class="p-4">Design Thinking & Innovation - Ideation & Research</td><td class="p-4 text-brand-secondary font-medium">Basic Electronics Laboratory</td><td class="p-4 text-brand-secondary font-medium">Basic Electronics Laboratory</td><td class="p-4 text-brand-secondary font-medium">Basic Electronics Laboratory</td></tr>
-                            <tr class="hover:bg-white/5 transition"><td class="p-4 font-bold text-white">Tuesday</td><td class="p-4">Basic Electronics</td><td class="p-4">Foreign Language</td><td class="p-4">MATLAB</td><td class="p-4 text-brand-secondary font-medium">Programming for Problem Solving Laboratory Using C</td><td class="p-4 text-gray-500 italic bg-black/20 text-center">BREAK</td><td class="p-4 text-brand-secondary font-medium">Programming for Problem Solving Laboratory Using C</td><td class="p-4 text-brand-secondary font-medium">Programming for Problem Solving Laboratory Using C</td><td class="p-4">Sports</td><td class="p-4">Chemistry</td></tr>
-                            <tr class="hover:bg-white/5 transition"><td class="p-4 font-bold text-white">Wednesday</td><td class="p-4">Programming for Problem Solving Using C</td><td class="p-4">Essential Studies for Professionals-I</td><td class="p-4">Mathematics and Basic Statistics</td><td class="p-4 text-brand-secondary font-medium">Workshop</td><td class="p-4 text-gray-500 italic bg-black/20 text-center">BREAK</td><td class="p-4 text-brand-secondary font-medium">Workshop</td><td class="p-4 text-brand-secondary font-medium">Workshop</td><td class="p-4">Chemistry</td><td class="p-4">Soft Skills</td></tr>
-                            <tr class="hover:bg-white/5 transition"><td class="p-4 font-bold text-white">Thursday</td><td class="p-4">Chemistry</td><td class="p-4">Basic Electronics</td><td class="p-4">Mathematics and Basic Statistics</td><td class="p-4">Essential Studies for Professionals-I</td><td class="p-4 text-gray-500 italic bg-black/20 text-center">BREAK</td><td class="p-4">Indian Knowledge System</td><td class="p-4 text-brand-secondary font-medium">Language Laboratory</td><td class="p-4 text-brand-secondary font-medium">Language Laboratory</td><td class="p-4">Programming for Problem Solving Using C</td></tr>
-                            <tr class="hover:bg-white/5 transition"><td class="p-4 font-bold text-white">Friday</td><td class="p-4">Basic Electronics</td><td class="p-4 text-brand-secondary font-medium">Chemistry</td><td class="p-4 text-brand-secondary font-medium">Chemistry</td><td class="p-4 text-brand-secondary font-medium">Chemistry</td><td class="p-4 text-gray-500 italic bg-black/20 text-center">BREAK</td><td class="p-4">Economics, Finance and Entrepreneurship</td><td class="p-4">English</td><td class="p-4">Mathematics and Basic Statistics</td><td class="p-4">Engineering Mechanics Essentials</td></tr>
+                        <tbody id="routine-tbody" class="text-sm divide-y divide-gray-800/50 text-gray-300">
+                            <!-- Injected dynamically by JS -->
                         </tbody>
                     </table>
                 </div>
+            </div>
+            <div class="mt-4 flex justify-end items-center gap-4 text-xs">
+                <div class="flex items-center gap-2 text-gray-400"><span class="w-3 h-3 rounded-full bg-brand-primary/30 border border-brand-primary inline-block"></span> Current Class</div>
+                <div class="flex items-center gap-2 text-gray-400"><span class="w-1 h-4 bg-brand-primary inline-block"></span> Current Day</div>
             </div>
         </section>
 
         <section id="holidays" class="page-section max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
             <div class="text-center mb-12">
                 <h2 class="text-4xl font-serif font-bold mb-4">Official <span class="text-gradient">Holidays 2026</span></h2>
-                <p class="text-gray-400">IEM-UEM Group Holiday List.</p>
+                <p class="text-gray-400">IEM-UEM Group Holiday List. Automatically highlights upcoming dates.</p>
             </div>
 
             <div class="glass-card rounded-2xl overflow-hidden border border-gray-700 shadow-xl max-w-4xl mx-auto">
@@ -413,7 +413,9 @@
                                 <th class="p-4 border-b border-gray-700 font-semibold bg-gray-900">Occasion</th>
                             </tr>
                         </thead>
-                        <tbody id="holidays-tbody" class="text-sm text-gray-300 divide-y divide-gray-800/50"></tbody>
+                        <tbody id="holidays-tbody" class="text-sm text-gray-300 divide-y divide-gray-800/50">
+                            <!-- Injected dynamically by JS -->
+                        </tbody>
                     </table>
                 </div>
             </div>
@@ -841,6 +843,252 @@
             drawFrame();
         }
 
+        // ============================================
+        // Live Tracker Logic (Routine, Dash, Holidays)
+        // ============================================
+        
+        const routineData = {
+            "Monday": ["Engineering Mechanics Essentials", "Chemistry", "English", "Mathematics and Basic Statistics", "BREAK", "Design Thinking & Innovation - Ideation & Research", "Basic Electronics Laboratory", "Basic Electronics Laboratory", "Basic Electronics Laboratory"],
+            "Tuesday": ["Basic Electronics", "Foreign Language", "MATLAB", "Programming for Problem Solving Laboratory Using C", "BREAK", "Programming for Problem Solving Laboratory Using C", "Programming for Problem Solving Laboratory Using C", "Sports", "Chemistry"],
+            "Wednesday": ["Programming for Problem Solving Using C", "Essential Studies for Professionals-I", "Mathematics and Basic Statistics", "Workshop", "BREAK", "Workshop", "Workshop", "Chemistry", "Soft Skills"],
+            "Thursday": ["Chemistry", "Basic Electronics", "Mathematics and Basic Statistics", "Essential Studies for Professionals-I", "BREAK", "Indian Knowledge System", "Language Laboratory", "Language Laboratory", "Programming for Problem Solving Using C"],
+            "Friday": ["Basic Electronics", "Chemistry", "Chemistry", "Chemistry", "BREAK", "Economics, Finance and Entrepreneurship", "English", "Mathematics and Basic Statistics", "Engineering Mechanics Essentials"]
+        };
+
+        const periodTimes = [
+            { start: "09:30", end: "10:15" },
+            { start: "10:15", end: "11:00" },
+            { start: "11:00", end: "11:45" },
+            { start: "11:45", end: "12:30" },
+            { start: "12:30", end: "13:15" }, // BREAK
+            { start: "13:15", end: "14:00" },
+            { start: "14:00", end: "14:45" },
+            { start: "14:45", end: "15:30" },
+            { start: "15:30", end: "16:15" }
+        ];
+
+        const holidaysData = [
+            { date: "1st January, 2026", day: "Thursday", days: 1, occasion: "New Year's Day" },
+            { date: "12th January, 2026", day: "Monday", days: 1, occasion: "Birth Day of Swami Vivekananda" },
+            { date: "23rd January, 2026", day: "Friday", days: 1, occasion: "Netaji’s Birth Day / Saraswati Puja" },
+            { date: "26th January, 2026", day: "Monday", days: 1, occasion: "Republic Day" },
+            { date: "4th March, 2026", day: "Wednesday", days: 1, occasion: "Holi" },
+            { date: "21st March, 2026", day: "Saturday", days: 0, occasion: "Eid-UI-Fitr" },
+            { date: "3rd April, 2026", day: "Friday", days: 1, occasion: "Good Friday" },
+            { date: "14th April, 2026", day: "Tuesday", days: 1, occasion: "Dr Ambedkar Jayanti" },
+            { date: "15th April, 2026", day: "Wednesday", days: 1, occasion: "Bengali New Year’s Day" },
+            { date: "1st May, 2026", day: "Friday", days: 1, occasion: "May Day & Buddha Purnima" },
+            { date: "27th May, 2026", day: "Wednesday", days: 1, occasion: "Bakrid" },
+            { date: "26th June, 2026", day: "Friday", days: 1, occasion: "Muharram" },
+            { date: "15th August, 2026", day: "Saturday", days: 0, occasion: "Independence Day" },
+            { date: "4th September, 2026", day: "Friday", days: 1, occasion: "Janmashtami" },
+            { date: "17th September, 2026", day: "Thursday", days: 1, occasion: "Vishwakarma Puja" },
+            { date: "2nd October, 2026", day: "Friday", days: 1, occasion: "Mahatma Gandhi Jayanti" },
+            { date: "10th October, 2026", day: "Saturday", days: 0, occasion: "Mahalaya" },
+            { date: "17th October, 2026", day: "Saturday", days: 0, occasion: "Maha Sasthi" },
+            { date: "18th October, 2026", day: "Sunday", days: 0, occasion: "Maha Saptami" },
+            { date: "19th October, 2026", day: "Monday", days: 1, occasion: "Maha Ashtami" },
+            { date: "20th October, 2026", day: "Tuesday", days: 1, occasion: "Maha Nabami" },
+            { date: "21st October, 2026", day: "Wednesday", days: 1, occasion: "Maha Dashami" },
+            { date: "25th October, 2026", day: "Sunday", days: 0, occasion: "Lakshmi Puja" },
+            { date: "8th November, 2026", day: "Sunday", days: 0, occasion: "Diwali" },
+            { date: "11th November, 2026", day: "Wednesday", days: 1, occasion: "Bhratridwitiya" },
+            { date: "15th November, 2026", day: "Sunday", days: 0, occasion: "Chhat Puja" },
+            { date: "24th November, 2026", day: "Tuesday", days: 1, occasion: "Guru Nanak Jayanti" },
+            { date: "25th December, 2026", day: "Friday", days: 1, occasion: "Christmas" }
+        ];
+
+        function parseHolidayDate(dateStr) {
+            const cleaned = dateStr.replace(/(st|nd|rd|th)/, '');
+            return new Date(cleaned);
+        }
+
+        function getNextHoliday() {
+            const now = new Date();
+            now.setHours(0,0,0,0);
+            for (let h of holidaysData) {
+                const hDate = parseHolidayDate(h.date);
+                if (hDate >= now) {
+                    return h;
+                }
+            }
+            return null;
+        }
+
+        function getNextClass() {
+            const now = new Date();
+            const day = now.getDay();
+            const hours = now.getHours();
+            const minutes = now.getMinutes();
+            const currentTimeStr = `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}`;
+            const days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+            
+            if (day === 0 || day === 6) {
+                return { day: "Mon", time: "09:30 AM", subject: routineData["Monday"][0], status: "Upcoming" };
+            }
+
+            let currentDayName = days[day];
+
+            if (currentTimeStr >= "16:15") {
+                let nextDay = day === 5 ? "Monday" : days[day + 1];
+                let nextDayShort = nextDay.substring(0,3);
+                return { day: nextDayShort, time: "09:30 AM", subject: routineData[nextDay][0], status: "Upcoming" };
+            }
+
+            if (currentTimeStr < "09:30") {
+                return { day: "Today", time: "09:30 AM", subject: routineData[currentDayName][0], status: "Upcoming" };
+            }
+
+            for (let i = 0; i < periodTimes.length; i++) {
+                if (currentTimeStr >= periodTimes[i].start && currentTimeStr < periodTimes[i].end) {
+                    return { status: "Ongoing", subject: routineData[currentDayName][i] };
+                }
+            }
+            
+            return { day: "Mon", time: "09:30 AM", subject: routineData["Monday"][0], status: "Upcoming" };
+        }
+
+        function renderRoutine() {
+            const tbody = document.getElementById('routine-tbody');
+            if(!tbody) return;
+            tbody.innerHTML = '';
+            
+            const now = new Date();
+            const currentDay = now.getDay();
+            const days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+            const currentDayName = days[currentDay];
+            
+            const h = now.getHours().toString().padStart(2, '0');
+            const m = now.getMinutes().toString().padStart(2, '0');
+            const currentTimeStr = `${h}:${m}`;
+            
+            let currentPeriodIndex = -1;
+            if(currentDay >= 1 && currentDay <= 5) {
+                for(let i=0; i<periodTimes.length; i++) {
+                    if(currentTimeStr >= periodTimes[i].start && currentTimeStr < periodTimes[i].end) {
+                        currentPeriodIndex = i;
+                        break;
+                    }
+                }
+            }
+
+            const dayKeys = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"];
+            
+            dayKeys.forEach(day => {
+                const periods = routineData[day];
+                const isToday = day === currentDayName;
+                
+                let tr = document.createElement('tr');
+                tr.className = `transition ${isToday ? 'bg-brand-primary/10 border-l-4 border-brand-primary' : 'hover:bg-white/5'} border-b border-gray-800/50`;
+                
+                let html = `<td class="p-4 font-bold ${isToday ? 'text-brand-primary text-base' : 'text-white'}">${day}</td>`;
+                
+                periods.forEach((subject, index) => {
+                    const isCurrentPeriod = isToday && index === currentPeriodIndex;
+                    const activeClass = isCurrentPeriod ? 'active-period-glow bg-brand-primary/20 text-white font-bold border border-brand-primary rounded-xl' : '';
+                    const baseClass = 'p-3 text-center border-l border-gray-800/50 text-xs md:text-sm ';
+                    
+                    if (subject === "BREAK") {
+                        html += `<td class="${baseClass} text-gray-500 italic bg-black/20 ${activeClass}">${subject}</td>`;
+                    } else if (subject.includes("Laboratory") || subject.includes("Workshop") || subject.includes("Chemistry") && (day === "Friday" || index >= 6)) { 
+                        html += `<td class="${baseClass} text-brand-secondary font-medium ${activeClass}">${subject}</td>`;
+                    } else {
+                        html += `<td class="${baseClass} ${activeClass}">${subject}</td>`;
+                    }
+                });
+                tr.innerHTML = html;
+                tbody.appendChild(tr);
+            });
+        }
+
+        function renderHolidays() {
+            const holidaysTbody = document.getElementById('holidays-tbody');
+            if (!holidaysTbody) return;
+            holidaysTbody.innerHTML = '';
+            
+            const nextHoliday = getNextHoliday();
+
+            holidaysData.forEach(h => {
+                const isNext = nextHoliday && h.date === nextHoliday.date;
+                const tr = document.createElement('tr');
+                tr.className = `transition border-b border-gray-800/50 ${isNext ? 'bg-purple-500/10 border-l-4 border-purple-500 shadow-[inset_0_0_20px_rgba(168,85,247,0.1)]' : 'hover:bg-gray-800/50'}`;
+                
+                let nextBadge = isNext ? `<span class="ml-3 text-[10px] bg-purple-500 text-white px-2 py-0.5 rounded-full animate-pulse-slow uppercase tracking-wider font-bold shadow-lg shadow-purple-500/50">Upcoming</span>` : '';
+
+                tr.innerHTML = `
+                    <td class="p-4 ${isNext ? 'text-white font-bold' : 'text-gray-300'}">${h.date}</td>
+                    <td class="p-4 ${isNext ? 'text-purple-300 font-bold' : 'text-gray-400 font-medium'}">${h.day}</td>
+                    <td class="p-4 text-center">
+                        <span class="inline-block w-6 h-6 rounded-full ${h.days > 0 ? (isNext ? 'bg-purple-500 text-white font-bold' : 'bg-green-500/20 text-green-400') : 'bg-gray-700 text-gray-400'} flex items-center justify-center text-xs mx-auto">
+                            ${h.days}
+                        </span>
+                    </td>
+                    <td class="p-4 ${isNext ? 'text-purple-400 font-bold text-base' : 'text-white font-medium'} flex items-center">${h.occasion} ${nextBadge}</td>
+                `;
+                holidaysTbody.appendChild(tr);
+            });
+        }
+
+        function updateDashboard() {
+            const dashboardEl = document.getElementById('live-dashboard-grid');
+            if(!dashboardEl) return;
+
+            const totalSubs = subjects.length;
+            
+            const now = new Date();
+            now.setHours(0,0,0,0);
+            const remainingHolidays = holidaysData.filter(h => parseHolidayDate(h.date) >= now).length;
+            const nextHol = getNextHoliday();
+
+            const nextClassInfo = getNextClass();
+            let nextClassTitle = "";
+            let nextClassSubtext = "";
+            let classIcon = "";
+            let classBorder = "";
+            
+            if(nextClassInfo.status === "Ongoing") {
+                nextClassTitle = "Ongoing Now";
+                nextClassSubtext = nextClassInfo.subject === "BREAK" ? "Break Time" : nextClassInfo.subject;
+                classIcon = `<i class="fas fa-circle text-[8px] animate-pulse text-brand-primary"></i> Live Class`;
+                classBorder = "border-brand-primary";
+            } else {
+                nextClassTitle = `Next: ${nextClassInfo.day} ${nextClassInfo.time}`;
+                nextClassSubtext = nextClassInfo.subject;
+                classIcon = `<i class="fas fa-clock text-[10px]"></i> Upcoming Class`;
+                classBorder = "border-brand-secondary";
+            }
+
+            dashboardEl.innerHTML = `
+                <div class="glass-card p-6 rounded-2xl border-l-4 border-gray-500 flex flex-col justify-center relative overflow-hidden group cursor-pointer" onclick="navigate('study')">
+                    <div class="absolute right-[-10px] bottom-[-10px] opacity-10 group-hover:opacity-20 transition-opacity"><i class="fas fa-folder-tree text-7xl"></i></div>
+                    <span class="text-gray-400 text-sm font-bold uppercase tracking-wider mb-1 flex items-center gap-2"><i class="fas fa-book"></i> Subjects Active</span>
+                    <span class="text-3xl font-bold text-white">${totalSubs}</span>
+                </div>
+                <div class="glass-card p-6 rounded-2xl border-l-4 ${classBorder} flex flex-col justify-center relative overflow-hidden group cursor-pointer" onclick="navigate('routine')">
+                    <div class="absolute right-[-10px] bottom-[-10px] opacity-10 group-hover:opacity-20 transition-opacity"><i class="fas fa-calendar-alt text-7xl"></i></div>
+                    <span class="text-gray-300 text-sm font-bold uppercase tracking-wider mb-2 flex items-center gap-2">${classIcon}</span>
+                    <span class="text-base font-bold text-white truncate w-full" title="${nextClassSubtext}">${nextClassSubtext}</span>
+                    <span class="text-xs text-brand-primary mt-1 font-medium tracking-wide">${nextClassTitle}</span>
+                </div>
+                <div class="glass-card p-6 rounded-2xl border-l-4 border-green-500 flex flex-col justify-center relative overflow-hidden group cursor-pointer" onclick="navigate('holidays')">
+                    <div class="absolute right-[-10px] bottom-[-10px] opacity-10 group-hover:opacity-20 transition-opacity"><i class="fas fa-calendar-check text-7xl"></i></div>
+                    <span class="text-green-500 text-sm font-bold uppercase tracking-wider mb-1 flex items-center gap-2"><i class="fas fa-plane-departure"></i> Holidays Left</span>
+                    <span class="text-3xl font-bold text-white">${remainingHolidays} <span class="text-sm font-normal text-gray-500">/ ${holidaysData.length}</span></span>
+                </div>
+                <div class="glass-card p-6 rounded-2xl border-l-4 border-purple-500 flex flex-col justify-center relative overflow-hidden group cursor-pointer" onclick="navigate('holidays')">
+                    <div class="absolute right-[-10px] bottom-[-10px] opacity-10 group-hover:opacity-20 transition-opacity"><i class="fas fa-umbrella-beach text-7xl"></i></div>
+                    <span class="text-purple-400 text-sm font-bold uppercase tracking-wider mb-2 flex items-center gap-2"><i class="fas fa-star"></i> Next Holiday</span>
+                    <span class="text-base font-bold text-white truncate w-full" title="${nextHol ? nextHol.occasion : ''}">${nextHol ? nextHol.occasion : 'End of Year'}</span>
+                    <span class="text-xs text-purple-300 mt-1 font-medium tracking-wide">${nextHol ? nextHol.date : ''}</span>
+                </div>
+            `;
+        }
+
+
+        // ============================================
+        // Main initialization
+        // ============================================
+
         document.addEventListener('DOMContentLoaded', () => {
             try {
                 initStarfield();
@@ -857,28 +1105,26 @@
                 renderNotices();
                 renderRecentNoticesOnHome();
 
-                const holidaysTbody = document.getElementById('holidays-tbody');
-                if (holidaysTbody) {
-                    holidaysData.forEach(h => {
-                        const tr = document.createElement('tr');
-                        tr.className = 'hover:bg-gray-800/50 transition border-b border-gray-800/50';
-                        tr.innerHTML = `
-                            <td class="p-4 text-white">${h.date}</td>
-                            <td class="p-4 font-medium text-gray-400">${h.day}</td>
-                            <td class="p-4 text-center">
-                                <span class="inline-block w-6 h-6 rounded-full ${h.days > 0 ? 'bg-green-500/20 text-green-400' : 'bg-gray-700 text-gray-400'} flex items-center justify-center text-xs mx-auto">
-                                    ${h.days}
-                                </span>
-                            </td>
-                            <td class="p-4 font-medium text-white">${h.occasion}</td>
-                        `;
-                        holidaysTbody.appendChild(tr);
-                    });
-                }
+                // Call the new live renderer functions
+                renderRoutine();
+                renderHolidays();
+                updateDashboard();
+
+                // Setup live refresh interval (every 60 seconds)
+                setInterval(() => {
+                    renderRoutine();
+                    renderHolidays();
+                    updateDashboard();
+                }, 60000);
+
             } catch (err) {
                 console.error("Initialization Error: ", err);
             }
         });
+
+        // ============================================
+        // Data & Utilities
+        // ============================================
 
         function getSafeStorage(key, defaultVal) {
             try {
@@ -1098,7 +1344,6 @@
         const defaultSharedHomework = [{ title: 'Homework Links', url: 'https://drive.google.com/drive/folders/1u0MtXmbvdXD9Jh-FkDv0Mjz64fEQLP7e?usp=drive_link' }];
         const defaultSharedExtraBooks = [{ title: 'Extra Books Link', url: 'https://drive.google.com/drive/folders/11LAIcNK6AQumRPeg4nDA26NEcu9PpvtO?usp=drive_link' }];
 
-        // The requested premium book object
         const premiumElectronicsBook = {
             title: 'Basic Electronics Premium Book (₹5)',
             url: 'https://drive.google.com/file/d/1DISUfeRcHWKD3KbZy7oJJfnD90lOSD5B/view?usp=drive_link',
@@ -1148,7 +1393,6 @@
                         }
                     }
 
-                    // Force push the premium book if it was cleared out of local storage
                     if (ds.name === 'Basic Electronics') {
                         if (!existingSubject.extrabooks.find(b => b.url.includes('1DISUfeRcHWKD3KbZy7oJJfnD90lOSD5B'))) {
                             existingSubject.extrabooks.push(premiumElectronicsBook);
@@ -1175,6 +1419,7 @@
             setSafeStorage('iem_b8_subjects', subjects);
             renderSubjectsGrid();
             if(currentActiveSubjectId) renderSubjectDetail(currentActiveSubjectId);
+            updateDashboard(); // Re-render dashboard if subject count changes
         }
 
         function renderSubjectsGrid() {
@@ -1425,37 +1670,6 @@
             renderNotices();
             renderRecentNoticesOnHome();
         }
-
-        const holidaysData = [
-            { date: "1st January, 2026", day: "Thursday", days: 1, occasion: "New Year's Day" },
-            { date: "12th January, 2026", day: "Monday", days: 1, occasion: "Birth Day of Swami Vivekananda" },
-            { date: "23rd January, 2026", day: "Friday", days: 1, occasion: "Netaji’s Birth Day / Saraswati Puja" },
-            { date: "26th January, 2026", day: "Monday", days: 1, occasion: "Republic Day" },
-            { date: "4th March, 2026", day: "Wednesday", days: 1, occasion: "Holi" },
-            { date: "21st March, 2026", day: "Saturday", days: 0, occasion: "Eid-UI-Fitr" },
-            { date: "3rd April, 2026", day: "Friday", days: 1, occasion: "Good Friday" },
-            { date: "14th April, 2026", day: "Tuesday", days: 1, occasion: "Dr Ambedkar Jayanti" },
-            { date: "15th April, 2026", day: "Wednesday", days: 1, occasion: "Bengali New Year’s Day" },
-            { date: "1st May, 2026", day: "Friday", days: 1, occasion: "May Day & Buddha Purnima" },
-            { date: "27th May, 2026", day: "Wednesday", days: 1, occasion: "Bakrid" },
-            { date: "26th June, 2026", day: "Friday", days: 1, occasion: "Muharram" },
-            { date: "15th August, 2026", day: "Saturday", days: 0, occasion: "Independence Day" },
-            { date: "4th September, 2026", day: "Friday", days: 1, occasion: "Janmashtami" },
-            { date: "17th September, 2026", day: "Thursday", days: 1, occasion: "Vishwakarma Puja" },
-            { date: "2nd October, 2026", day: "Friday", days: 1, occasion: "Mahatma Gandhi Jayanti" },
-            { date: "10th October, 2026", day: "Saturday", days: 0, occasion: "Mahalaya" },
-            { date: "17th October, 2026", day: "Saturday", days: 0, occasion: "Maha Sasthi" },
-            { date: "18th October, 2026", day: "Sunday", days: 0, occasion: "Maha Saptami" },
-            { date: "19th October, 2026", day: "Monday", days: 1, occasion: "Maha Ashtami" },
-            { date: "20th October, 2026", day: "Tuesday", days: 1, occasion: "Maha Nabami" },
-            { date: "21st October, 2026", day: "Wednesday", days: 1, occasion: "Maha Dashami" },
-            { date: "25th October, 2026", day: "Sunday", days: 0, occasion: "Lakshmi Puja" },
-            { date: "8th November, 2026", day: "Sunday", days: 0, occasion: "Diwali" },
-            { date: "11th November, 2026", day: "Wednesday", days: 1, occasion: "Bhratridwitiya" },
-            { date: "15th November, 2026", day: "Sunday", days: 0, occasion: "Chhat Puja" },
-            { date: "24th November, 2026", day: "Tuesday", days: 1, occasion: "Guru Nanak Jayanti" },
-            { date: "25th December, 2026", day: "Friday", days: 1, occasion: "Christmas" }
-        ];
 
         function createNoticeElement(notice) {
             const date = new Date(notice.timestamp).toLocaleDateString('en-US', { day: 'numeric', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' });
