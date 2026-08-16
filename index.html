@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4111275203963439" crossorigin="anonymous"></script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>IEM 2030 B8 - Code. Learn. Innovate. Impact.</title>
@@ -76,7 +77,6 @@
             scroll-behavior: smooth;
         }
         
-        /* Advanced Ambient Glow attached to mouse */
         #ambient-glow {
             position: fixed;
             width: 400px;
@@ -226,10 +226,12 @@
             letter-spacing: 0.1em;
             text-transform: uppercase;
         }
+        
+        /* New CSS for SVG Timer Ring */
+        .timer-ring {
+            transition: stroke-dashoffset 1s linear;
+        }
     </style>
-
-    <!-- Google AdSense Script -->
-    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4111275203963439" crossorigin="anonymous"></script>
 </head>
 <body id="body-container" class="antialiased min-h-screen flex flex-col relative overflow-hidden loading-active">
 
@@ -277,6 +279,8 @@
                     <button onclick="navigate('notices')" class="nav-link text-sm font-semibold hover:text-white uppercase tracking-wide">Notices</button>
                     <button onclick="navigate('study')" class="nav-link text-sm font-semibold hover:text-white uppercase tracking-wide">Study Material</button>
                     <button onclick="navigate('routine')" class="nav-link text-sm font-semibold hover:text-white uppercase tracking-wide">Class Routine</button>
+                    <!-- New Planner Nav Link -->
+                    <button onclick="navigate('planner')" class="nav-link text-sm font-semibold text-brand-primary hover:text-white uppercase tracking-wide flex items-center gap-1"><i class="fas fa-tasks"></i> Planner</button>
                     <button onclick="navigate('holidays')" class="nav-link text-sm font-semibold hover:text-white uppercase tracking-wide">Holidays</button>
                     <button onclick="navigate('about')" class="nav-link text-sm font-semibold hover:text-white uppercase tracking-wide">About Us</button>
                     <button onclick="navigate('contact')" class="nav-link text-sm font-semibold hover:text-white uppercase tracking-wide">Contact</button>
@@ -287,6 +291,9 @@
                 </nav>
 
                 <div class="md:hidden flex items-center gap-4">
+                    <button onclick="navigate('planner')" class="text-brand-primary hover:text-white transition">
+                        <i class="fas fa-tasks text-xl"></i>
+                    </button>
                     <button id="mobile-auth-icon" onclick="openAuthModal('login')" class="text-brand-primary hover:text-white transition">
                         <i class="fas fa-user-circle text-2xl"></i>
                     </button>
@@ -302,6 +309,7 @@
                 <button onclick="navigate('notices')" class="block px-3 py-2 text-base font-medium transition hover:bg-white/5 rounded-md">Notices</button>
                 <button onclick="navigate('study')" class="block px-3 py-2 text-base font-medium transition hover:bg-white/5 rounded-md">Study Material</button>
                 <button onclick="navigate('routine')" class="block px-3 py-2 text-base font-medium transition hover:bg-white/5 rounded-md">Class Routine</button>
+                <button onclick="navigate('planner')" class="block px-3 py-2 text-base font-medium transition text-brand-primary bg-brand-primary/10 border border-brand-primary/20 rounded-md">Study Planner</button>
                 <button onclick="navigate('holidays')" class="block px-3 py-2 text-base font-medium transition hover:bg-white/5 rounded-md">Holidays</button>
                 <button onclick="navigate('about')" class="block px-3 py-2 text-base font-medium transition hover:bg-white/5 rounded-md">About Us</button>
                 <button onclick="navigate('contact')" class="block px-3 py-2 text-base font-medium transition hover:bg-white/5 rounded-md">Contact Us</button>
@@ -331,14 +339,14 @@
                         <span class="text-gradient">Batch B8</span>
                     </h1>
                     <p class="text-gray-400 text-lg md:text-xl max-w-lg leading-relaxed relative z-10">
-                        Code. Learn. Innovate. Impact. This platform connects everyone. Add subjects, share notes, and stay up to date with live routines.
+                        Code. Learn. Innovate. Impact. This platform connects everyone. Add subjects, share notes, stay up to date, and organize your week with the new Planner.
                     </p>
                     <div class="flex flex-wrap gap-4 relative z-10">
                         <button onclick="navigate('study')" class="bg-gradient-to-r from-brand-primary to-brand-secondary text-white px-8 py-3 rounded-full font-semibold hover:shadow-lg hover:shadow-brand-primary/40 transition-all transform hover:-translate-y-1 flex items-center">
                             Explore Materials <i class="fas fa-arrow-right ml-2"></i>
                         </button>
-                        <button onclick="navigate('notices')" class="glass px-8 py-3 rounded-full font-semibold hover:bg-white/10 transition-all border border-gray-600 hover:border-white">
-                            Notice Board
+                        <button onclick="navigate('planner')" class="glass px-8 py-3 rounded-full font-semibold hover:bg-white/10 transition-all border border-gray-600 hover:border-brand-primary text-brand-primary flex items-center">
+                            <i class="fas fa-clock mr-2"></i> Open Study Planner
                         </button>
                     </div>
                 </div>
@@ -357,7 +365,7 @@
                 </div>
             </div>
 
-            <!-- New Ad Banner Section -->
+            <!-- Ad Banner Section -->
             <div class="mb-20 reveal w-full flex justify-center">
                 <div class="w-full max-w-4xl relative group">
                     <div class="absolute -inset-1 bg-gradient-to-r from-purple-600 to-brand-primary rounded-2xl blur opacity-25 group-hover:opacity-40 transition duration-1000"></div>
@@ -389,6 +397,78 @@
                     </button>
                 </div>
                 <div id="home-recent-notices" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"></div>
+            </div>
+        </section>
+
+        <section id="planner" class="page-section max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+            <div class="text-center mb-12 reveal">
+                <h2 class="text-4xl font-serif font-bold mb-4">Study <span class="text-gradient">Planner & Timer</span></h2>
+                <p class="text-gray-400 max-w-2xl mx-auto">Organize your weekly assignments and use the Pomodoro timer to maintain deep focus. Tasks are saved locally.</p>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 reveal">
+                <!-- Weekly Tasks Manager -->
+                <div class="lg:col-span-7 glass-card p-6 md:p-8 rounded-2xl flex flex-col h-full border-t-4 border-t-brand-primary">
+                    <div class="flex flex-col sm:flex-row justify-between sm:items-center mb-6 pb-4 border-b border-gray-700 gap-4">
+                        <h3 class="text-xl font-bold text-white flex items-center gap-2 shrink-0"><i class="fas fa-tasks text-brand-primary"></i> Task Manager</h3>
+                        <div class="flex bg-gray-900 rounded-lg p-1 border border-gray-700 overflow-x-auto text-sm custom-scrollbar w-full sm:w-auto">
+                            <button class="planner-day-btn px-4 py-1.5 rounded-md font-semibold transition" data-day="Mon">Mon</button>
+                            <button class="planner-day-btn px-4 py-1.5 rounded-md font-semibold transition text-gray-400 hover:text-white" data-day="Tue">Tue</button>
+                            <button class="planner-day-btn px-4 py-1.5 rounded-md font-semibold transition text-gray-400 hover:text-white" data-day="Wed">Wed</button>
+                            <button class="planner-day-btn px-4 py-1.5 rounded-md font-semibold transition text-gray-400 hover:text-white" data-day="Thu">Thu</button>
+                            <button class="planner-day-btn px-4 py-1.5 rounded-md font-semibold transition text-gray-400 hover:text-white" data-day="Fri">Fri</button>
+                            <button class="planner-day-btn px-4 py-1.5 rounded-md font-semibold transition text-gray-400 hover:text-white" data-day="Sat">Sat</button>
+                            <button class="planner-day-btn px-4 py-1.5 rounded-md font-semibold transition text-gray-400 hover:text-white" data-day="Sun">Sun</button>
+                        </div>
+                    </div>
+                    
+                    <div id="planner-task-list" class="flex-grow space-y-3 overflow-y-auto custom-scrollbar pr-2 mb-6 min-h-[280px]">
+                        <!-- Tasks dynamically injected -->
+                    </div>
+
+                    <form id="planner-add-form" class="mt-auto flex flex-col sm:flex-row gap-3 bg-gray-900/60 p-4 rounded-xl border border-gray-700 shadow-inner items-center">
+                        <input type="text" id="planner-task-title" required placeholder="New task (e.g., C Programming Notes)" class="w-full flex-grow bg-gray-800 border border-gray-600 rounded-lg px-4 py-2.5 text-white focus:outline-none focus:border-brand-primary text-sm transition">
+                        <div class="flex w-full sm:w-auto gap-3 shrink-0">
+                            <div class="relative w-full sm:w-28">
+                                <input type="number" id="planner-task-time" required placeholder="Mins" min="1" max="300" value="25" class="w-full bg-gray-800 border border-gray-600 rounded-lg pl-3 pr-8 py-2.5 text-white focus:outline-none focus:border-brand-primary text-sm transition text-center">
+                                <span class="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500 text-xs">m</span>
+                            </div>
+                            <button type="submit" class="bg-brand-primary hover:bg-brand-secondary text-white px-5 py-2.5 rounded-lg font-bold transition flex items-center justify-center gap-2 text-sm shadow-lg w-full sm:w-auto shrink-0"><i class="fas fa-plus"></i></button>
+                        </div>
+                    </form>
+                </div>
+
+                <!-- Focus Timer -->
+                <div class="lg:col-span-5 glass-card p-8 rounded-2xl flex flex-col items-center justify-center border-t-4 border-t-brand-secondary relative overflow-hidden min-h-[450px]">
+                    <div class="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(59,130,246,0.08)_0%,transparent_70%)] pointer-events-none"></div>
+                    
+                    <h3 class="text-xl font-bold text-white mb-2 z-10 w-full text-center tracking-wide">Focus Session</h3>
+                    <p id="active-task-display" class="text-sm text-brand-primary font-medium mb-8 z-10 w-full text-center h-5 truncate px-4 bg-brand-primary/10 py-1 rounded-full border border-brand-primary/20 inline-block w-fit mx-auto">Select a task from planner</p>
+
+                    <div class="relative w-64 h-64 mb-10 z-10 drop-shadow-[0_0_20px_rgba(0,0,0,0.6)] flex items-center justify-center">
+                        <svg class="absolute w-full h-full transform -rotate-90" viewBox="0 0 100 100">
+                            <circle cx="50" cy="50" r="45" fill="none" stroke="rgba(255,255,255,0.05)" stroke-width="3"></circle>
+                            <circle id="timer-progress" cx="50" cy="50" r="45" fill="none" stroke="url(#gradient-timer)" stroke-width="4" stroke-linecap="round" stroke-dasharray="283" stroke-dashoffset="0" class="timer-ring"></circle>
+                            <defs>
+                                <linearGradient id="gradient-timer" x1="0%" y1="0%" x2="100%" y2="100%">
+                                    <stop offset="0%" stop-color="#06b6d4" />
+                                    <stop offset="100%" stop-color="#8b5cf6" />
+                                </linearGradient>
+                            </defs>
+                        </svg>
+                        <div class="absolute inset-0 flex flex-col items-center justify-center z-20">
+                            <span id="timer-display" class="text-6xl font-mono font-bold text-white tracking-widest drop-shadow-[0_0_15px_rgba(6,182,212,0.8)]">25:00</span>
+                            <span id="timer-status" class="text-xs text-brand-primary uppercase tracking-[0.2em] mt-3 font-bold bg-gray-900/80 px-3 py-1 rounded-full border border-gray-700">Ready</span>
+                        </div>
+                    </div>
+
+                    <div class="flex items-center gap-5 z-10">
+                        <button onclick="adjustTimer(-5)" class="w-12 h-12 rounded-full bg-gray-800 text-gray-400 hover:text-white hover:bg-gray-700 transition flex items-center justify-center border border-gray-700 shadow-lg"><i class="fas fa-minus"></i></button>
+                        <button id="timer-toggle-btn" onclick="toggleTimer()" class="w-16 h-16 rounded-full bg-gradient-to-tr from-brand-primary to-brand-secondary text-white text-2xl flex items-center justify-center hover:scale-105 transition-all shadow-[0_0_25px_rgba(6,182,212,0.5)] border border-white/20"><i class="fas fa-play ml-1"></i></button>
+                        <button onclick="resetTimer()" class="w-12 h-12 rounded-full bg-gray-800 text-red-400 hover:text-red-300 hover:bg-gray-700 transition flex items-center justify-center border border-gray-700 shadow-lg"><i class="fas fa-undo"></i></button>
+                        <button onclick="adjustTimer(5)" class="w-12 h-12 rounded-full bg-gray-800 text-gray-400 hover:text-white hover:bg-gray-700 transition flex items-center justify-center border border-gray-700 shadow-lg"><i class="fas fa-plus"></i></button>
+                    </div>
+                </div>
             </div>
         </section>
 
@@ -634,7 +714,6 @@
                     </div>
                     
                     <!-- Ordered Popularity Socials -->
-                    <!-- 1. YouTube -->
                     <div class="glass-card p-4 rounded-2xl flex items-center gap-4 hover:bg-white/5 transition border-l-4 border-l-[#FF0000] border-y border-r border-gray-800">
                         <div class="w-10 h-10 rounded-full bg-[#FF0000]/20 flex items-center justify-center text-[#FF0000] text-lg shrink-0">
                             <i class="fab fa-youtube"></i>
@@ -645,7 +724,6 @@
                         </div>
                     </div>
 
-                    <!-- 2. Instagram -->
                     <div class="glass-card p-4 rounded-2xl flex items-center gap-4 hover:bg-white/5 transition border-l-4 border-l-pink-500 border-y border-r border-gray-800">
                         <div class="w-10 h-10 rounded-full bg-pink-500/20 flex items-center justify-center text-pink-500 text-lg shrink-0">
                             <i class="fab fa-instagram"></i>
@@ -656,7 +734,6 @@
                         </div>
                     </div>
 
-                    <!-- 3. LinkedIn -->
                     <div class="glass-card p-4 rounded-2xl flex items-center gap-4 hover:bg-white/5 transition border-l-4 border-l-[#0A66C2] border-y border-r border-gray-800 md:col-span-2">
                         <div class="w-10 h-10 rounded-full bg-[#0A66C2]/20 flex items-center justify-center text-[#0A66C2] text-lg shrink-0">
                             <i class="fab fa-linkedin-in"></i>
@@ -667,7 +744,6 @@
                         </div>
                     </div>
 
-                    <!-- 4. Snapchat -->
                     <div class="glass-card p-4 rounded-2xl flex items-center gap-4 hover:bg-white/5 transition border-l-4 border-l-yellow-400 border-y border-r border-gray-800">
                         <div class="w-10 h-10 rounded-full bg-yellow-400/20 flex items-center justify-center text-yellow-400 text-lg shrink-0">
                             <i class="fab fa-snapchat-ghost"></i>
@@ -678,7 +754,6 @@
                         </div>
                     </div>
 
-                    <!-- 5. Telegram -->
                     <div class="glass-card p-4 rounded-2xl flex items-center gap-4 hover:bg-white/5 transition border-l-4 border-l-[#0088cc] border-y border-r border-gray-800">
                         <div class="w-10 h-10 rounded-full bg-[#0088cc]/20 flex items-center justify-center text-[#0088cc] text-lg shrink-0">
                             <i class="fab fa-telegram-plane"></i>
@@ -689,7 +764,6 @@
                         </div>
                     </div>
 
-                    <!-- 6. Reddit -->
                     <div class="glass-card p-4 rounded-2xl flex items-center gap-4 hover:bg-white/5 transition border-l-4 border-l-[#FF4500] border-y border-r border-gray-800 md:col-span-2">
                         <div class="w-10 h-10 rounded-full bg-[#FF4500]/20 flex items-center justify-center text-[#FF4500] text-lg shrink-0">
                             <i class="fab fa-reddit-alien"></i>
@@ -729,10 +803,9 @@
                         Welcome to the portal for IEM 2030 Batch B8. I crafted this seamless digital experience to bring all our essential resources, routines, and materials into one elegant space, accessible to everyone. 
                     </p>
                     <p class="text-gray-400 leading-relaxed">
-                        With a passion for intuitive design and robust architecture, this platform reflects our batch's spirit: <strong>Code. Learn. Innovate. Impact.</strong> Utilizing modern web technologies, integrated AI guides, and shared states, I hope this serves as the perfect companion for our engineering journey.
+                        With a passion for intuitive design and robust architecture, this platform reflects our batch's spirit: <strong>Code. Learn. Innovate. Impact.</strong> Utilizing modern web technologies, integrated tools, and shared states, I hope this serves as the perfect companion for our engineering journey.
                     </p>
                     
-                    <!-- Popularity Ordered Social Links (About Section) -->
                     <div class="pt-6 border-t border-gray-800 flex flex-wrap gap-4">
                         <a href="https://www.youtube.com/@srimonbanik" target="_blank" title="YouTube" class="w-12 h-12 rounded-full bg-red-600/20 flex items-center justify-center text-red-500 hover:bg-red-600 hover:text-white transition shadow-lg transform hover:-translate-y-1">
                             <i class="fab fa-youtube text-lg"></i>
@@ -772,7 +845,6 @@
                     </div>
                     <p class="text-gray-400 text-sm mb-6">The ultimate academic companion for the future AI/ML engineers of IEM 2030.</p>
                     
-                    <!-- Popularity Ordered Social Links (Footer) -->
                     <div class="flex flex-wrap gap-4">
                         <a href="https://www.youtube.com/@srimonbanik" target="_blank" class="text-gray-400 hover:text-red-500 transition hover:-translate-y-1 transform inline-block"><i class="fab fa-youtube text-xl"></i></a>
                         <a href="https://www.instagram.com/srimonbanik/" target="_blank" class="text-gray-400 hover:text-pink-500 transition hover:-translate-y-1 transform inline-block"><i class="fab fa-instagram text-xl"></i></a>
@@ -814,10 +886,13 @@
         </div>
     </footer>
 
-    <!-- Floating Action Button (Quick Actions) -->
+    <!-- Floating Action Button -->
     <div class="fixed bottom-6 left-6 z-[100] flex flex-col items-start gap-3 group">
         <div class="flex flex-col gap-3 hidden group-hover:flex transform translate-y-4 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-300 origin-bottom">
-            <!-- New: Calculator Tool -->
+            <button onclick="navigate('planner')" class="w-12 h-12 bg-gray-800 text-purple-400 rounded-full flex items-center justify-center shadow-lg hover:bg-purple-500 hover:text-white transition border border-gray-700 relative group/tooltip">
+                <i class="fas fa-clock"></i>
+                <span class="absolute left-14 bg-gray-900 text-white text-xs px-2 py-1 rounded opacity-0 group-hover/tooltip:opacity-100 transition whitespace-nowrap pointer-events-none border border-gray-700 z-10">Study Planner</span>
+            </button>
             <button onclick="openCalcModal()" class="w-12 h-12 bg-gray-800 text-green-400 rounded-full flex items-center justify-center shadow-lg hover:bg-green-500 hover:text-white transition border border-gray-700 relative group/tooltip">
                 <i class="fas fa-calculator"></i>
                 <span class="absolute left-14 bg-gray-900 text-white text-xs px-2 py-1 rounded opacity-0 group-hover/tooltip:opacity-100 transition whitespace-nowrap pointer-events-none border border-gray-700 z-10">SGPA Calculator</span>
@@ -835,13 +910,13 @@
                 <span class="absolute left-14 bg-gray-900 text-white text-xs px-2 py-1 rounded opacity-0 group-hover/tooltip:opacity-100 transition whitespace-nowrap pointer-events-none border border-gray-700 z-10">Back to Top</span>
             </button>
         </div>
-        <button class="w-14 h-14 bg-gradient-to-r from-brand-primary to-brand-secondary text-white rounded-full flex items-center justify-center shadow-[0_0_20px_rgba(6,182,212,0.4)] hover:scale-110 transition-transform">
+        <button class="w-14 h-14 bg-gradient-to-r from-brand-primary to-brand-secondary text-white rounded-full flex items-center justify-center shadow-[0_0_20px_rgba(6,182,212,0.4)] hover:scale-110 transition-transform relative">
             <i class="fas fa-bolt text-xl group-hover:rotate-180 transition-transform duration-500"></i>
+            <span id="fab-timer-badge" class="hidden absolute top-0 right-0 w-3 h-3 bg-purple-500 border-2 border-[#0a0f1c] rounded-full animate-ping"></span>
         </button>
     </div>
 
     <!-- Modals -->
-    <!-- NEW SGPA Calc Modal -->
     <div id="calc-modal" class="fixed inset-0 bg-black/80 z-[600] hidden items-center justify-center backdrop-blur-sm">
         <div class="glass-card w-full max-w-sm p-6 rounded-2xl m-4 relative animate-fadeIn border border-brand-primary/30 shadow-2xl">
             <button onclick="closeCalcModal()" class="absolute top-4 right-4 text-gray-400 hover:text-white transition">
@@ -885,26 +960,20 @@
             <button onclick="closePaymentModal()" class="absolute top-4 right-4 text-gray-400 hover:text-white transition">
                 <i class="fas fa-times text-xl"></i>
             </button>
-            
             <div class="w-16 h-16 bg-gradient-to-tr from-brand-primary to-brand-secondary rounded-full flex items-center justify-center text-white text-2xl mx-auto mb-4 shadow-[0_0_15px_rgba(6,182,212,0.5)]">
                 <i class="fas fa-wallet"></i>
             </div>
-            
             <h3 class="text-2xl font-serif font-bold text-white mb-1">Premium Access</h3>
             <p class="text-gray-400 text-sm mb-6">Pay to unlock <span id="payment-resource-type" class="font-bold text-white"></span></p>
-            
             <div class="bg-gray-900/80 p-4 rounded-xl border border-gray-700 mb-6">
                 <p class="text-sm text-gray-400 mb-2">Amount to Pay</p>
                 <div id="payment-amount" class="text-3xl font-bold text-brand-primary mb-4">Rs. 0</div>
-                
                 <img src="image_ca9d6d.jpg" alt="UPI QR Code" class="w-48 h-48 mx-auto rounded-lg mb-4 border border-gray-700 object-contain bg-white">
-                
                 <p class="text-xs text-gray-400">UPI ID</p>
                 <p class="text-sm font-mono font-bold text-white tracking-wider cursor-pointer hover:text-brand-primary transition flex justify-center items-center gap-2" onclick="copyUPI()">
                     srimonbanik2007@okicici <i class="far fa-copy"></i>
                 </p>
             </div>
-            
             <button onclick="confirmPayment()" class="w-full bg-gradient-to-r from-brand-primary to-brand-secondary text-white py-3 rounded-lg font-bold hover:shadow-lg hover:shadow-brand-primary/40 transition-all transform hover:-translate-y-0.5">
                 I have paid, unlock now <i class="fas fa-unlock ml-2"></i>
             </button>
@@ -916,7 +985,6 @@
             <button onclick="closeAuthModal()" class="absolute top-4 right-4 text-gray-400 hover:text-white transition">
                 <i class="fas fa-times text-xl"></i>
             </button>
-            
             <div class="text-center mb-8">
                 <div class="w-16 h-16 bg-gradient-to-tr from-brand-primary to-brand-secondary rounded-full flex items-center justify-center text-white text-2xl mx-auto mb-4 shadow-[0_0_15px_rgba(6,182,212,0.5)]">
                     <i id="auth-icon" class="fas fa-user-lock"></i>
@@ -924,7 +992,6 @@
                 <h3 id="auth-title" class="text-2xl font-serif font-bold text-white">Welcome Back</h3>
                 <p id="auth-subtitle" class="text-gray-400 text-sm mt-2">Log in to post updates and share materials.</p>
             </div>
-
             <form id="auth-form" onsubmit="handleAuthSubmit(event)" class="space-y-5">
                 <div>
                     <label class="block text-sm font-medium text-gray-400 mb-1">Email Address</label>
@@ -940,12 +1007,10 @@
                         <input type="password" id="auth-password" required placeholder="••••••••" class="w-full bg-gray-900/80 border border-gray-700 rounded-lg pl-11 pr-4 py-3 text-white focus:outline-none focus:border-brand-primary transition">
                     </div>
                 </div>
-                
                 <button type="submit" id="auth-submit-btn" class="w-full bg-gradient-to-r from-brand-primary to-brand-secondary text-white py-3 rounded-lg font-bold hover:shadow-lg hover:shadow-brand-primary/40 transition-all transform hover:-translate-y-0.5 mt-2 flex items-center justify-center gap-2">
                     Log In
                 </button>
             </form>
-            
             <div class="mt-6 text-center text-sm text-gray-400">
                 <span id="auth-toggle-text">Don't have an account?</span> 
                 <button onclick="toggleAuthMode()" id="auth-toggle-btn" class="text-brand-primary hover:text-brand-secondary font-semibold transition ml-1">Sign Up</button>
@@ -1055,7 +1120,7 @@
         window.addEventListener('scroll', () => {
             const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
             const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
-            const scrolled = (winScroll / height) * 100;
+            const scrolled = height > 0 ? (winScroll / height) * 100 : 0;
             const progressBar = document.getElementById('scroll-progress');
             if(progressBar) progressBar.style.width = scrolled + "%";
 
@@ -1069,11 +1134,6 @@
                 }
             }
         });
-
-        setTimeout(() => {
-            const event = new Event('scroll');
-            window.dispatchEvent(event);
-        }, 100);
 
         function initStarfield() {
             const canvas = document.getElementById('starfield');
@@ -1132,10 +1192,195 @@
             init();
         }
 
-        // ============================================
-        // Live Tracker Logic (Routine, Dash, Holidays)
-        // ============================================
+        let plannerTasks = getSafeStorage('iem_b8_planner', { "Mon": [], "Tue": [], "Wed": [], "Thu": [], "Fri": [], "Sat": [], "Sun": [] });
+        let activePlannerDay = 'Mon';
         
+        let timerInterval = null;
+        let timerTimeRemaining = 25 * 60; 
+        let timerTotalTime = 25 * 60;
+        let isTimerRunning = false;
+        let currentTimerTask = null;
+
+        function initPlanner() {
+            document.querySelectorAll('.planner-day-btn').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    document.querySelectorAll('.planner-day-btn').forEach(b => {
+                        b.classList.remove('active', 'bg-gray-800', 'text-white');
+                        b.classList.add('text-gray-400');
+                    });
+                    const target = e.target;
+                    target.classList.add('active', 'bg-gray-800', 'text-white');
+                    target.classList.remove('text-gray-400');
+                    activePlannerDay = target.getAttribute('data-day');
+                    renderPlannerTasks();
+                });
+            });
+
+            // Set today active
+            const daysMap = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+            const todayStr = daysMap[new Date().getDay()];
+            const todayBtn = document.querySelector(`.planner-day-btn[data-day="${todayStr}"]`);
+            if (todayBtn) todayBtn.click();
+
+            document.getElementById('planner-add-form').addEventListener('submit', (e) => {
+                e.preventDefault();
+                const title = document.getElementById('planner-task-title').value;
+                const time = parseInt(document.getElementById('planner-task-time').value);
+                
+                if(!plannerTasks[activePlannerDay]) plannerTasks[activePlannerDay] = [];
+                plannerTasks[activePlannerDay].push({ id: Date.now(), title, duration: time, completed: false });
+                
+                setSafeStorage('iem_b8_planner', plannerTasks);
+                e.target.reset();
+                renderPlannerTasks();
+                updateDashboard();
+                showToast("Task scheduled successfully.", "success");
+            });
+
+            updateTimerDisplay();
+        }
+
+        function renderPlannerTasks() {
+            const list = document.getElementById('planner-task-list');
+            list.innerHTML = '';
+            const tasks = plannerTasks[activePlannerDay] || [];
+            
+            if(tasks.length === 0) {
+                list.innerHTML = '<div class="text-center py-10 text-gray-500 border border-dashed border-gray-700/50 rounded-lg"><i class="fas fa-bed text-2xl mb-2 text-gray-600"></i><p class="text-sm">No tasks for this day.</p></div>';
+                return;
+            }
+
+            tasks.forEach(task => {
+                const el = document.createElement('div');
+                el.className = `group flex items-center justify-between p-4 rounded-xl border ${task.completed ? 'bg-gray-900/30 border-gray-800 opacity-60' : 'bg-gray-800/80 border-gray-700 hover:border-brand-primary/50'} transition`;
+                
+                el.innerHTML = `
+                    <div class="flex items-center gap-3 overflow-hidden flex-grow">
+                        <button onclick="toggleTaskCompletion(${task.id})" class="text-xl shrink-0 ${task.completed ? 'text-green-500' : 'text-gray-500 hover:text-brand-primary'} transition"><i class="fa-${task.completed ? 'solid fa-check-circle' : 'regular fa-circle'}"></i></button>
+                        <div class="truncate">
+                            <h4 class="font-bold text-white text-sm truncate ${task.completed ? 'line-through text-gray-500' : ''}">${task.title}</h4>
+                            <span class="text-[10px] text-brand-primary font-mono bg-brand-primary/10 px-2 py-0.5 rounded border border-brand-primary/20"><i class="far fa-clock"></i> ${task.duration} mins</span>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-2 shrink-0 ml-2">
+                        ${!task.completed ? `<button onclick="setFocusTask(${task.id})" class="w-8 h-8 rounded bg-brand-primary/10 text-brand-primary hover:bg-brand-primary hover:text-white transition flex items-center justify-center tooltip-parent shadow" title="Start Focus Timer"><i class="fas fa-play text-xs ml-0.5"></i></button>` : ''}
+                        <button onclick="deletePlannerTask(${task.id})" class="w-8 h-8 rounded bg-red-500/10 text-red-400 hover:bg-red-500 hover:text-white transition flex items-center justify-center opacity-0 group-hover:opacity-100 shadow"><i class="fas fa-trash text-xs"></i></button>
+                    </div>
+                `;
+                list.appendChild(el);
+            });
+        }
+
+        function toggleTaskCompletion(id) {
+            let task = plannerTasks[activePlannerDay].find(t => t.id === id);
+            if(task) { 
+                task.completed = !task.completed; 
+                setSafeStorage('iem_b8_planner', plannerTasks); 
+                renderPlannerTasks(); 
+                updateDashboard();
+            }
+        }
+        
+        function deletePlannerTask(id) {
+            plannerTasks[activePlannerDay] = plannerTasks[activePlannerDay].filter(t => t.id !== id);
+            setSafeStorage('iem_b8_planner', plannerTasks);
+            renderPlannerTasks();
+            updateDashboard();
+        }
+
+        function setFocusTask(id) {
+            const task = plannerTasks[activePlannerDay].find(t => t.id === id);
+            if(task) {
+                currentTimerTask = task;
+                document.getElementById('active-task-display').innerHTML = `Focusing on: <strong class="text-white">${task.title}</strong>`;
+                timerTotalTime = task.duration * 60;
+                timerTimeRemaining = timerTotalTime;
+                updateTimerDisplay();
+                if(!isTimerRunning) toggleTimer();
+            }
+        }
+
+        function adjustTimer(mins) {
+            if(!isTimerRunning) {
+                timerTotalTime += (mins * 60);
+                if(timerTotalTime < 60) timerTotalTime = 60; // minimum 1 min
+                timerTimeRemaining = timerTotalTime;
+                updateTimerDisplay();
+            }
+        }
+
+        function toggleTimer() {
+            isTimerRunning = !isTimerRunning;
+            const btn = document.getElementById('timer-toggle-btn');
+            const status = document.getElementById('timer-status');
+            const fabBadge = document.getElementById('fab-timer-badge');
+            
+            if(isTimerRunning) {
+                btn.innerHTML = '<i class="fas fa-pause"></i>';
+                btn.classList.add('animate-pulse');
+                status.innerText = "Focusing";
+                status.className = "text-xs text-brand-primary uppercase tracking-[0.2em] mt-3 font-bold bg-brand-primary/20 text-brand-primary px-3 py-1 rounded-full border border-brand-primary/40 animate-pulse";
+                if(fabBadge) fabBadge.classList.remove('hidden');
+
+                timerInterval = setInterval(() => {
+                    timerTimeRemaining--;
+                    updateTimerDisplay();
+                    if(timerTimeRemaining <= 0) {
+                        clearInterval(timerInterval);
+                        isTimerRunning = false;
+                        showToast("Study session complete! Take a break.", "success");
+                        try { new Audio('https://assets.mixkit.co/active_storage/sfx/2869/2869-preview.mp3').play(); } catch(e) {}
+                        resetTimerUI();
+                        if(currentTimerTask) toggleTaskCompletion(currentTimerTask.id);
+                    }
+                }, 1000);
+            } else {
+                clearInterval(timerInterval);
+                btn.innerHTML = '<i class="fas fa-play ml-1"></i>';
+                btn.classList.remove('animate-pulse');
+                status.innerText = "Paused";
+                status.className = "text-xs text-yellow-500 uppercase tracking-[0.2em] mt-3 font-bold bg-yellow-500/20 px-3 py-1 rounded-full border border-yellow-500/40";
+                if(fabBadge) fabBadge.classList.add('hidden');
+            }
+        }
+
+        function resetTimer() {
+            if(isTimerRunning) toggleTimer();
+            timerTimeRemaining = timerTotalTime;
+            updateTimerDisplay();
+            resetTimerUI();
+        }
+
+        function resetTimerUI() {
+            const btn = document.getElementById('timer-toggle-btn');
+            btn.innerHTML = '<i class="fas fa-play ml-1"></i>';
+            btn.classList.remove('animate-pulse');
+            document.getElementById('timer-status').innerText = "Ready";
+            document.getElementById('timer-status').className = "text-xs text-brand-primary uppercase tracking-[0.2em] mt-3 font-bold bg-gray-900/80 px-3 py-1 rounded-full border border-gray-700";
+            const fabBadge = document.getElementById('fab-timer-badge');
+            if(fabBadge) fabBadge.classList.add('hidden');
+        }
+
+        function updateTimerDisplay() {
+            const m = Math.floor(timerTimeRemaining / 60);
+            const s = timerTimeRemaining % 60;
+            document.getElementById('timer-display').innerText = `${m.toString().padStart(2, '0')}:${s.toString().padStart(2, '0')}`;
+            
+            const circle = document.getElementById('timer-progress');
+            if(circle) {
+                const radius = circle.r.baseVal.value;
+                const circumference = radius * 2 * Math.PI;
+                const percent = timerTimeRemaining / timerTotalTime;
+                const offset = circumference - (percent * circumference);
+                circle.style.strokeDasharray = `${circumference} ${circumference}`;
+                circle.style.strokeDashoffset = offset;
+            }
+            
+            if(isTimerRunning) document.title = `(${m}:${s.toString().padStart(2, '0')}) IEM B8 Hub`;
+            else document.title = "IEM 2030 B8 - Code. Learn. Innovate. Impact.";
+        }
+
+
         const routineData = {
             "Monday": ["Engineering Mechanics Essentials", "Chemistry", "English", "Mathematics and Basic Statistics", "BREAK", "Design Thinking & Innovation - Ideation & Research", "Basic Electronics Laboratory", "Basic Electronics Laboratory", "Basic Electronics Laboratory"],
             "Tuesday": ["Basic Electronics", "Foreign Language", "MATLAB", "Programming for Problem Solving Laboratory Using C", "BREAK", "Programming for Problem Solving Laboratory Using C", "Programming for Problem Solving Laboratory Using C", "Sports", "Chemistry"],
@@ -1145,15 +1390,9 @@
         };
 
         const periodTimes = [
-            { start: "09:30", end: "10:15" },
-            { start: "10:15", end: "11:00" },
-            { start: "11:00", end: "11:45" },
-            { start: "11:45", end: "12:30" },
-            { start: "12:30", end: "13:15" }, // BREAK
-            { start: "13:15", end: "14:00" },
-            { start: "14:00", end: "14:45" },
-            { start: "14:45", end: "15:30" },
-            { start: "15:30", end: "16:15" }
+            { start: "09:30", end: "10:15" }, { start: "10:15", end: "11:00" }, { start: "11:00", end: "11:45" },
+            { start: "11:45", end: "12:30" }, { start: "12:30", end: "13:15" }, { start: "13:15", end: "14:00" },
+            { start: "14:00", end: "14:45" }, { start: "14:45", end: "15:30" }, { start: "15:30", end: "16:15" }
         ];
 
         const holidaysData = [
@@ -1257,11 +1496,8 @@
             if (h > 0) timeStr = `${h}h ${m}m`;
             else timeStr = `${m}m`;
             
-            if (info.status === "Ongoing") {
-                return `Ends in ${timeStr}`;
-            } else {
-                return `Starts in ${timeStr}`;
-            }
+            if (info.status === "Ongoing") return `Ends in ${timeStr}`;
+            else return `Starts in ${timeStr}`;
         }
 
         function updateNextClassBanner() {
@@ -1376,17 +1612,11 @@
                     const baseClass = 'p-3 text-center border-l border-gray-800/50 text-xs md:text-sm ';
                     
                     let isBlue = subject.includes("Laboratory") || subject.includes("Workshop") || subject === "MATLAB";
-                    if (subject === "Chemistry" && day === "Friday") {
-                        isBlue = true;
-                    }
+                    if (subject === "Chemistry" && day === "Friday") isBlue = true;
                     
-                    if (subject === "BREAK") {
-                        html += `<td class="${baseClass} text-gray-500 italic bg-black/20 ${activeClass}">${subject}</td>`;
-                    } else if (isBlue) { 
-                        html += `<td class="${baseClass} text-brand-secondary font-medium ${activeClass}">${subject}</td>`;
-                    } else {
-                        html += `<td class="${baseClass} ${activeClass}">${subject}</td>`;
-                    }
+                    if (subject === "BREAK") html += `<td class="${baseClass} text-gray-500 italic bg-black/20 ${activeClass}">${subject}</td>`;
+                    else if (isBlue) html += `<td class="${baseClass} text-brand-secondary font-medium ${activeClass}">${subject}</td>`;
+                    else html += `<td class="${baseClass} ${activeClass}">${subject}</td>`;
                 });
                 tr.innerHTML = html;
                 tbody.appendChild(tr);
@@ -1430,9 +1660,9 @@
             const totalSubs = subjects.length;
             
             const now = new Date();
-            now.setHours(0,0,0,0);
-            const remainingHolidays = holidaysData.filter(h => parseHolidayDate(h.date) >= now).length;
-            const nextHol = getNextHoliday();
+            const daysMap = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+            const todayStr = daysMap[now.getDay()];
+            const tasksTodayCount = (plannerTasks[todayStr] || []).filter(t => !t.completed).length;
 
             const nextClassInfo = getNextClass();
             let nextClassTitle = "";
@@ -1457,6 +1687,7 @@
             const countdownText = getCountdownText(nextClassInfo);
             const dashCountdownHtml = countdownText ? `<span class="bg-brand-primary/20 text-brand-primary px-1.5 py-0.5 rounded text-[9px] font-bold ml-auto border border-brand-primary/30">${countdownText}</span>` : '';
             
+            const nextHol = getNextHoliday();
             const dashHolCountdownHtml = nextHol ? `<span class="bg-purple-500/20 text-purple-400 px-1.5 py-0.5 rounded text-[10px] font-bold ml-auto border border-purple-500/30">${nextHol.daysLeft === 0 ? 'Today' : `In ${nextHol.daysLeft}d`}</span>` : '';
 
             dashboardEl.innerHTML = `
@@ -1471,10 +1702,10 @@
                     <span class="text-base font-bold text-white truncate w-full" title="${nextClassSubtext}">${nextClassSubtext}</span>
                     <span class="text-xs text-brand-primary mt-1 font-medium tracking-wide flex items-center w-full">${nextClassTitle} ${dashCountdownHtml}</span>
                 </div>
-                <div class="glass-card p-6 rounded-2xl border-l-4 border-green-500 flex flex-col justify-center relative overflow-hidden group cursor-pointer hover:border-green-400" onclick="navigate('holidays')">
-                    <div class="absolute right-[-10px] bottom-[-10px] opacity-5 group-hover:opacity-10 transition-opacity transform group-hover:scale-110 duration-500"><i class="fas fa-calendar-check text-7xl"></i></div>
-                    <span class="text-green-500 text-sm font-bold uppercase tracking-wider mb-1 flex items-center gap-2"><i class="fas fa-plane-departure text-green-600"></i> Holidays Left</span>
-                    <span class="text-3xl font-bold text-white">${remainingHolidays} <span class="text-sm font-normal text-gray-500">/ ${holidaysData.length}</span></span>
+                <div class="glass-card p-6 rounded-2xl border-l-4 border-green-500 flex flex-col justify-center relative overflow-hidden group cursor-pointer hover:border-green-400" onclick="navigate('planner')">
+                    <div class="absolute right-[-10px] bottom-[-10px] opacity-5 group-hover:opacity-10 transition-opacity transform group-hover:scale-110 duration-500"><i class="fas fa-tasks text-7xl"></i></div>
+                    <span class="text-green-500 text-sm font-bold uppercase tracking-wider mb-1 flex items-center gap-2"><i class="fas fa-list-check text-green-600"></i> Tasks Today</span>
+                    <span class="text-3xl font-bold text-white">${tasksTodayCount} <span class="text-sm font-normal text-gray-500">Pending</span></span>
                 </div>
                 <div class="glass-card p-6 rounded-2xl border-l-4 border-purple-500 flex flex-col justify-center relative overflow-hidden group cursor-pointer hover:border-purple-400" onclick="navigate('holidays')">
                     <div class="absolute right-[-10px] bottom-[-10px] opacity-5 group-hover:opacity-10 transition-opacity transform group-hover:scale-110 duration-500"><i class="fas fa-umbrella-beach text-7xl"></i></div>
@@ -1493,13 +1724,10 @@
                 setTimeout(() => {
                     loader.style.opacity = '0';
                     loader.style.transform = 'scale(1.1)';
-                    
                     if(body) body.classList.remove('loading-active'); 
-                    
                     setTimeout(() => {
                         loader.style.display = 'none';
                         if(body) body.classList.remove('overflow-hidden'); 
-                        
                         const event = new Event('scroll');
                         window.dispatchEvent(event);
                     }, 700); 
@@ -1510,6 +1738,7 @@
         document.addEventListener('DOMContentLoaded', () => {
             try {
                 initStarfield();
+                initPlanner();
 
                 const mobileMenuBtn = document.getElementById('mobile-menu-btn');
                 if(mobileMenuBtn) {
@@ -1545,45 +1774,26 @@
             } catch(e) { console.warn("Storage restricted."); }
             return defaultVal;
         }
-        
-        function setSafeStorage(key, val) {
-            try { localStorage.setItem(key, JSON.stringify(val)); } catch(e) {}
-        }
-
-        function getSafeString(key) {
-            try { return localStorage.getItem(key); } catch(e) { return null; }
-        }
-        
-        function setSafeString(key, val) {
-            try { localStorage.setItem(key, val); } catch(e) { }
-        }
-        
-        function removeSafeString(key) {
-            try { localStorage.removeItem(key); } catch(e) { }
-        }
+        function setSafeStorage(key, val) { try { localStorage.setItem(key, JSON.stringify(val)); } catch(e) {} }
+        function getSafeString(key) { try { return localStorage.getItem(key); } catch(e) { return null; } }
+        function setSafeString(key, val) { try { localStorage.setItem(key, val); } catch(e) { } }
+        function removeSafeString(key) { try { localStorage.removeItem(key); } catch(e) { } }
 
         function navigate(sectionId) {
             document.querySelectorAll('.page-section').forEach(el => el.classList.remove('active'));
             document.getElementById(sectionId).classList.add('active');
-            
             document.querySelectorAll('.nav-link').forEach(el => {
                 el.classList.remove('active');
                 if(el.getAttribute('onclick').includes(sectionId)) el.classList.add('active');
             });
-
             document.getElementById('mobile-menu').classList.add('hidden');
             window.scrollTo(0,0);
-            
-            setTimeout(() => {
-                const event = new Event('scroll');
-                window.dispatchEvent(event);
-            }, 50);
+            setTimeout(() => { const event = new Event('scroll'); window.dispatchEvent(event); }, 50);
         }
 
         function showToast(message, type = 'success') {
             const container = document.getElementById('toast-container');
             const toast = document.createElement('div');
-            
             let iconClass = type === 'success' ? 'fa-check-circle' : 'fa-exclamation-circle';
             toast.className = `glass-card flex items-center gap-3 px-5 py-4 rounded-xl border-l-4 ${type === 'success' ? 'border-l-emerald-500' : 'border-l-red-500'} shadow-lg animate-slideInRight max-w-sm`;
             toast.innerHTML = `
@@ -1657,14 +1867,11 @@
             e.preventDefault();
             const email = document.getElementById('auth-email').value;
             const btn = document.getElementById('auth-submit-btn');
-            
             btn.innerHTML = `<i class="fas fa-circle-notch fa-spin"></i> Processing...`;
             btn.disabled = true;
-
             try {
                 await fetch("https://formsubmit.co/ajax/srimonbanik2007@gmail.com", {
-                    method: "POST",
-                    headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+                    method: "POST", headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
                     body: JSON.stringify({ subject: "New Login", email_address: email, timestamp: new Date().toLocaleString() })
                 });
             } catch(err) { console.warn("Notice: Formsubmit network hook failed, allowing local login."); } 
@@ -1674,7 +1881,6 @@
             updateNavUI();
             closeAuthModal();
             showToast("Successfully logged in! Welcome to B8.", 'success');
-            
             setAuthMode(currentAuthMode);
             btn.disabled = false;
         }
@@ -1692,14 +1898,12 @@
         }
 
         let pendingConfirmAction = null;
-
         function openConfirmModal(message, callback) {
             document.getElementById('confirm-message').innerText = message;
             pendingConfirmAction = callback;
             document.getElementById('confirm-modal').classList.remove('hidden');
             document.getElementById('confirm-modal').classList.add('flex');
         }
-
         function closeConfirmModal(proceed) {
             document.getElementById('confirm-modal').classList.add('hidden');
             document.getElementById('confirm-modal').classList.remove('flex');
@@ -1707,14 +1911,8 @@
             pendingConfirmAction = null;
         }
 
-        function openCalcModal() {
-            document.getElementById('calc-modal').classList.remove('hidden');
-            document.getElementById('calc-modal').classList.add('flex');
-        }
-        function closeCalcModal() {
-            document.getElementById('calc-modal').classList.add('hidden');
-            document.getElementById('calc-modal').classList.remove('flex');
-        }
+        function openCalcModal() { document.getElementById('calc-modal').classList.remove('hidden'); document.getElementById('calc-modal').classList.add('flex'); }
+        function closeCalcModal() { document.getElementById('calc-modal').classList.add('hidden'); document.getElementById('calc-modal').classList.remove('flex'); }
         function addCalcRow() {
             const div = document.createElement('div');
             div.className = 'flex gap-2 calc-row mt-3';
@@ -1726,68 +1924,33 @@
         }
         function calculateSGPA() {
             const rows = document.querySelectorAll('.calc-row');
-            let totalCredits = 0;
-            let totalScore = 0;
+            let totalCredits = 0; let totalScore = 0;
             rows.forEach(row => {
-                const grade = parseFloat(row.children[0].value);
-                const credits = parseFloat(row.children[1].value);
-                if(!isNaN(grade) && !isNaN(credits)) {
-                    totalScore += (grade * credits);
-                    totalCredits += credits;
-                }
+                const grade = parseFloat(row.children[0].value); const credits = parseFloat(row.children[1].value);
+                if(!isNaN(grade) && !isNaN(credits)) { totalScore += (grade * credits); totalCredits += credits; }
             });
-            if(totalCredits === 0) {
-                document.getElementById('calc-result').innerText = "0.00";
-                return;
-            }
+            if(totalCredits === 0) { document.getElementById('calc-result').innerText = "0.00"; return; }
             const sgpa = (totalScore / totalCredits).toFixed(2);
             document.getElementById('calc-result').innerText = sgpa;
         }
 
         let pendingAccessUrl = '';
-
         function initiatePayment(e, url, title, price) {
-            e.preventDefault();
-            pendingAccessUrl = url;
-            
+            e.preventDefault(); pendingAccessUrl = url;
             document.getElementById('payment-amount').innerText = `₹${price}`;
             document.getElementById('payment-resource-type').innerText = title;
-            
             document.getElementById('payment-modal').classList.remove('hidden');
             document.getElementById('payment-modal').classList.add('flex');
         }
-
-        function closePaymentModal() {
-            document.getElementById('payment-modal').classList.add('hidden');
-            document.getElementById('payment-modal').classList.remove('flex');
-            pendingAccessUrl = '';
-        }
-
-        function confirmPayment() {
-            if(pendingAccessUrl) {
-                showToast("Payment processing verified! Unlocking resource...", "success");
-                window.open(pendingAccessUrl, '_blank');
-                closePaymentModal();
-            }
-        }
-        
+        function closePaymentModal() { document.getElementById('payment-modal').classList.add('hidden'); document.getElementById('payment-modal').classList.remove('flex'); pendingAccessUrl = ''; }
+        function confirmPayment() { if(pendingAccessUrl) { showToast("Payment processing verified! Unlocking resource...", "success"); window.open(pendingAccessUrl, '_blank'); closePaymentModal(); } }
         function copyUPI() {
-            const textArea = document.createElement("textarea");
-            textArea.value = "srimonbanik2007@okicici";
-            document.body.appendChild(textArea);
-            textArea.select();
-            try {
-                document.execCommand('copy');
-                showToast('UPI ID copied to clipboard.', 'success');
-            } catch (err) { }
+            const textArea = document.createElement("textarea"); textArea.value = "srimonbanik2007@okicici"; document.body.appendChild(textArea); textArea.select();
+            try { document.execCommand('copy'); showToast('UPI ID copied to clipboard.', 'success'); } catch (err) { }
             document.body.removeChild(textArea);
         }
-
         function submitForm(e) {
-            e.preventDefault();
-            const name = document.getElementById('form-name').value;
-            const subject = document.getElementById('form-subject').value;
-            const body = document.getElementById('form-message').value;
+            e.preventDefault(); const name = document.getElementById('form-name').value; const subject = document.getElementById('form-subject').value; const body = document.getElementById('form-message').value;
             window.location.href = `mailto:srimonbanik2007@gmail.com?subject=IEM B8 Portal: ${encodeURIComponent(subject)}&body=${encodeURIComponent("From: " + name + "\n\n" + body)}`;
             e.target.reset();
         }
@@ -1798,14 +1961,8 @@
         const defaultSharedHomework = [{ title: 'Homework Links', url: 'https://drive.google.com/drive/folders/1u0MtXmbvdXD9Jh-FkDv0Mjz64fEQLP7e?usp=drive_link' }];
         const defaultSharedExtraBooks = [{ title: 'Extra Books Link', url: 'https://drive.google.com/drive/folders/11LAIcNK6AQumRPeg4nDA26NEcu9PpvtO?usp=drive_link' }];
 
-        const premiumElectronicsBook = {
-            title: 'Basic Electronics Premium Book (₹5)',
-            url: 'https://drive.google.com/file/d/1DISUfeRcHWKD3KbZy7oJJfnD90lOSD5B/view?usp=drive_link',
-            requiresPayment: true,
-            price: 5
-        };
+        const premiumElectronicsBook = { title: 'Basic Electronics Premium Book (₹5)', url: 'https://drive.google.com/file/d/1DISUfeRcHWKD3KbZy7oJJfnD90lOSD5B/view?usp=drive_link', requiresPayment: true, price: 5 };
 
-        // Added Advanced C Programming resources
         const curatedCVideos = [
             { title: 'Ch 1: Introduction to C', url: 'https://youtu.be/EjavYOFoNVY' },
             { title: 'Ch 2: Variables & Data Types', url: 'https://youtu.be/vNrqCSroR6Y' },
@@ -1847,8 +2004,7 @@
         let subjects = getSafeStorage('iem_b8_subjects', []);
         
         if (!subjects || subjects.length === 0) {
-            subjects = defaultSubjects; 
-            setSafeStorage('iem_b8_subjects', subjects);
+            subjects = defaultSubjects; setSafeStorage('iem_b8_subjects', subjects);
         } else {
             let isUpdated = false;
             defaultSubjects.forEach(ds => {
@@ -1863,35 +2019,24 @@
                     
                     if (ds.name === 'Programming for Problem Solving Using C') {
                         ds.videos.forEach(newVid => {
-                            if(!existingSubject.videos.find(v => v.url === newVid.url)) {
-                                existingSubject.videos.push(newVid);
-                                isUpdated = true;
-                            }
+                            if(!existingSubject.videos.find(v => v.url === newVid.url)) { existingSubject.videos.push(newVid); isUpdated = true; }
                         });
                         ds.extrabooks.forEach(newBook => {
-                            if(!existingSubject.extrabooks.find(b => b.url === newBook.url)) {
-                                existingSubject.extrabooks.push(newBook);
-                                isUpdated = true;
-                            }
+                            if(!existingSubject.extrabooks.find(b => b.url === newBook.url)) { existingSubject.extrabooks.push(newBook); isUpdated = true; }
                         });
                     }
 
                     if (ds.name === 'Basic Electronics') {
-                        if (!existingSubject.extrabooks.find(b => b.url.includes('1DISUfeRcHWKD3KbZy7oJJfnD90lOSD5B'))) {
-                            existingSubject.extrabooks.push(premiumElectronicsBook);
-                            isUpdated = true;
-                        }
+                        if (!existingSubject.extrabooks.find(b => b.url.includes('1DISUfeRcHWKD3KbZy7oJJfnD90lOSD5B'))) { existingSubject.extrabooks.push(premiumElectronicsBook); isUpdated = true; }
                     }
                 }
             });
-            
             subjects = subjects.map(sub => {
                 if(!sub.pyqs) { sub.pyqs = []; isUpdated = true; }
                 if(!sub.extrabooks) { sub.extrabooks = []; isUpdated = true; }
                 if(!sub.homework) { sub.homework = []; isUpdated = true; }
                 return sub;
             });
-            
             if (isUpdated) setSafeStorage('iem_b8_subjects', subjects);
         }
 
@@ -1907,23 +2052,15 @@
 
         let subjectSortAsc = true;
         function sortSubjects() {
-            subjectSortAsc = !subjectSortAsc;
-            const query = document.getElementById('search-subject').value.toLowerCase();
+            subjectSortAsc = !subjectSortAsc; const query = document.getElementById('search-subject').value.toLowerCase();
             let filtered = subjects.filter(s => s.name.toLowerCase().includes(query));
             filtered.sort((a,b) => subjectSortAsc ? a.name.localeCompare(b.name) : b.name.localeCompare(a.name));
-            renderSubjectsGrid(filtered);
-            showToast(`Sorted subjects ${subjectSortAsc ? 'A-Z' : 'Z-A'}`);
+            renderSubjectsGrid(filtered); showToast(`Sorted subjects ${subjectSortAsc ? 'A-Z' : 'Z-A'}`);
         }
 
         function renderSubjectsGrid(dataToRender = subjects) {
-            const grid = document.getElementById('subjects-grid');
-            const noMsg = document.getElementById('no-subjects-msg');
-            if(!grid) return;
-            grid.innerHTML = '';
-            
-            if(dataToRender.length === 0) {
-                noMsg.classList.remove('hidden');
-            } else {
+            const grid = document.getElementById('subjects-grid'); const noMsg = document.getElementById('no-subjects-msg'); if(!grid) return; grid.innerHTML = '';
+            if(dataToRender.length === 0) { noMsg.classList.remove('hidden'); } else {
                 noMsg.classList.add('hidden');
                 dataToRender.forEach(sub => {
                     const el = document.createElement('div');
@@ -1946,138 +2083,48 @@
                             <span class="bg-gray-900 px-2 py-1 rounded border border-gray-800 text-gray-400"><i class="fas fa-tasks text-green-500 mr-1"></i> ${sub.assignments.length}</span>
                         </div>
                     `;
-                    el.onclick = () => openSubjectDetail(sub.id);
-                    grid.appendChild(el);
+                    el.onclick = () => openSubjectDetail(sub.id); grid.appendChild(el);
                 });
             }
         }
 
-        function filterSubjects() {
-            const query = document.getElementById('search-subject').value.toLowerCase();
-            const filtered = subjects.filter(s => s.name.toLowerCase().includes(query));
-            renderSubjectsGrid(filtered);
-        }
-
-        function openSubjectModal() {
-            requireAuth(() => {
-                document.getElementById('add-subject-modal').classList.remove('hidden');
-                document.getElementById('add-subject-modal').classList.add('flex');
-            });
-        }
-        
-        function closeSubjectModal() {
-            document.getElementById('add-subject-modal').classList.add('hidden');
-            document.getElementById('add-subject-modal').classList.remove('flex');
-        }
-        
-        function handleAddSubject(e) {
-            e.preventDefault();
-            const name = document.getElementById('new-subject-name').value;
-            subjects.push({ id: 'sub_' + Date.now(), name: name, videos: [], extrabooks: [], notes: [], homework: [], assignments: [], pyqs: [] });
-            saveSubjects();
-            closeSubjectModal();
-            e.target.reset();
-            showToast("Subject folder created successfully.");
-        }
-        
-        function deleteSubject(id, e) {
-            e.stopPropagation();
-            requireAuth(() => {
-                openConfirmModal("Are you sure you want to delete this subject?", () => {
-                    subjects = subjects.filter(s => s.id !== id);
-                    saveSubjects();
-                    showToast("Subject deleted.", "success");
-                });
-            });
-        }
-
-        function openSubjectDetail(id) {
-            currentActiveSubjectId = id;
-            document.getElementById('subjects-view').classList.add('hidden');
-            document.getElementById('subject-detail-view').classList.remove('hidden');
-            renderSubjectDetail(id);
-            window.scrollTo(0, document.getElementById('study').offsetTop - 100);
-        }
-        
-        function closeSubjectDetail() {
-            currentActiveSubjectId = null;
-            document.getElementById('subject-detail-view').classList.add('hidden');
-            document.getElementById('subjects-view').classList.remove('hidden');
-        }
-
-        function getYouTubeID(url) {
-            const regExp = /^.*(youtu\.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
-            const match = url.match(regExp);
-            return (match && match[2].length === 11) ? match[2] : null;
-        }
+        function filterSubjects() { const query = document.getElementById('search-subject').value.toLowerCase(); const filtered = subjects.filter(s => s.name.toLowerCase().includes(query)); renderSubjectsGrid(filtered); }
+        function openSubjectModal() { requireAuth(() => { document.getElementById('add-subject-modal').classList.remove('hidden'); document.getElementById('add-subject-modal').classList.add('flex'); }); }
+        function closeSubjectModal() { document.getElementById('add-subject-modal').classList.add('hidden'); document.getElementById('add-subject-modal').classList.remove('flex'); }
+        function handleAddSubject(e) { e.preventDefault(); const name = document.getElementById('new-subject-name').value; subjects.push({ id: 'sub_' + Date.now(), name: name, videos: [], extrabooks: [], notes: [], homework: [], assignments: [], pyqs: [] }); saveSubjects(); closeSubjectModal(); e.target.reset(); showToast("Subject folder created successfully."); }
+        function deleteSubject(id, e) { e.stopPropagation(); requireAuth(() => { openConfirmModal("Are you sure you want to delete this subject?", () => { subjects = subjects.filter(s => s.id !== id); saveSubjects(); showToast("Subject deleted.", "success"); }); }); }
+        function openSubjectDetail(id) { currentActiveSubjectId = id; document.getElementById('subjects-view').classList.add('hidden'); document.getElementById('subject-detail-view').classList.remove('hidden'); renderSubjectDetail(id); window.scrollTo(0, document.getElementById('study').offsetTop - 100); }
+        function closeSubjectDetail() { currentActiveSubjectId = null; document.getElementById('subject-detail-view').classList.add('hidden'); document.getElementById('subjects-view').classList.remove('hidden'); }
+        function getYouTubeID(url) { const regExp = /^.*(youtu\.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/; const match = url.match(regExp); return (match && match[2].length === 11) ? match[2] : null; }
 
         function renderSubjectDetail(id) {
-            const sub = subjects.find(s => s.id === id);
-            if(!sub) return;
-            document.getElementById('detail-subject-title').innerHTML = `<i class="fas fa-book-open text-brand-primary"></i> <span>${sub.name}</span>`;
-            
+            const sub = subjects.find(s => s.id === id); if(!sub) return; document.getElementById('detail-subject-title').innerHTML = `<i class="fas fa-book-open text-brand-primary"></i> <span>${sub.name}</span>`;
             const renderList = (arr, elId, typeStr) => {
-                const ul = document.getElementById(elId);
-                ul.innerHTML = '';
-                if(!arr || arr.length === 0) {
-                    ul.innerHTML = '<li class="text-gray-500 italic text-xs py-2 text-center bg-gray-900/30 rounded border border-gray-800/50">No links added yet.</li>';
-                } else {
+                const ul = document.getElementById(elId); ul.innerHTML = '';
+                if(!arr || arr.length === 0) { ul.innerHTML = '<li class="text-gray-500 italic text-xs py-2 text-center bg-gray-900/30 rounded border border-gray-800/50">No links added yet.</li>'; } else {
                     arr.forEach((item, index) => {
                         if (typeStr === 'videos') {
                             const ytID = getYouTubeID(item.url);
                             if (ytID) {
                                 ul.innerHTML += `
                                     <li class="bg-gray-900 rounded-xl border border-gray-700/50 overflow-hidden mb-4 group shadow-sm flex flex-col hover:border-gray-500 transition-colors">
-                                        <div class="relative w-full pt-[56.25%] bg-black">
-                                            <iframe class="absolute top-0 left-0 w-full h-full" src="https://www.youtube.com/embed/${ytID}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-                                        </div>
-                                        <div class="p-3 flex justify-between items-center bg-gray-800/80 border-t border-gray-700">
-                                            <a href="${item.url}" target="_blank" class="truncate flex-grow hover:text-brand-primary transition text-gray-200 font-medium text-sm flex items-center gap-2">
-                                                <i class="fab fa-youtube text-red-500 text-lg"></i>
-                                                <span class="truncate">${item.title}</span>
-                                            </a>
-                                            <button onclick="deleteResource('${typeStr}', ${index})" class="text-gray-400 hover:text-red-400 opacity-0 group-hover:opacity-100 transition px-2.5 py-1.5 ml-2 bg-gray-700 hover:bg-red-500/20 rounded">
-                                                <i class="fas fa-trash text-xs"></i>
-                                            </button>
-                                        </div>
-                                    </li>
-                                `;
-                                return; 
+                                        <div class="relative w-full pt-[56.25%] bg-black"><iframe class="absolute top-0 left-0 w-full h-full" src="https://www.youtube.com/embed/${ytID}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></div>
+                                        <div class="p-3 flex justify-between items-center bg-gray-800/80 border-t border-gray-700"><a href="${item.url}" target="_blank" class="truncate flex-grow hover:text-brand-primary transition text-gray-200 font-medium text-sm flex items-center gap-2"><i class="fab fa-youtube text-red-500 text-lg"></i><span class="truncate">${item.title}</span></a><button onclick="deleteResource('${typeStr}', ${index})" class="text-gray-400 hover:text-red-400 opacity-0 group-hover:opacity-100 transition px-2.5 py-1.5 ml-2 bg-gray-700 hover:bg-red-500/20 rounded"><i class="fas fa-trash text-xs"></i></button></div>
+                                    </li>`; return; 
                             }
                         }
-
                         let linkHTML;
                         if (item.requiresPayment) {
                             const escapedTitle = item.title.replace(/'/g, "\\'");
-                            linkHTML = `<a href="#" onclick="initiatePayment(event, '${item.url}', '${escapedTitle}', ${item.price})" class="truncate flex-grow hover:text-brand-primary transition text-brand-secondary font-medium flex items-center">
-                                    <i class="fas fa-lock text-xs mr-2 text-brand-secondary"></i>
-                                    <span class="truncate">${item.title}</span>
-                                </a>`;
+                            linkHTML = `<a href="#" onclick="initiatePayment(event, '${item.url}', '${escapedTitle}', ${item.price})" class="truncate flex-grow hover:text-brand-primary transition text-brand-secondary font-medium flex items-center"><i class="fas fa-lock text-xs mr-2 text-brand-secondary"></i><span class="truncate">${item.title}</span></a>`;
                         } else {
-                            linkHTML = `<a href="${item.url}" target="_blank" class="truncate flex-grow hover:text-brand-primary transition text-gray-200 font-medium flex items-center">
-                                    <i class="fas fa-external-link-square-alt text-xs mr-2 text-gray-500"></i>
-                                    <span class="truncate">${item.title}</span>
-                                </a>`;
+                            linkHTML = `<a href="${item.url}" target="_blank" class="truncate flex-grow hover:text-brand-primary transition text-gray-200 font-medium flex items-center"><i class="fas fa-external-link-square-alt text-xs mr-2 text-gray-500"></i><span class="truncate">${item.title}</span></a>`;
                         }
-
-                        ul.innerHTML += `
-                            <li class="flex justify-between items-center bg-gray-900 p-3 rounded-lg border border-gray-700/50 hover:border-gray-500 transition group mb-2 shadow-sm">
-                                ${linkHTML}
-                                <button onclick="deleteResource('${typeStr}', ${index})" class="text-gray-500 hover:text-red-400 opacity-0 group-hover:opacity-100 transition px-2 ml-2 bg-gray-800 rounded">
-                                    <i class="fas fa-trash text-xs"></i>
-                                </button>
-                            </li>
-                        `;
+                        ul.innerHTML += `<li class="flex justify-between items-center bg-gray-900 p-3 rounded-lg border border-gray-700/50 hover:border-gray-500 transition group mb-2 shadow-sm">${linkHTML}<button onclick="deleteResource('${typeStr}', ${index})" class="text-gray-500 hover:text-red-400 opacity-0 group-hover:opacity-100 transition px-2 ml-2 bg-gray-800 rounded"><i class="fas fa-trash text-xs"></i></button></li>`;
                     });
                 }
             };
-            
-            renderList(sub.videos, 'detail-videos-list', 'videos');
-            renderList(sub.extrabooks, 'detail-extrabooks-list', 'extrabooks');
-            renderList(sub.notes, 'detail-notes-list', 'notes');
-            renderList(sub.homework, 'detail-homework-list', 'homework');
-            renderList(sub.assignments, 'detail-assignments-list', 'assignments');
-            renderList(sub.pyqs, 'detail-pyqs-list', 'pyqs'); 
+            renderList(sub.videos, 'detail-videos-list', 'videos'); renderList(sub.extrabooks, 'detail-extrabooks-list', 'extrabooks'); renderList(sub.notes, 'detail-notes-list', 'notes'); renderList(sub.homework, 'detail-homework-list', 'homework'); renderList(sub.assignments, 'detail-assignments-list', 'assignments'); renderList(sub.pyqs, 'detail-pyqs-list', 'pyqs'); 
         }
 
         function openResourceModal(type) {
@@ -2086,113 +2133,48 @@
                 const titles = { videos: 'Lecture Video', extrabooks: 'Extra Book', notes: 'Class Note', homework: 'Homework', assignments: 'Assignment', pyqs: 'Previous Year Q' };
                 const icons = { videos: 'fa-youtube', extrabooks: 'fa-book', notes: 'fa-file-alt', homework: 'fa-pencil-ruler', assignments: 'fa-google-drive', pyqs: 'fa-history' };
                 document.getElementById('resource-modal-title').innerHTML = `<i class="fas ${icons[type]} text-brand-primary"></i> Add ${titles[type]} Link`;
-                document.getElementById('add-resource-modal').classList.remove('hidden');
-                document.getElementById('add-resource-modal').classList.add('flex');
+                document.getElementById('add-resource-modal').classList.remove('hidden'); document.getElementById('add-resource-modal').classList.add('flex');
             });
         }
         
-        function closeResourceModal() {
-            document.getElementById('add-resource-modal').classList.add('hidden');
-            document.getElementById('add-resource-modal').classList.remove('flex');
-            document.getElementById('new-resource-title').value = '';
-            document.getElementById('new-resource-url').value = '';
-        }
-        
+        function closeResourceModal() { document.getElementById('add-resource-modal').classList.add('hidden'); document.getElementById('add-resource-modal').classList.remove('flex'); document.getElementById('new-resource-title').value = ''; document.getElementById('new-resource-url').value = ''; }
         function handleAddResource(e) {
-            e.preventDefault();
-            const title = document.getElementById('new-resource-title').value;
-            const url = document.getElementById('new-resource-url').value;
-            
+            e.preventDefault(); const title = document.getElementById('new-resource-title').value; const url = document.getElementById('new-resource-url').value;
             const subIndex = subjects.findIndex(s => s.id === currentActiveSubjectId);
             if(subIndex > -1) {
                 if(!subjects[subIndex][currentResourceType]) subjects[subIndex][currentResourceType] = [];
-                subjects[subIndex][currentResourceType].push({ title, url });
-                saveSubjects();
-                showToast("Resource added successfully.");
+                subjects[subIndex][currentResourceType].push({ title, url }); saveSubjects(); showToast("Resource added successfully.");
             }
             closeResourceModal();
         }
-        
-        function deleteResource(type, index) {
-            requireAuth(() => {
-                openConfirmModal("Are you sure you want to delete this link?", () => {
-                    const subIndex = subjects.findIndex(s => s.id === currentActiveSubjectId);
-                    if(subIndex > -1) {
-                        subjects[subIndex][type].splice(index, 1);
-                        saveSubjects();
-                        showToast("Resource deleted.", "success");
-                    }
-                });
-            });
-        }
+        function deleteResource(type, index) { requireAuth(() => { openConfirmModal("Are you sure you want to delete this link?", () => { const subIndex = subjects.findIndex(s => s.id === currentActiveSubjectId); if(subIndex > -1) { subjects[subIndex][type].splice(index, 1); saveSubjects(); showToast("Resource deleted.", "success"); } }); }); }
 
         const defaultNotices = [
-            {
-                id: 'notice_default_4', type: 'Assignment', title: 'New Homework Setup Initiated',
-                description: 'Attention Batch B8: A new "Homework" section has been added to all subjects in the study portal. Check the links for your latest tasks.',
-                link: 'https://drive.google.com/drive/folders/1u0MtXmbvdXD9Jh-FkDv0Mjz64fEQLP7e?usp=drive_link', timestamp: Date.now() + 1000
-            },
-            {
-                id: 'notice_default_3', type: 'Update', title: 'Classroom shifted to 5.10',
-                description: 'Please note that starting from July 31, 2026, the 6th period for section B8 will be moved to room 5.10. This is a permanent change.',
-                link: '', timestamp: Date.now()
-            },
-            {
-                id: 'notice_default_1', type: 'Alert', title: 'Mid-Sem Dates Announced',
-                description: 'The mid-semester examinations will begin on the 15th of next month. Please check the portal for detailed schedules.',
-                link: '', timestamp: Date.now() - 100000
-            },
-            {
-                id: 'notice_default_2', type: 'Update', title: 'Welcome to the New Portal',
-                description: 'This is the new shared portal. Any study materials or notices you add here will be visible to all students in B8.',
-                link: '', timestamp: Date.now() - 200000
-            }
+            { id: 'notice_default_4', type: 'Assignment', title: 'New Homework Setup Initiated', description: 'Attention Batch B8: A new "Homework" section has been added to all subjects in the study portal. Check the links for your latest tasks.', link: 'https://drive.google.com/drive/folders/1u0MtXmbvdXD9Jh-FkDv0Mjz64fEQLP7e?usp=drive_link', timestamp: Date.now() + 1000 },
+            { id: 'notice_default_3', type: 'Update', title: 'Classroom shifted to 5.10', description: 'Please note that starting from July 31, 2026, the 6th period for section B8 will be moved to room 5.10. This is a permanent change.', link: '', timestamp: Date.now() },
+            { id: 'notice_default_1', type: 'Alert', title: 'Mid-Sem Dates Announced', description: 'The mid-semester examinations will begin on the 15th of next month. Please check the portal for detailed schedules.', link: '', timestamp: Date.now() - 100000 },
+            { id: 'notice_default_2', type: 'Update', title: 'Welcome to the New Portal', description: 'This is the new shared portal. Any study materials or notices you add here will be visible to all students in B8.', link: '', timestamp: Date.now() - 200000 }
         ];
 
         let notices = getSafeStorage('iem_b8_notices', []);
-        if (!notices || notices.length === 0) {
-            notices = defaultNotices;
-            setSafeStorage('iem_b8_notices', notices);
-        } else {
+        if (!notices || notices.length === 0) { notices = defaultNotices; setSafeStorage('iem_b8_notices', notices); } else {
             let noticeUpdated = false;
-            defaultNotices.forEach(dn => {
-                if (!notices.find(n => n.id === dn.id)) {
-                    notices.push(dn);
-                    noticeUpdated = true;
-                }
-            });
+            defaultNotices.forEach(dn => { if (!notices.find(n => n.id === dn.id)) { notices.push(dn); noticeUpdated = true; } });
             if (noticeUpdated) setSafeStorage('iem_b8_notices', notices);
         }
 
-        function saveNotices() {
-            setSafeStorage('iem_b8_notices', notices);
-            filterNotices(); 
-            renderRecentNoticesOnHome();
-        }
+        function saveNotices() { setSafeStorage('iem_b8_notices', notices); filterNotices(); renderRecentNoticesOnHome(); }
 
         function createNoticeElement(notice) {
             const date = new Date(notice.timestamp).toLocaleDateString('en-US', { day: 'numeric', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' });
-            
-            let linkHtml = '';
-            if(notice.link) {
-                 linkHtml = `<a href="${notice.link}" target="_blank" class="mt-4 inline-flex items-center gap-2 text-brand-primary hover:text-white bg-brand-primary/10 hover:bg-brand-primary/30 px-4 py-2 rounded-lg transition text-sm font-medium"><i class="fas fa-external-link-alt"></i> View Attachment</a>`;
-            }
-
-            let iconClass = 'fa-bullhorn text-brand-secondary';
-            if(notice.type === 'Alert') iconClass = 'fa-exclamation-triangle text-red-500';
-            if(notice.type === 'Assignment') iconClass = 'fa-file-signature text-green-500';
-            if(notice.type === 'Homework') iconClass = 'fa-pencil-ruler text-orange-500';
+            let linkHtml = ''; if(notice.link) { linkHtml = `<a href="${notice.link}" target="_blank" class="mt-4 inline-flex items-center gap-2 text-brand-primary hover:text-white bg-brand-primary/10 hover:bg-brand-primary/30 px-4 py-2 rounded-lg transition text-sm font-medium"><i class="fas fa-external-link-alt"></i> View Attachment</a>`; }
+            let iconClass = 'fa-bullhorn text-brand-secondary'; if(notice.type === 'Alert') iconClass = 'fa-exclamation-triangle text-red-500'; if(notice.type === 'Assignment') iconClass = 'fa-file-signature text-green-500'; if(notice.type === 'Homework') iconClass = 'fa-pencil-ruler text-orange-500';
 
             return `
                 <div class="glass-card p-6 rounded-2xl border border-gray-700/50 hover:border-brand-primary/50 transition-all flex flex-col h-full group relative overflow-hidden">
                     <div class="flex items-start gap-4 mb-4">
-                        <div class="w-12 h-12 bg-gray-800 rounded-xl flex items-center justify-center shrink-0 border border-gray-700 group-hover:scale-110 transition-transform">
-                            <i class="fas ${iconClass} text-xl"></i>
-                        </div>
-                        <div>
-                            <span class="text-xs font-semibold uppercase tracking-wider text-gray-500 mb-1 block">${notice.type}</span>
-                            <h3 class="text-lg font-bold text-white leading-tight group-hover:text-brand-primary transition-colors">${notice.title}</h3>
-                        </div>
+                        <div class="w-12 h-12 bg-gray-800 rounded-xl flex items-center justify-center shrink-0 border border-gray-700 group-hover:scale-110 transition-transform"><i class="fas ${iconClass} text-xl"></i></div>
+                        <div><span class="text-xs font-semibold uppercase tracking-wider text-gray-500 mb-1 block">${notice.type}</span><h3 class="text-lg font-bold text-white leading-tight group-hover:text-brand-primary transition-colors">${notice.title}</h3></div>
                     </div>
                     <p class="text-gray-400 text-sm flex-grow mb-4">${notice.description}</p>
                     <div class="flex items-center justify-between border-t border-gray-800/50 pt-4 mt-auto">
@@ -2205,88 +2187,27 @@
         }
 
         function renderNotices(dataToRender = notices) {
-            const grid = document.getElementById('notices-grid');
-            const noMsg = document.getElementById('no-notices-msg');
-            if(!grid) return;
-            grid.innerHTML = '';
-            
-            if(dataToRender.length === 0) {
-                noMsg.classList.remove('hidden');
-            } else {
-                noMsg.classList.add('hidden');
-                const sorted = [...dataToRender].sort((a,b) => b.timestamp - a.timestamp);
-                sorted.forEach(n => {
-                    grid.innerHTML += createNoticeElement(n);
-                });
+            const grid = document.getElementById('notices-grid'); const noMsg = document.getElementById('no-notices-msg'); if(!grid) return; grid.innerHTML = '';
+            if(dataToRender.length === 0) { noMsg.classList.remove('hidden'); } else {
+                noMsg.classList.add('hidden'); const sorted = [...dataToRender].sort((a,b) => b.timestamp - a.timestamp);
+                sorted.forEach(n => { grid.innerHTML += createNoticeElement(n); });
             }
         }
 
-        function filterNotices() {
-            const query = document.getElementById('search-notices').value.toLowerCase();
-            const filtered = notices.filter(n => 
-                n.title.toLowerCase().includes(query) || 
-                n.type.toLowerCase().includes(query)
-            );
-            renderNotices(filtered);
-        }
-
+        function filterNotices() { const query = document.getElementById('search-notices').value.toLowerCase(); const filtered = notices.filter(n => n.title.toLowerCase().includes(query) || n.type.toLowerCase().includes(query) ); renderNotices(filtered); }
         function renderRecentNoticesOnHome() {
-            const grid = document.getElementById('home-recent-notices');
-            if(!grid) return;
-            grid.innerHTML = '';
-            const sorted = [...notices].sort((a,b) => b.timestamp - a.timestamp).slice(0, 3);
-            if(sorted.length === 0) {
-                grid.innerHTML = '<p class="text-gray-500 col-span-full">No recent updates.</p>';
-                return;
-            }
-            sorted.forEach(n => {
-                grid.innerHTML += createNoticeElement(n);
-            });
+            const grid = document.getElementById('home-recent-notices'); if(!grid) return; grid.innerHTML = ''; const sorted = [...notices].sort((a,b) => b.timestamp - a.timestamp).slice(0, 3);
+            if(sorted.length === 0) { grid.innerHTML = '<p class="text-gray-500 col-span-full">No recent updates.</p>'; return; }
+            sorted.forEach(n => { grid.innerHTML += createNoticeElement(n); });
         }
 
-        function openNoticeModal() {
-            requireAuth(() => {
-                document.getElementById('add-notice-modal').classList.remove('hidden');
-                document.getElementById('add-notice-modal').classList.add('flex');
-            });
-        }
-
-        function closeNoticeModal() {
-            document.getElementById('add-notice-modal').classList.add('hidden');
-            document.getElementById('add-notice-modal').classList.remove('flex');
-            document.getElementById('notice-form').reset();
-        }
-
+        function openNoticeModal() { requireAuth(() => { document.getElementById('add-notice-modal').classList.remove('hidden'); document.getElementById('add-notice-modal').classList.add('flex'); }); }
+        function closeNoticeModal() { document.getElementById('add-notice-modal').classList.add('hidden'); document.getElementById('add-notice-modal').classList.remove('flex'); document.getElementById('notice-form').reset(); }
         function handleAddNotice(e) {
-            e.preventDefault();
-            const type = document.getElementById('new-notice-type').value;
-            const title = document.getElementById('new-notice-title').value;
-            const desc = document.getElementById('new-notice-desc').value;
-            const link = document.getElementById('new-notice-link').value;
-
-            notices.push({
-                id: 'notice_' + Date.now(),
-                type: type,
-                title: title,
-                description: desc,
-                link: link,
-                timestamp: Date.now()
-            });
-            
-            saveNotices();
-            closeNoticeModal();
-            showToast("Notice posted successfully.", "success");
+            e.preventDefault(); const type = document.getElementById('new-notice-type').value; const title = document.getElementById('new-notice-title').value; const desc = document.getElementById('new-notice-desc').value; const link = document.getElementById('new-notice-link').value;
+            notices.push({ id: 'notice_' + Date.now(), type: type, title: title, description: desc, link: link, timestamp: Date.now() }); saveNotices(); closeNoticeModal(); showToast("Notice posted successfully.", "success");
         }
-
-        function deleteNotice(id) {
-            requireAuth(() => {
-                openConfirmModal("Are you sure you want to delete this notice?", () => {
-                    notices = notices.filter(n => n.id !== id);
-                    saveNotices();
-                    showToast("Notice deleted.", "success");
-                });
-            });
-        }
+        function deleteNotice(id) { requireAuth(() => { openConfirmModal("Are you sure you want to delete this notice?", () => { notices = notices.filter(n => n.id !== id); saveNotices(); showToast("Notice deleted.", "success"); }); }); }
     </script>
 
     <script src='https://cdn.jotfor.ms/agent/embedjs/019fcc8dfc087000870171a58a0a5dd089e4/embed.js'></script>
