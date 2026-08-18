@@ -20,11 +20,12 @@
                     },
                     colors: {
                         brand: {
-                            dark: '#0a0f1c',
+                            dark: '#050914',
                             card: '#111827',
                             primary: '#06b6d4',
                             secondary: '#3b82f6',
                             accent: '#8b5cf6',
+                            space: '#0b0c10'
                         }
                     },
                     animation: {
@@ -35,6 +36,8 @@
                         'pulse-slow': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
                         'blob': 'blob 7s infinite',
                         'loading': 'loadingBar 1.8s ease-in-out forwards',
+                        'spin-slow': 'spin 15s linear infinite',
+                        'galaxy-spin': 'spin 30s linear infinite',
                     },
                     keyframes: {
                         'gradient-x': {
@@ -71,7 +74,7 @@
 
     <style>
         body {
-            background-color: #0a0f1c; 
+            background-color: #050914; 
             color: #f8fafc;
             overflow-x: hidden;
             scroll-behavior: smooth;
@@ -79,26 +82,27 @@
         
         #ambient-glow {
             position: fixed;
-            width: 400px;
-            height: 400px;
+            width: 500px;
+            height: 500px;
             border-radius: 50%;
-            background: radial-gradient(circle, rgba(6,182,212,0.08) 0%, rgba(0,0,0,0) 70%);
+            background: radial-gradient(circle, rgba(139, 92, 246, 0.08) 0%, rgba(6, 182, 212, 0.05) 40%, rgba(0,0,0,0) 70%);
             pointer-events: none;
             z-index: 1;
             transform: translate(-50%, -50%);
             transition: opacity 0.3s ease;
             opacity: 0;
+            mix-blend-mode: screen;
         }
 
         .glass {
-            background: rgba(17, 24, 39, 0.7);
+            background: rgba(11, 12, 16, 0.7);
             backdrop-filter: blur(12px);
             -webkit-backdrop-filter: blur(12px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.08);
         }
         
         .glass-card {
-            background: linear-gradient(145deg, rgba(30,41,59,0.7) 0%, rgba(15,23,42,0.7) 100%);
+            background: linear-gradient(145deg, rgba(30,41,59,0.7) 0%, rgba(11, 12, 16, 0.8) 100%);
             backdrop-filter: blur(10px);
             border: 1px solid rgba(255, 255, 255, 0.05);
             box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
@@ -108,14 +112,14 @@
         .glass-card:hover {
             transform: translateY(-5px);
             box-shadow: 0 12px 40px 0 rgba(0, 0, 0, 0.5);
-            border-color: rgba(6, 182, 212, 0.3);
+            border-color: rgba(139, 92, 246, 0.3);
         }
 
         .text-gradient {
             background-clip: text;
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            background-image: linear-gradient(to right, #06b6d4, #3b82f6);
+            background-image: linear-gradient(to right, #06b6d4, #8b5cf6, #ec4899);
         }
 
         .nav-link {
@@ -130,7 +134,7 @@
             height: 2px;
             bottom: -4px;
             left: 0;
-            background-color: #06b6d4;
+            background-image: linear-gradient(to right, #06b6d4, #8b5cf6);
             transition: width 0.3s ease;
         }
         
@@ -162,9 +166,9 @@
         }
         
         ::-webkit-scrollbar { width: 8px; }
-        ::-webkit-scrollbar-track { background: #0a0f1c; }
+        ::-webkit-scrollbar-track { background: #050914; }
         ::-webkit-scrollbar-thumb { background: #1e293b; border-radius: 4px; }
-        ::-webkit-scrollbar-thumb:hover { background: #3b82f6; }
+        ::-webkit-scrollbar-thumb:hover { background: #8b5cf6; }
         
         .active-period-glow {
             box-shadow: inset 0 0 15px rgba(6, 182, 212, 0.3), 0 0 10px rgba(6, 182, 212, 0.2);
@@ -173,7 +177,7 @@
 
         @keyframes borderPulse {
             0% { border-color: rgba(6, 182, 212, 0.4); }
-            50% { border-color: rgba(6, 182, 212, 1); }
+            50% { border-color: rgba(139, 92, 246, 1); }
             100% { border-color: rgba(6, 182, 212, 0.4); }
         }
 
@@ -204,7 +208,8 @@
             transition: all 0.3s ease;
         }
         .search-input-wrapper input:focus {
-            box-shadow: 0 0 15px rgba(6, 182, 212, 0.2);
+            box-shadow: 0 0 15px rgba(139, 92, 246, 0.2);
+            border-color: #8b5cf6;
         }
 
         body.loading-active header,
@@ -221,15 +226,48 @@
             transition: opacity 1s cubic-bezier(0.4, 0, 0.2, 1), transform 1s cubic-bezier(0.4, 0, 0.2, 1);
         }
         
-        .sponsored-tag {
-            font-size: 0.65rem;
-            letter-spacing: 0.1em;
-            text-transform: uppercase;
-        }
-        
-        /* New CSS for SVG Timer Ring */
         .timer-ring {
             transition: stroke-dashoffset 1s linear;
+        }
+
+        /* Galaxy Loader CSS */
+        .galaxy-loader {
+            position: absolute;
+            width: 300px;
+            height: 300px;
+            border-radius: 50%;
+            background: conic-gradient(from 0deg, transparent 0%, rgba(139, 92, 246, 0.1) 20%, rgba(6, 182, 212, 0.4) 50%, rgba(236, 72, 153, 0.1) 80%, transparent 100%);
+            filter: blur(15px);
+            mix-blend-mode: screen;
+        }
+
+        .signup-field {
+            transition: all 0.4s ease;
+            max-height: 500px;
+            opacity: 1;
+            overflow: hidden;
+        }
+        .signup-field.hidden-field {
+            max-height: 0;
+            opacity: 0;
+            margin: 0 !important;
+            padding: 0 !important;
+            border: none !important;
+        }
+
+        /* Level Badge */
+        .xp-bar-container {
+            width: 100%;
+            height: 4px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 2px;
+            overflow: hidden;
+            margin-top: 4px;
+        }
+        .xp-bar-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #06b6d4, #8b5cf6);
+            transition: width 0.5s ease;
         }
     </style>
 </head>
@@ -238,39 +276,44 @@
     <!-- Ambient Glow Element -->
     <div id="ambient-glow"></div>
 
-    <div id="global-loader" class="fixed inset-0 z-[9999] flex flex-col items-center justify-center bg-[#0a0f1c] transition-all duration-700 ease-in-out overflow-hidden">
-        <div class="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-brand-primary/15 via-[#0a0f1c] to-[#0a0f1c]"></div>
-        <div class="absolute inset-0 bg-[linear-gradient(rgba(6,182,212,0.03)_1px,transparent_1px),linear-gradient(90deg,rgba(6,182,212,0.03)_1px,transparent_1px)] bg-[size:40px_40px] [mask-image:radial-gradient(ellipse_50%_50%_at_50%_50%,#000_10%,transparent_100%)]"></div>
+    <!-- Loading Screen with Galaxy Theme -->
+    <div id="global-loader" class="fixed inset-0 z-[9999] flex flex-col items-center justify-center bg-[#030610] transition-all duration-700 ease-in-out overflow-hidden">
+        <div class="absolute inset-0 bg-[radial-gradient(circle_at_center,_rgba(139,92,246,0.15)_0%,_rgba(3,6,16,1)_70%)]"></div>
         
-        <div class="absolute w-[50vw] max-w-[600px] h-[50vw] max-h-[600px] bg-brand-primary/10 rounded-full blur-[120px] animate-pulse-slow pointer-events-none"></div>
-        
-        <div class="relative flex items-center justify-center mb-10 z-10">
+        <div class="relative flex items-center justify-center mb-10 z-10 w-64 h-64">
+            <!-- Galaxy Spinners -->
+            <div class="galaxy-loader animate-galaxy-spin"></div>
+            <div class="galaxy-loader animate-galaxy-spin" style="animation-direction: reverse; width: 200px; height: 200px; background: conic-gradient(from 180deg, transparent 0%, rgba(6,182,212,0.1) 20%, rgba(236,72,153,0.4) 50%, rgba(139,92,246,0.1) 80%, transparent 100%);"></div>
+            
             <div class="absolute w-40 h-40 border border-brand-primary/20 rounded-full animate-[spin_4s_linear_infinite] shadow-[inset_0_0_20px_rgba(6,182,212,0.2)]"></div>
-            <div class="absolute w-32 h-32 border-t-2 border-b-2 border-brand-primary border-dashed rounded-full animate-[spin_2.5s_linear_infinite] shadow-[0_0_20px_rgba(6,182,212,0.6)]"></div>
-            <div class="absolute w-24 h-24 border-l-2 border-r-2 border-brand-secondary rounded-full animate-[spin_1.5s_linear_infinite_reverse] shadow-[0_0_20px_rgba(59,130,246,0.6)]"></div>
-            <div class="absolute w-16 h-16 border-2 border-purple-500/50 rounded-full animate-[spin_3s_linear_infinite] shadow-[0_0_15px_rgba(168,85,247,0.4)]"></div>
-            <img src="ChatGPT Image Jul 22, 2026, 03_22_36 PM.png" alt="IEM 2030 B8 Logo" class="w-16 h-16 rounded-full object-cover animate-pulse shadow-[0_0_25px_rgba(6,182,212,0.8)] border border-white/40 z-10 relative" onerror="this.onerror=null; this.src='https://placehold.co/100x100/06b6d4/ffffff?text=B8'">
+            <div class="absolute w-32 h-32 border-t-2 border-b-2 border-brand-accent border-dashed rounded-full animate-[spin_2.5s_linear_infinite] shadow-[0_0_20px_rgba(139,92,246,0.6)]"></div>
+            <div class="absolute w-24 h-24 border-l-2 border-r-2 border-pink-500 rounded-full animate-[spin_1.5s_linear_infinite_reverse] shadow-[0_0_20px_rgba(236,72,153,0.6)]"></div>
+            <div class="absolute w-16 h-16 border-2 border-brand-primary/50 rounded-full animate-[spin_3s_linear_infinite] shadow-[0_0_15px_rgba(6,182,212,0.4)]"></div>
+            
+            <img src="ChatGPT Image Jul 22, 2026, 03_22_36 PM.png" alt="IEM 2030 B8 Logo" class="w-16 h-16 rounded-full object-cover animate-pulse shadow-[0_0_35px_rgba(139,92,246,0.8)] border border-white/40 z-10 relative" onerror="this.onerror=null; this.src='https://placehold.co/100x100/06b6d4/ffffff?text=B8'">
         </div>
         
-        <div class="text-transparent bg-clip-text bg-gradient-to-r from-brand-primary to-brand-secondary font-mono text-xs sm:text-sm tracking-[0.3em] sm:tracking-[0.5em] animate-pulse mb-6 z-10 font-bold drop-shadow-[0_0_10px_rgba(6,182,212,0.5)] uppercase">
+        <div class="text-transparent bg-clip-text bg-gradient-to-r from-brand-primary via-brand-accent to-pink-500 font-mono text-xs sm:text-sm tracking-[0.3em] sm:tracking-[0.5em] animate-pulse mb-6 z-10 font-bold drop-shadow-[0_0_10px_rgba(139,92,246,0.5)] uppercase">
             Loading...
         </div>
         
-        <div class="w-64 sm:w-80 h-1 bg-gray-800/80 rounded-full overflow-hidden shadow-[0_0_15px_rgba(6,182,212,0.3)] z-10 border border-gray-700/50">
-            <div class="h-full bg-gradient-to-r from-brand-primary via-brand-secondary to-purple-500 animate-loading relative">
-                <div class="absolute inset-0 bg-white/20 w-full animate-[slideInRight_1s_ease-out_infinite]"></div>
+        <div class="w-64 sm:w-80 h-1 bg-gray-900 rounded-full overflow-hidden shadow-[0_0_15px_rgba(139,92,246,0.3)] z-10 border border-gray-800">
+            <div class="h-full bg-gradient-to-r from-brand-primary via-brand-accent to-pink-500 animate-loading relative">
+                <div class="absolute inset-0 bg-white/30 w-full animate-[slideInRight_1s_ease-out_infinite]"></div>
             </div>
         </div>
     </div>
 
-    <div id="scroll-progress" class="fixed top-0 left-0 h-1 bg-gradient-to-r from-brand-primary to-brand-secondary z-[100] transition-all duration-150" style="width: 0%;"></div>
+    <div id="scroll-progress" class="fixed top-0 left-0 h-1 bg-gradient-to-r from-brand-primary via-brand-accent to-pink-500 z-[100] transition-all duration-150" style="width: 0%;"></div>
+    
+    <!-- Canvas for Galaxy Starfield Background -->
     <canvas id="starfield" class="fixed inset-0 z-[-1] pointer-events-none w-full h-full"></canvas>
 
     <header class="glass fixed w-full top-0 z-50">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between items-center h-20">
                 <div class="flex items-center space-x-3 cursor-pointer" onclick="navigate('home')">
-                    <img src="ChatGPT Image Jul 22, 2026, 03_22_36 PM.png" alt="IEM 2030 B8 Logo" class="h-12 w-12 rounded-full object-cover border-2 border-brand-primary shadow-[0_0_15px_rgba(6,182,212,0.5)] transition-transform hover:rotate-12" onerror="this.onerror=null; this.src='https://placehold.co/100x100/06b6d4/ffffff?text=B8'">
+                    <img src="ChatGPT Image Jul 22, 2026, 03_22_36 PM.png" alt="IEM 2030 B8 Logo" class="h-12 w-12 rounded-full object-cover border-2 border-brand-accent shadow-[0_0_15px_rgba(139,92,246,0.5)] transition-transform hover:rotate-12" onerror="this.onerror=null; this.src='https://placehold.co/100x100/06b6d4/ffffff?text=B8'">
                     <span class="font-serif text-2xl font-bold tracking-wider text-white">IEM 2030 <span class="text-gradient">B8</span></span>
                 </div>
                 
@@ -279,10 +322,9 @@
                     <button onclick="navigate('notices')" class="nav-link text-sm font-semibold hover:text-white uppercase tracking-wide">Notices</button>
                     <button onclick="navigate('study')" class="nav-link text-sm font-semibold hover:text-white uppercase tracking-wide">Study Material</button>
                     <button onclick="navigate('routine')" class="nav-link text-sm font-semibold hover:text-white uppercase tracking-wide">Class Routine</button>
-                    <!-- New Planner Nav Link -->
-                    <button onclick="navigate('planner')" class="nav-link text-sm font-semibold text-brand-primary hover:text-white uppercase tracking-wide flex items-center gap-1"><i class="fas fa-tasks"></i> Planner</button>
+                    <button onclick="navigate('planner')" class="nav-link text-sm font-semibold text-brand-accent hover:text-white uppercase tracking-wide flex items-center gap-1"><i class="fas fa-tasks"></i> Planner</button>
                     <button onclick="navigate('holidays')" class="nav-link text-sm font-semibold hover:text-white uppercase tracking-wide">Holidays</button>
-                    <button onclick="navigate('about')" class="nav-link text-sm font-semibold hover:text-white uppercase tracking-wide">About Us</button>
+                    <button onclick="navigate('about')" class="nav-link text-sm font-semibold hover:text-white uppercase tracking-wide">About</button>
                     <button onclick="navigate('contact')" class="nav-link text-sm font-semibold hover:text-white uppercase tracking-wide">Contact</button>
                     
                     <div id="desktop-auth-ui" class="flex items-center space-x-4 pl-4 border-l border-gray-700">
@@ -291,7 +333,7 @@
                 </nav>
 
                 <div class="md:hidden flex items-center gap-4">
-                    <button onclick="navigate('planner')" class="text-brand-primary hover:text-white transition">
+                    <button onclick="navigate('planner')" class="text-brand-accent hover:text-white transition">
                         <i class="fas fa-tasks text-xl"></i>
                     </button>
                     <button id="mobile-auth-icon" onclick="openAuthModal('login')" class="text-brand-primary hover:text-white transition">
@@ -309,7 +351,7 @@
                 <button onclick="navigate('notices')" class="block px-3 py-2 text-base font-medium transition hover:bg-white/5 rounded-md">Notices</button>
                 <button onclick="navigate('study')" class="block px-3 py-2 text-base font-medium transition hover:bg-white/5 rounded-md">Study Material</button>
                 <button onclick="navigate('routine')" class="block px-3 py-2 text-base font-medium transition hover:bg-white/5 rounded-md">Class Routine</button>
-                <button onclick="navigate('planner')" class="block px-3 py-2 text-base font-medium transition text-brand-primary bg-brand-primary/10 border border-brand-primary/20 rounded-md">Study Planner</button>
+                <button onclick="navigate('planner')" class="block px-3 py-2 text-base font-medium transition text-brand-accent bg-brand-accent/10 border border-brand-accent/20 rounded-md">Study Planner</button>
                 <button onclick="navigate('holidays')" class="block px-3 py-2 text-base font-medium transition hover:bg-white/5 rounded-md">Holidays</button>
                 <button onclick="navigate('about')" class="block px-3 py-2 text-base font-medium transition hover:bg-white/5 rounded-md">About Us</button>
                 <button onclick="navigate('contact')" class="block px-3 py-2 text-base font-medium transition hover:bg-white/5 rounded-md">Contact Us</button>
@@ -327,38 +369,38 @@
         <section id="home" class="page-section active max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 lg:py-16">
             <div class="flex flex-col lg:flex-row items-center gap-12 mb-16 reveal">
                 <div class="lg:w-1/2 space-y-8 relative">
-                    <div class="absolute top-0 -left-4 w-72 h-72 bg-brand-primary rounded-full mix-blend-multiply filter blur-2xl opacity-20 animate-blob"></div>
-                    <div class="absolute top-0 -right-4 w-72 h-72 bg-brand-secondary rounded-full mix-blend-multiply filter blur-2xl opacity-20 animate-blob animation-delay-2000"></div>
+                    <div class="absolute top-0 -left-4 w-72 h-72 bg-brand-accent rounded-full mix-blend-screen filter blur-[100px] opacity-30 animate-blob"></div>
+                    <div class="absolute top-0 -right-4 w-72 h-72 bg-brand-primary rounded-full mix-blend-screen filter blur-[100px] opacity-30 animate-blob animation-delay-2000"></div>
                     
-                    <div class="inline-flex items-center space-x-2 glass px-4 py-2 rounded-full text-brand-primary text-sm font-semibold relative z-10 border border-brand-primary/30 shadow-[0_0_15px_rgba(6,182,212,0.2)]">
-                        <i class="fas fa-globe animate-pulse"></i>
+                    <div class="inline-flex items-center space-x-2 glass px-4 py-2 rounded-full text-brand-accent text-sm font-semibold relative z-10 border border-brand-accent/30 shadow-[0_0_15px_rgba(139,92,246,0.2)]">
+                        <i class="fas fa-rocket animate-pulse"></i>
                         <span>Live Hub for B.Tech CSE (AI/ML)</span>
                     </div>
                     <h1 class="text-5xl lg:text-7xl font-serif font-bold leading-tight relative z-10">
                         Welcome to <br>
                         <span class="text-gradient">Batch B8</span>
                     </h1>
-                    <p class="text-gray-400 text-lg md:text-xl max-w-lg leading-relaxed relative z-10">
-                        Code. Learn. Innovate. Impact. This platform connects everyone. Add subjects, share notes, stay up to date, and organize your week with the new Planner.
+                    <p class="text-gray-300 text-lg md:text-xl max-w-lg leading-relaxed relative z-10">
+                        Code. Learn. Innovate. Impact. This platform connects everyone. Add subjects, share notes, stay up to date, level up your XP, and organize your week with the Advanced Planner.
                     </p>
                     <div class="flex flex-wrap gap-4 relative z-10">
-                        <button onclick="navigate('study')" class="bg-gradient-to-r from-brand-primary to-brand-secondary text-white px-8 py-3 rounded-full font-semibold hover:shadow-lg hover:shadow-brand-primary/40 transition-all transform hover:-translate-y-1 flex items-center">
+                        <button onclick="navigate('study')" class="bg-gradient-to-r from-brand-primary via-brand-accent to-pink-500 text-white px-8 py-3 rounded-full font-semibold hover:shadow-[0_0_20px_rgba(139,92,246,0.5)] transition-all transform hover:-translate-y-1 flex items-center">
                             Explore Materials <i class="fas fa-arrow-right ml-2"></i>
                         </button>
-                        <button onclick="navigate('planner')" class="glass px-8 py-3 rounded-full font-semibold hover:bg-white/10 transition-all border border-gray-600 hover:border-brand-primary text-brand-primary flex items-center">
-                            <i class="fas fa-clock mr-2"></i> Open Study Planner
+                        <button onclick="navigate('planner')" class="glass px-8 py-3 rounded-full font-semibold hover:bg-white/10 transition-all border border-brand-accent/50 hover:border-brand-accent text-brand-accent flex items-center">
+                            <i class="fas fa-tasks mr-2"></i> Open Planner
                         </button>
                     </div>
                 </div>
                 <div class="lg:w-1/2 relative w-full flex justify-center">
-                    <div class="absolute inset-0 bg-gradient-to-tr from-brand-primary/30 to-brand-secondary/30 rounded-full blur-3xl -z-10 animate-float"></div>
-                    <img src="ChatGPT Image Jul 22, 2026, 03_22_36 PM.png" alt="Hero Logo" class="w-full max-w-sm rounded-full shadow-[0_0_50px_rgba(6,182,212,0.4)] border-4 border-white/10 animate-float object-cover transition-transform hover:scale-105 duration-500" onerror="this.onerror=null; this.src='https://placehold.co/400x400/06b6d4/ffffff?text=B8'">
+                    <div class="absolute inset-0 bg-gradient-to-tr from-brand-primary/30 via-brand-accent/30 to-pink-500/30 rounded-full blur-3xl -z-10 animate-float mix-blend-screen"></div>
+                    <img src="ChatGPT Image Jul 22, 2026, 03_22_36 PM.png" alt="Hero Logo" class="w-full max-w-sm rounded-full shadow-[0_0_60px_rgba(139,92,246,0.5)] border-4 border-white/10 animate-float object-cover transition-transform hover:scale-105 duration-500" onerror="this.onerror=null; this.src='https://placehold.co/400x400/06b6d4/ffffff?text=B8'">
                 </div>
             </div>
             
             <div class="mb-20 reveal">
                 <h3 class="text-xl font-bold font-serif mb-6 text-white flex items-center gap-2">
-                    <i class="fas fa-chart-pie text-brand-primary"></i> Live Dashboard Overview
+                    <i class="fas fa-chart-pie text-brand-accent"></i> Live Dashboard Overview
                 </h3>
                 <div id="live-dashboard-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
                     <!-- Cards injected by JS -->
@@ -368,7 +410,7 @@
             <!-- Ad Banner Section -->
             <div class="mb-20 reveal w-full flex justify-center">
                 <div class="w-full max-w-4xl relative group">
-                    <div class="absolute -inset-1 bg-gradient-to-r from-purple-600 to-brand-primary rounded-2xl blur opacity-25 group-hover:opacity-40 transition duration-1000"></div>
+                    <div class="absolute -inset-1 bg-gradient-to-r from-pink-600 to-brand-accent rounded-2xl blur opacity-25 group-hover:opacity-50 transition duration-1000 mix-blend-screen"></div>
                     <div class="relative glass-card p-4 sm:p-6 rounded-2xl border border-gray-700 flex flex-col sm:flex-row items-center justify-between gap-6 overflow-hidden">
                         <div class="absolute top-2 left-2 bg-gray-900/80 px-2 py-0.5 rounded text-gray-400 sponsored-tag border border-gray-700">Sponsored</div>
                         <div class="flex items-center gap-4 z-10 w-full sm:w-auto mt-4 sm:mt-0">
@@ -389,10 +431,10 @@
 
             <div class="mb-24 reveal">
                 <div class="flex justify-between items-center mb-6">
-                    <h3 class="text-2xl font-bold font-serif border-b-2 border-brand-primary pb-2 flex items-center gap-2">
+                    <h3 class="text-2xl font-bold font-serif border-b-2 border-brand-accent pb-2 flex items-center gap-2">
                         <i class="fas fa-bolt text-yellow-400"></i> Recent Updates
                     </h3>
-                    <button onclick="navigate('notices')" class="text-sm text-brand-primary hover:text-brand-secondary transition flex items-center gap-2 font-semibold">
+                    <button onclick="navigate('notices')" class="text-sm text-brand-accent hover:text-pink-400 transition flex items-center gap-2 font-semibold">
                         See All <i class="fas fa-arrow-right"></i>
                     </button>
                 </div>
@@ -402,15 +444,15 @@
 
         <section id="planner" class="page-section max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
             <div class="text-center mb-12 reveal">
-                <h2 class="text-4xl font-serif font-bold mb-4">Study <span class="text-gradient">Planner & Timer</span></h2>
-                <p class="text-gray-400 max-w-2xl mx-auto">Organize your weekly assignments and use the Pomodoro timer to maintain deep focus. Tasks are saved locally.</p>
+                <h2 class="text-4xl font-serif font-bold mb-4">Study <span class="text-gradient">Planner</span></h2>
+                <p class="text-gray-400 max-w-2xl mx-auto">Organize assignments, set specific study times, link them to subjects, and gain XP by completing Pomodoro focus sessions!</p>
             </div>
 
             <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 reveal">
                 <!-- Weekly Tasks Manager -->
-                <div class="lg:col-span-7 glass-card p-6 md:p-8 rounded-2xl flex flex-col h-full border-t-4 border-t-brand-primary">
+                <div class="lg:col-span-7 glass-card p-6 md:p-8 rounded-2xl flex flex-col h-full border-t-4 border-t-brand-accent">
                     <div class="flex flex-col sm:flex-row justify-between sm:items-center mb-6 pb-4 border-b border-gray-700 gap-4">
-                        <h3 class="text-xl font-bold text-white flex items-center gap-2 shrink-0"><i class="fas fa-tasks text-brand-primary"></i> Task Manager</h3>
+                        <h3 class="text-xl font-bold text-white flex items-center gap-2 shrink-0"><i class="fas fa-tasks text-brand-accent"></i> Task Manager</h3>
                         <div class="flex bg-gray-900 rounded-lg p-1 border border-gray-700 overflow-x-auto text-sm custom-scrollbar w-full sm:w-auto">
                             <button class="planner-day-btn px-4 py-1.5 rounded-md font-semibold transition" data-day="Mon">Mon</button>
                             <button class="planner-day-btn px-4 py-1.5 rounded-md font-semibold transition text-gray-400 hover:text-white" data-day="Tue">Tue</button>
@@ -426,45 +468,59 @@
                         <!-- Tasks dynamically injected -->
                     </div>
 
-                    <form id="planner-add-form" class="mt-auto flex flex-col sm:flex-row gap-3 bg-gray-900/60 p-4 rounded-xl border border-gray-700 shadow-inner items-center">
-                        <input type="text" id="planner-task-title" required placeholder="New task (e.g., C Programming Notes)" class="w-full flex-grow bg-gray-800 border border-gray-600 rounded-lg px-4 py-2.5 text-white focus:outline-none focus:border-brand-primary text-sm transition">
-                        <div class="flex w-full sm:w-auto gap-3 shrink-0">
-                            <div class="relative w-full sm:w-28">
-                                <input type="number" id="planner-task-time" required placeholder="Mins" min="1" max="300" value="25" class="w-full bg-gray-800 border border-gray-600 rounded-lg pl-3 pr-8 py-2.5 text-white focus:outline-none focus:border-brand-primary text-sm transition text-center">
-                                <span class="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500 text-xs">m</span>
+                    <form id="planner-add-form" class="mt-auto flex flex-col gap-3 bg-gray-900/60 p-4 rounded-xl border border-gray-700 shadow-inner">
+                        <div class="flex flex-col sm:flex-row gap-3">
+                            <input type="text" id="planner-task-title" required placeholder="New task title (e.g., Module 1 Revision)" class="w-full flex-grow bg-gray-800 border border-gray-600 rounded-lg px-4 py-2.5 text-white focus:outline-none focus:border-brand-accent text-sm transition">
+                            <select id="planner-task-subject" class="w-full sm:w-1/3 bg-gray-800 border border-gray-600 rounded-lg px-3 py-2.5 text-white focus:outline-none focus:border-brand-accent text-sm transition">
+                                <option value="">No Subject linked</option>
+                                <!-- Populated dynamically -->
+                            </select>
+                        </div>
+                        <div class="flex flex-col sm:flex-row gap-3 items-center">
+                            <div class="flex gap-2 w-full sm:w-auto items-center">
+                                <span class="text-xs text-gray-400 whitespace-nowrap">Time:</span>
+                                <input type="time" id="planner-task-scheduled-time" class="w-full bg-gray-800 border border-gray-600 rounded-lg px-3 py-2.5 text-white focus:outline-none focus:border-brand-accent text-sm transition">
                             </div>
-                            <button type="submit" class="bg-brand-primary hover:bg-brand-secondary text-white px-5 py-2.5 rounded-lg font-bold transition flex items-center justify-center gap-2 text-sm shadow-lg w-full sm:w-auto shrink-0"><i class="fas fa-plus"></i></button>
+                            <div class="flex gap-2 w-full sm:w-auto items-center">
+                                <span class="text-xs text-gray-400 whitespace-nowrap">Duration:</span>
+                                <div class="relative w-full">
+                                    <input type="number" id="planner-task-time" required placeholder="Mins" min="1" max="300" value="25" class="w-full bg-gray-800 border border-gray-600 rounded-lg pl-3 pr-8 py-2.5 text-white focus:outline-none focus:border-brand-accent text-sm transition text-center">
+                                    <span class="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500 text-xs">m</span>
+                                </div>
+                            </div>
+                            <button type="submit" class="bg-gradient-to-r from-brand-accent to-pink-500 text-white px-6 py-2.5 rounded-lg font-bold transition flex items-center justify-center gap-2 text-sm shadow-lg w-full sm:w-auto ml-auto hover:scale-105"><i class="fas fa-plus"></i> Add Task</button>
                         </div>
                     </form>
                 </div>
 
                 <!-- Focus Timer -->
-                <div class="lg:col-span-5 glass-card p-8 rounded-2xl flex flex-col items-center justify-center border-t-4 border-t-brand-secondary relative overflow-hidden min-h-[450px]">
-                    <div class="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(59,130,246,0.08)_0%,transparent_70%)] pointer-events-none"></div>
+                <div class="lg:col-span-5 glass-card p-8 rounded-2xl flex flex-col items-center justify-center border-t-4 border-t-pink-500 relative overflow-hidden min-h-[450px]">
+                    <div class="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(236,72,153,0.08)_0%,transparent_70%)] pointer-events-none"></div>
                     
-                    <h3 class="text-xl font-bold text-white mb-2 z-10 w-full text-center tracking-wide">Focus Session</h3>
-                    <p id="active-task-display" class="text-sm text-brand-primary font-medium mb-8 z-10 w-full text-center h-5 truncate px-4 bg-brand-primary/10 py-1 rounded-full border border-brand-primary/20 inline-block w-fit mx-auto">Select a task from planner</p>
+                    <h3 class="text-xl font-bold text-white mb-2 z-10 w-full text-center tracking-wide">Focus Session (+50 XP)</h3>
+                    <p id="active-task-display" class="text-sm text-pink-400 font-medium mb-8 z-10 w-full text-center h-5 truncate px-4 bg-pink-500/10 py-1 rounded-full border border-pink-500/20 inline-block w-fit mx-auto">Select a task from planner</p>
 
-                    <div class="relative w-64 h-64 mb-10 z-10 drop-shadow-[0_0_20px_rgba(0,0,0,0.6)] flex items-center justify-center">
+                    <div class="relative w-64 h-64 mb-10 z-10 drop-shadow-[0_0_30px_rgba(0,0,0,0.8)] flex items-center justify-center">
                         <svg class="absolute w-full h-full transform -rotate-90" viewBox="0 0 100 100">
                             <circle cx="50" cy="50" r="45" fill="none" stroke="rgba(255,255,255,0.05)" stroke-width="3"></circle>
-                            <circle id="timer-progress" cx="50" cy="50" r="45" fill="none" stroke="url(#gradient-timer)" stroke-width="4" stroke-linecap="round" stroke-dasharray="283" stroke-dashoffset="0" class="timer-ring"></circle>
+                            <circle id="timer-progress" cx="50" cy="50" r="45" fill="none" stroke="url(#gradient-timer)" stroke-width="4" stroke-linecap="round" stroke-dasharray="283" stroke-dashoffset="0" class="timer-ring drop-shadow-[0_0_10px_rgba(236,72,153,0.8)]"></circle>
                             <defs>
                                 <linearGradient id="gradient-timer" x1="0%" y1="0%" x2="100%" y2="100%">
                                     <stop offset="0%" stop-color="#06b6d4" />
-                                    <stop offset="100%" stop-color="#8b5cf6" />
+                                    <stop offset="50%" stop-color="#8b5cf6" />
+                                    <stop offset="100%" stop-color="#ec4899" />
                                 </linearGradient>
                             </defs>
                         </svg>
                         <div class="absolute inset-0 flex flex-col items-center justify-center z-20">
-                            <span id="timer-display" class="text-6xl font-mono font-bold text-white tracking-widest drop-shadow-[0_0_15px_rgba(6,182,212,0.8)]">25:00</span>
-                            <span id="timer-status" class="text-xs text-brand-primary uppercase tracking-[0.2em] mt-3 font-bold bg-gray-900/80 px-3 py-1 rounded-full border border-gray-700">Ready</span>
+                            <span id="timer-display" class="text-6xl font-mono font-bold text-white tracking-widest drop-shadow-[0_0_15px_rgba(139,92,246,0.8)]">25:00</span>
+                            <span id="timer-status" class="text-xs text-brand-accent uppercase tracking-[0.2em] mt-3 font-bold bg-gray-900/80 px-3 py-1 rounded-full border border-gray-700">Ready</span>
                         </div>
                     </div>
 
                     <div class="flex items-center gap-5 z-10">
                         <button onclick="adjustTimer(-5)" class="w-12 h-12 rounded-full bg-gray-800 text-gray-400 hover:text-white hover:bg-gray-700 transition flex items-center justify-center border border-gray-700 shadow-lg"><i class="fas fa-minus"></i></button>
-                        <button id="timer-toggle-btn" onclick="toggleTimer()" class="w-16 h-16 rounded-full bg-gradient-to-tr from-brand-primary to-brand-secondary text-white text-2xl flex items-center justify-center hover:scale-105 transition-all shadow-[0_0_25px_rgba(6,182,212,0.5)] border border-white/20"><i class="fas fa-play ml-1"></i></button>
+                        <button id="timer-toggle-btn" onclick="toggleTimer()" class="w-16 h-16 rounded-full bg-gradient-to-tr from-brand-accent to-pink-500 text-white text-2xl flex items-center justify-center hover:scale-105 transition-all shadow-[0_0_25px_rgba(236,72,153,0.5)] border border-white/20"><i class="fas fa-play ml-1"></i></button>
                         <button onclick="resetTimer()" class="w-12 h-12 rounded-full bg-gray-800 text-red-400 hover:text-red-300 hover:bg-gray-700 transition flex items-center justify-center border border-gray-700 shadow-lg"><i class="fas fa-undo"></i></button>
                         <button onclick="adjustTimer(5)" class="w-12 h-12 rounded-full bg-gray-800 text-gray-400 hover:text-white hover:bg-gray-700 transition flex items-center justify-center border border-gray-700 shadow-lg"><i class="fas fa-plus"></i></button>
                     </div>
@@ -483,7 +539,7 @@
                         <input type="text" id="search-notices" placeholder="Search notices by title or type..." class="w-full bg-gray-900/80 border border-gray-700 rounded-lg py-2.5 pr-4 text-white focus:outline-none text-sm" onkeyup="filterNotices()">
                     </div>
                 </div>
-                <button onclick="openNoticeModal()" class="bg-gradient-to-r from-brand-primary to-brand-secondary text-white px-8 py-4 rounded-xl font-bold hover:shadow-lg hover:shadow-brand-primary/40 transition-all flex items-center gap-3 transform hover:-translate-y-1 whitespace-nowrap">
+                <button onclick="openNoticeModal()" class="bg-gradient-to-r from-brand-primary via-brand-accent to-pink-500 text-white px-8 py-4 rounded-xl font-bold hover:shadow-[0_0_20px_rgba(139,92,246,0.4)] transition-all flex items-center gap-3 transform hover:-translate-y-1 whitespace-nowrap">
                     <i class="fas fa-plus-circle text-xl"></i> Post Update
                 </button>
             </div>
@@ -502,7 +558,7 @@
         <section id="study" class="page-section max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
             <div class="text-center mb-12 reveal">
                 <h2 class="text-4xl font-serif font-bold mb-4">Study <span class="text-gradient">Materials</span></h2>
-                <p class="text-gray-400 max-w-2xl mx-auto">A shared repository for all subjects. Discover the world-class C programming resources inside!</p>
+                <p class="text-gray-400 max-w-2xl mx-auto">A shared repository for all subjects.</p>
             </div>
 
             <div id="subjects-view" class="reveal">
@@ -513,9 +569,9 @@
                     </div>
                     <div class="flex items-center gap-3 w-full md:w-auto">
                         <button onclick="sortSubjects()" class="bg-gray-800 hover:bg-gray-700 text-white px-4 py-2.5 rounded-lg font-medium transition-colors border border-gray-700 flex items-center gap-2">
-                            <i class="fas fa-sort-alpha-down text-brand-primary"></i> Sort
+                            <i class="fas fa-sort-alpha-down text-brand-accent"></i> Sort
                         </button>
-                        <button onclick="openSubjectModal()" class="bg-brand-primary hover:bg-brand-secondary text-white px-6 py-2.5 rounded-lg font-semibold transition-colors flex items-center gap-2 shadow-lg shadow-brand-primary/20 whitespace-nowrap flex-grow justify-center">
+                        <button onclick="openSubjectModal()" class="bg-brand-accent hover:bg-pink-500 text-white px-6 py-2.5 rounded-lg font-semibold transition-colors flex items-center gap-2 shadow-lg shadow-brand-accent/20 whitespace-nowrap flex-grow justify-center">
                             <i class="fas fa-plus"></i> Create Folder
                         </button>
                     </div>
@@ -530,11 +586,11 @@
 
             <!-- Subject Detail View -->
             <div id="subject-detail-view" class="hidden reveal">
-                <button onclick="closeSubjectDetail()" class="text-brand-primary hover:text-brand-secondary mb-6 flex items-center gap-2 transition font-medium bg-brand-primary/10 hover:bg-brand-primary/20 px-4 py-2 rounded-lg w-fit border border-brand-primary/20">
+                <button onclick="closeSubjectDetail()" class="text-brand-accent hover:text-pink-400 mb-6 flex items-center gap-2 transition font-medium bg-brand-accent/10 hover:bg-brand-accent/20 px-4 py-2 rounded-lg w-fit border border-brand-accent/20">
                     <i class="fas fa-arrow-left"></i> Back to Directory
                 </button>
                 <div class="glass-card p-6 md:p-10 rounded-2xl relative overflow-hidden border border-gray-700/50 shadow-2xl">
-                    <div class="absolute top-0 right-0 w-64 h-64 bg-brand-primary/10 rounded-full blur-3xl -mt-20 -mr-20 pointer-events-none"></div>
+                    <div class="absolute top-0 right-0 w-64 h-64 bg-brand-accent/10 rounded-full blur-[80px] -mt-20 -mr-20 pointer-events-none"></div>
                     <h2 id="detail-subject-title" class="text-3xl md:text-4xl font-bold mb-8 text-white flex items-center gap-3"></h2>
                     
                     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -554,10 +610,10 @@
                             <ul id="detail-extrabooks-list" class="space-y-3 text-sm flex-grow overflow-y-auto custom-scrollbar pr-2 min-h-[16rem] max-h-[30rem]"></ul>
                         </div>
                         
-                        <div class="bg-gray-900/60 p-6 rounded-xl border border-gray-700/50 hover:border-brand-secondary/50 transition-all hover:shadow-[0_0_15px_rgba(59,130,246,0.15)] flex flex-col">
+                        <div class="bg-gray-900/60 p-6 rounded-xl border border-gray-700/50 hover:border-brand-primary/50 transition-all hover:shadow-[0_0_15px_rgba(6,182,212,0.15)] flex flex-col">
                             <div class="flex justify-between items-center mb-4 pb-3 border-b border-gray-700">
-                                <h4 class="font-bold text-lg flex items-center gap-2 text-white"><i class="fas fa-file-alt text-brand-secondary text-xl"></i> Class Notes</h4>
-                                <button onclick="openResourceModal('notes')" class="text-xs bg-brand-secondary/20 hover:bg-brand-secondary text-brand-secondary hover:text-white px-3 py-1.5 rounded transition font-medium"><i class="fas fa-plus mr-1"></i> Add</button>
+                                <h4 class="font-bold text-lg flex items-center gap-2 text-white"><i class="fas fa-file-alt text-brand-primary text-xl"></i> Class Notes</h4>
+                                <button onclick="openResourceModal('notes')" class="text-xs bg-brand-primary/20 hover:bg-brand-primary text-brand-primary hover:text-white px-3 py-1.5 rounded transition font-medium"><i class="fas fa-plus mr-1"></i> Add</button>
                             </div>
                             <ul id="detail-notes-list" class="space-y-3 text-sm flex-grow overflow-y-auto custom-scrollbar pr-2 min-h-[16rem] max-h-[30rem]"></ul>
                         </div>
@@ -599,10 +655,10 @@
             <div id="next-class-banner" class="reveal"></div>
             
             <div class="glass-card rounded-2xl overflow-hidden border border-gray-700 shadow-2xl reveal relative">
-                <div class="absolute -top-20 -right-20 w-40 h-40 bg-brand-primary/20 blur-3xl rounded-full"></div>
+                <div class="absolute -top-20 -right-20 w-40 h-40 bg-brand-accent/20 blur-3xl rounded-full mix-blend-screen"></div>
                 <div class="overflow-x-auto custom-scrollbar relative z-10">
                     <table class="w-full text-left border-collapse min-w-[1000px]">
-                        <thead class="bg-gray-800/80 text-brand-primary border-b border-gray-700 backdrop-blur-sm">
+                        <thead class="bg-gray-800/80 text-brand-accent border-b border-gray-700 backdrop-blur-sm">
                             <tr class="whitespace-nowrap">
                                 <th class="p-4 font-semibold w-24">Day</th>
                                 <th class="p-4 font-semibold text-center text-xs w-32 border-l border-gray-700">Period 1<br><span class="text-gray-400 font-normal">09:30 - 10:15</span></th>
@@ -623,8 +679,8 @@
                 </div>
             </div>
             <div class="mt-4 flex justify-end items-center gap-4 text-xs reveal">
-                <div class="flex items-center gap-2 text-gray-400"><span class="w-3 h-3 rounded-full bg-brand-primary/30 border border-brand-primary inline-block animate-pulse"></span> Current Class</div>
-                <div class="flex items-center gap-2 text-gray-400"><span class="w-1 h-4 bg-brand-primary inline-block"></span> Current Day</div>
+                <div class="flex items-center gap-2 text-gray-400"><span class="w-3 h-3 rounded-full bg-brand-accent/30 border border-brand-accent inline-block animate-pulse"></span> Current Class</div>
+                <div class="flex items-center gap-2 text-gray-400"><span class="w-1 h-4 bg-brand-accent inline-block"></span> Current Day</div>
             </div>
         </section>
 
@@ -660,8 +716,8 @@
                 <h2 class="text-4xl font-serif font-bold mb-4">Contact <span class="text-gradient">Us</span></h2>
                 <div class="flex items-center justify-center mb-4">
                     <div class="relative">
-                        <div class="absolute inset-0 bg-brand-primary blur rounded-full opacity-50 animate-pulse"></div>
-                        <img src="Srimon Banik.jpg" alt="Srimon Banik" class="relative w-20 h-20 rounded-full border-2 border-brand-primary object-cover shadow-[0_0_15px_rgba(6,182,212,0.5)]" onerror="this.onerror=null; this.src='https://placehold.co/100x100/06b6d4/ffffff?text=SB'">
+                        <div class="absolute inset-0 bg-brand-accent blur rounded-full opacity-50 animate-pulse"></div>
+                        <img src="Srimon Banik.jpg" alt="Srimon Banik" class="relative w-20 h-20 rounded-full border-2 border-brand-accent object-cover shadow-[0_0_15px_rgba(139,92,246,0.5)]" onerror="this.onerror=null; this.src='https://placehold.co/100x100/06b6d4/ffffff?text=SB'">
                     </div>
                 </div>
                 <p class="text-gray-400">Get in touch with Srimon Banik and the B8 admin team.</p>
@@ -669,26 +725,26 @@
 
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 reveal">
                 <!-- Contact Form -->
-                <div class="glass-card p-8 rounded-2xl border border-gray-700/50 hover:border-brand-primary/30 transition-colors h-fit">
+                <div class="glass-card p-8 rounded-2xl border border-gray-700/50 hover:border-brand-accent/30 transition-colors h-fit">
                     <h3 class="text-2xl font-bold mb-6 flex items-center gap-3 text-white">
-                        <i class="fas fa-envelope-open-text text-brand-primary"></i> Send a Message
+                        <i class="fas fa-envelope-open-text text-brand-accent"></i> Send a Message
                     </h3>
                     <p class="text-sm text-gray-400 mb-6">This form routes your message securely and directly to <span class="text-white font-medium">srimonbanik2007@gmail.com</span>.</p>
                     
                     <form id="contact-form" class="space-y-5" onsubmit="submitForm(event)">
                         <div>
                             <label class="block text-sm font-medium text-gray-400 mb-1">Your Name</label>
-                            <input type="text" id="form-name" required class="w-full bg-gray-900/50 border border-gray-700 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-brand-primary focus:ring-1 focus:ring-brand-primary transition">
+                            <input type="text" id="form-name" required class="w-full bg-gray-900/50 border border-gray-700 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-brand-accent focus:ring-1 focus:ring-brand-accent transition">
                         </div>
                         <div>
                             <label class="block text-sm font-medium text-gray-400 mb-1">Subject</label>
-                            <input type="text" id="form-subject" required class="w-full bg-gray-900/50 border border-gray-700 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-brand-primary focus:ring-1 focus:ring-brand-primary transition">
+                            <input type="text" id="form-subject" required class="w-full bg-gray-900/50 border border-gray-700 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-brand-accent focus:ring-1 focus:ring-brand-accent transition">
                         </div>
                         <div>
                             <label class="block text-sm font-medium text-gray-400 mb-1">Message</label>
-                            <textarea id="form-message" rows="4" required class="w-full bg-gray-900/50 border border-gray-700 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-brand-primary focus:ring-1 focus:ring-brand-primary transition"></textarea>
+                            <textarea id="form-message" rows="4" required class="w-full bg-gray-900/50 border border-gray-700 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-brand-accent focus:ring-1 focus:ring-brand-accent transition"></textarea>
                         </div>
-                        <button type="submit" class="w-full bg-gradient-to-r from-brand-primary to-brand-secondary text-white font-bold py-3 px-4 rounded-lg hover:shadow-lg hover:shadow-brand-primary/40 transition transform hover:-translate-y-1">
+                        <button type="submit" class="w-full bg-gradient-to-r from-brand-primary to-brand-accent text-white font-bold py-3 px-4 rounded-lg hover:shadow-[0_0_15px_rgba(139,92,246,0.4)] transition transform hover:-translate-y-1">
                             Submit via Email Client <i class="fas fa-paper-plane ml-2"></i>
                         </button>
                     </form>
@@ -784,18 +840,18 @@
             </div>
 
             <div class="flex flex-col lg:flex-row items-center gap-12 bg-gray-900/40 rounded-3xl p-8 lg:p-12 border border-white/5 relative overflow-hidden reveal shadow-2xl">
-                <div class="absolute -top-24 -right-24 w-64 h-64 bg-brand-primary/20 rounded-full blur-3xl animate-blob"></div>
-                <div class="absolute -bottom-24 -left-24 w-64 h-64 bg-brand-secondary/20 rounded-full blur-3xl animate-blob animation-delay-2000"></div>
+                <div class="absolute -top-24 -right-24 w-64 h-64 bg-brand-accent/20 rounded-full blur-3xl animate-blob"></div>
+                <div class="absolute -bottom-24 -left-24 w-64 h-64 bg-pink-500/20 rounded-full blur-3xl animate-blob animation-delay-2000"></div>
                 
                 <div class="lg:w-2/5 relative z-10">
                     <div class="relative group cursor-pointer">
-                        <div class="absolute -inset-1 bg-gradient-to-r from-brand-primary to-brand-secondary rounded-2xl blur opacity-30 group-hover:opacity-70 transition duration-1000 group-hover:duration-200"></div>
+                        <div class="absolute -inset-1 bg-gradient-to-r from-brand-primary to-brand-accent rounded-2xl blur opacity-30 group-hover:opacity-70 transition duration-1000 group-hover:duration-200"></div>
                         <img src="Srimon Banik.jpg" alt="Srimon Banik" class="relative rounded-2xl object-cover shadow-2xl border border-white/10 w-full max-h-[500px] transition-transform duration-500 group-hover:scale-[1.02]" onerror="this.onerror=null; this.src='https://placehold.co/400x500/06b6d4/ffffff?text=Creator'">
                     </div>
                 </div>
                 
                 <div class="lg:w-3/5 relative z-10 space-y-6">
-                    <div class="inline-block bg-brand-primary/20 text-brand-primary px-4 py-1.5 rounded-full text-sm font-semibold tracking-wide border border-brand-primary/30 shadow-inner">
+                    <div class="inline-block bg-brand-accent/20 text-brand-accent px-4 py-1.5 rounded-full text-sm font-semibold tracking-wide border border-brand-accent/30 shadow-inner">
                         Creator & Lead Developer
                     </div>
                     <h3 class="text-4xl md:text-5xl font-bold text-white">Srimon Banik</h3>
@@ -835,13 +891,13 @@
 
     </main>
 
-    <footer class="bg-gray-900/90 border-t border-gray-800 pt-16 pb-8 relative z-10 backdrop-blur-xl">
+    <footer class="bg-[#030610]/90 border-t border-gray-800 pt-16 pb-8 relative z-10 backdrop-blur-xl">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 reveal">
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10 mb-12">
                 <div class="col-span-1 lg:col-span-1">
                     <div class="flex items-center space-x-3 mb-6">
-                        <img src="ChatGPT Image Jul 22, 2026, 03_22_36 PM.png" alt="Logo" class="h-10 w-10 rounded-full border border-brand-primary" onerror="this.onerror=null; this.src='https://placehold.co/100x100/06b6d4/ffffff?text=B8'">
-                        <span class="font-serif text-xl font-bold text-white">IEM <span class="text-brand-primary">B8</span></span>
+                        <img src="ChatGPT Image Jul 22, 2026, 03_22_36 PM.png" alt="Logo" class="h-10 w-10 rounded-full border border-brand-accent" onerror="this.onerror=null; this.src='https://placehold.co/100x100/06b6d4/ffffff?text=B8'">
+                        <span class="font-serif text-xl font-bold text-white">IEM <span class="text-brand-accent">B8</span></span>
                     </div>
                     <p class="text-gray-400 text-sm mb-6">The ultimate academic companion for the future AI/ML engineers of IEM 2030.</p>
                     
@@ -861,11 +917,11 @@
                     <h4 class="text-white font-bold mb-6">Contact Info</h4>
                     <ul class="space-y-4 text-sm text-gray-400">
                         <li class="flex items-start gap-3">
-                            <i class="fas fa-map-marker-alt mt-1 text-brand-primary"></i>
+                            <i class="fas fa-map-marker-alt mt-1 text-brand-accent"></i>
                             <span>EP Block, Sector V, Salt Lake City,<br>Calcutta, West Bengal, 700091</span>
                         </li>
                         <li class="flex items-center gap-3">
-                            <i class="fas fa-envelope text-brand-primary"></i>
+                            <i class="fas fa-envelope text-brand-accent"></i>
                             <a href="mailto:srimonbanik2007@gmail.com" class="hover:text-white transition">srimonbanik2007@gmail.com</a>
                         </li>
                     </ul>
@@ -880,7 +936,7 @@
             <div class="border-t border-gray-800 pt-8 flex flex-col md:flex-row justify-between items-center text-xs text-gray-500">
                 <p>&copy; 2026 IEM 2030 B8. All rights reserved.</p>
                 <div class="mt-4 md:mt-0 flex items-center gap-2">
-                    <p>Designed & Built by <span class="text-brand-primary font-semibold">Srimon Banik</span></p>
+                    <p>Designed & Built by <span class="text-brand-accent font-semibold">Srimon Banik</span></p>
                 </div>
             </div>
         </div>
@@ -910,42 +966,42 @@
                 <span class="absolute left-14 bg-gray-900 text-white text-xs px-2 py-1 rounded opacity-0 group-hover/tooltip:opacity-100 transition whitespace-nowrap pointer-events-none border border-gray-700 z-10">Back to Top</span>
             </button>
         </div>
-        <button class="w-14 h-14 bg-gradient-to-r from-brand-primary to-brand-secondary text-white rounded-full flex items-center justify-center shadow-[0_0_20px_rgba(6,182,212,0.4)] hover:scale-110 transition-transform relative">
+        <button class="w-14 h-14 bg-gradient-to-r from-brand-primary via-brand-accent to-pink-500 text-white rounded-full flex items-center justify-center shadow-[0_0_20px_rgba(139,92,246,0.4)] hover:scale-110 transition-transform relative">
             <i class="fas fa-bolt text-xl group-hover:rotate-180 transition-transform duration-500"></i>
-            <span id="fab-timer-badge" class="hidden absolute top-0 right-0 w-3 h-3 bg-purple-500 border-2 border-[#0a0f1c] rounded-full animate-ping"></span>
+            <span id="fab-timer-badge" class="hidden absolute top-0 right-0 w-3 h-3 bg-pink-500 border-2 border-[#0a0f1c] rounded-full animate-ping"></span>
         </button>
     </div>
 
     <!-- Modals -->
     <div id="calc-modal" class="fixed inset-0 bg-black/80 z-[600] hidden items-center justify-center backdrop-blur-sm">
-        <div class="glass-card w-full max-w-sm p-6 rounded-2xl m-4 relative animate-fadeIn border border-brand-primary/30 shadow-2xl">
+        <div class="glass-card w-full max-w-sm p-6 rounded-2xl m-4 relative animate-fadeIn border border-brand-accent/30 shadow-2xl">
             <button onclick="closeCalcModal()" class="absolute top-4 right-4 text-gray-400 hover:text-white transition">
                 <i class="fas fa-times text-xl"></i>
             </button>
-            <h3 class="text-xl font-bold text-white mb-2 flex items-center gap-2"><i class="fas fa-calculator text-brand-primary"></i> Quick SGPA Calculator</h3>
+            <h3 class="text-xl font-bold text-white mb-2 flex items-center gap-2"><i class="fas fa-calculator text-brand-accent"></i> Quick SGPA Calculator</h3>
             <p class="text-xs text-gray-400 mb-4">Input Grade Points (10 for O, 9 for E, etc.) & Credits</p>
             
             <div id="calc-rows" class="space-y-3 max-h-60 overflow-y-auto custom-scrollbar pr-2 mb-4">
                 <div class="flex gap-2 calc-row">
-                    <input type="number" placeholder="Grade (1-10)" max="10" min="0" class="w-1/2 bg-gray-900/80 border border-gray-700 rounded p-2 text-white text-sm focus:outline-none focus:border-brand-primary">
-                    <input type="number" placeholder="Credits (e.g. 3)" min="0" class="w-1/2 bg-gray-900/80 border border-gray-700 rounded p-2 text-white text-sm focus:outline-none focus:border-brand-primary">
+                    <input type="number" placeholder="Grade (1-10)" max="10" min="0" class="w-1/2 bg-gray-900/80 border border-gray-700 rounded p-2 text-white text-sm focus:outline-none focus:border-brand-accent">
+                    <input type="number" placeholder="Credits (e.g. 3)" min="0" class="w-1/2 bg-gray-900/80 border border-gray-700 rounded p-2 text-white text-sm focus:outline-none focus:border-brand-accent">
                 </div>
                 <div class="flex gap-2 calc-row">
-                    <input type="number" placeholder="Grade (1-10)" max="10" min="0" class="w-1/2 bg-gray-900/80 border border-gray-700 rounded p-2 text-white text-sm focus:outline-none focus:border-brand-primary">
-                    <input type="number" placeholder="Credits (e.g. 3)" min="0" class="w-1/2 bg-gray-900/80 border border-gray-700 rounded p-2 text-white text-sm focus:outline-none focus:border-brand-primary">
+                    <input type="number" placeholder="Grade (1-10)" max="10" min="0" class="w-1/2 bg-gray-900/80 border border-gray-700 rounded p-2 text-white text-sm focus:outline-none focus:border-brand-accent">
+                    <input type="number" placeholder="Credits (e.g. 3)" min="0" class="w-1/2 bg-gray-900/80 border border-gray-700 rounded p-2 text-white text-sm focus:outline-none focus:border-brand-accent">
                 </div>
                 <div class="flex gap-2 calc-row">
-                    <input type="number" placeholder="Grade (1-10)" max="10" min="0" class="w-1/2 bg-gray-900/80 border border-gray-700 rounded p-2 text-white text-sm focus:outline-none focus:border-brand-primary">
-                    <input type="number" placeholder="Credits (e.g. 3)" min="0" class="w-1/2 bg-gray-900/80 border border-gray-700 rounded p-2 text-white text-sm focus:outline-none focus:border-brand-primary">
+                    <input type="number" placeholder="Grade (1-10)" max="10" min="0" class="w-1/2 bg-gray-900/80 border border-gray-700 rounded p-2 text-white text-sm focus:outline-none focus:border-brand-accent">
+                    <input type="number" placeholder="Credits (e.g. 3)" min="0" class="w-1/2 bg-gray-900/80 border border-gray-700 rounded p-2 text-white text-sm focus:outline-none focus:border-brand-accent">
                 </div>
                 <div class="flex gap-2 calc-row">
-                    <input type="number" placeholder="Grade (1-10)" max="10" min="0" class="w-1/2 bg-gray-900/80 border border-gray-700 rounded p-2 text-white text-sm focus:outline-none focus:border-brand-primary">
-                    <input type="number" placeholder="Credits (e.g. 3)" min="0" class="w-1/2 bg-gray-900/80 border border-gray-700 rounded p-2 text-white text-sm focus:outline-none focus:border-brand-primary">
+                    <input type="number" placeholder="Grade (1-10)" max="10" min="0" class="w-1/2 bg-gray-900/80 border border-gray-700 rounded p-2 text-white text-sm focus:outline-none focus:border-brand-accent">
+                    <input type="number" placeholder="Credits (e.g. 3)" min="0" class="w-1/2 bg-gray-900/80 border border-gray-700 rounded p-2 text-white text-sm focus:outline-none focus:border-brand-accent">
                 </div>
             </div>
             <div class="flex gap-2 mb-4">
                 <button onclick="addCalcRow()" class="text-xs bg-gray-800 text-gray-300 px-3 py-1.5 rounded hover:bg-gray-700 flex-1">+ Add Row</button>
-                <button onclick="calculateSGPA()" class="text-xs bg-brand-primary text-white px-3 py-1.5 rounded font-bold hover:bg-brand-secondary flex-1">Calculate</button>
+                <button onclick="calculateSGPA()" class="text-xs bg-brand-accent text-white px-3 py-1.5 rounded font-bold hover:bg-pink-50 flex-1 transition-colors">Calculate</button>
             </div>
             <div class="bg-gray-900 p-3 rounded-lg text-center border border-gray-700">
                 <span class="text-gray-400 text-sm">Estimated SGPA:</span>
@@ -956,70 +1012,129 @@
 
     <!-- Payment Modal -->
     <div id="payment-modal" class="fixed inset-0 bg-black/80 z-[600] hidden items-center justify-center backdrop-blur-sm">
-        <div class="glass-card w-full max-w-sm p-8 rounded-2xl m-4 relative animate-fadeIn border border-brand-primary/30 shadow-2xl text-center">
+        <div class="glass-card w-full max-w-sm p-8 rounded-2xl m-4 relative animate-fadeIn border border-brand-accent/30 shadow-2xl text-center">
             <button onclick="closePaymentModal()" class="absolute top-4 right-4 text-gray-400 hover:text-white transition">
                 <i class="fas fa-times text-xl"></i>
             </button>
-            <div class="w-16 h-16 bg-gradient-to-tr from-brand-primary to-brand-secondary rounded-full flex items-center justify-center text-white text-2xl mx-auto mb-4 shadow-[0_0_15px_rgba(6,182,212,0.5)]">
+            <div class="w-16 h-16 bg-gradient-to-tr from-brand-primary to-brand-accent rounded-full flex items-center justify-center text-white text-2xl mx-auto mb-4 shadow-[0_0_15px_rgba(139,92,246,0.5)]">
                 <i class="fas fa-wallet"></i>
             </div>
             <h3 class="text-2xl font-serif font-bold text-white mb-1">Premium Access</h3>
             <p class="text-gray-400 text-sm mb-6">Pay to unlock <span id="payment-resource-type" class="font-bold text-white"></span></p>
             <div class="bg-gray-900/80 p-4 rounded-xl border border-gray-700 mb-6">
                 <p class="text-sm text-gray-400 mb-2">Amount to Pay</p>
-                <div id="payment-amount" class="text-3xl font-bold text-brand-primary mb-4">Rs. 0</div>
+                <div id="payment-amount" class="text-3xl font-bold text-brand-accent mb-4">Rs. 0</div>
                 <img src="image_ca9d6d.jpg" alt="UPI QR Code" class="w-48 h-48 mx-auto rounded-lg mb-4 border border-gray-700 object-contain bg-white">
                 <p class="text-xs text-gray-400">UPI ID</p>
-                <p class="text-sm font-mono font-bold text-white tracking-wider cursor-pointer hover:text-brand-primary transition flex justify-center items-center gap-2" onclick="copyUPI()">
+                <p class="text-sm font-mono font-bold text-white tracking-wider cursor-pointer hover:text-brand-accent transition flex justify-center items-center gap-2" onclick="copyUPI()">
                     srimonbanik2007@okicici <i class="far fa-copy"></i>
                 </p>
             </div>
-            <button onclick="confirmPayment()" class="w-full bg-gradient-to-r from-brand-primary to-brand-secondary text-white py-3 rounded-lg font-bold hover:shadow-lg hover:shadow-brand-primary/40 transition-all transform hover:-translate-y-0.5">
+            <button onclick="confirmPayment()" class="w-full bg-gradient-to-r from-brand-primary to-brand-accent text-white py-3 rounded-lg font-bold hover:shadow-[0_0_15px_rgba(139,92,246,0.4)] transition-all transform hover:-translate-y-0.5">
                 I have paid, unlock now <i class="fas fa-unlock ml-2"></i>
             </button>
         </div>
     </div>
 
-    <div id="auth-modal" class="fixed inset-0 bg-black/80 z-[300] hidden items-center justify-center backdrop-blur-sm">
-        <div class="glass-card w-full max-w-md p-8 rounded-2xl m-4 relative animate-fadeIn border border-brand-primary/30 shadow-2xl">
+    <!-- Enhanced Auth Modal -->
+    <div id="auth-modal" class="fixed inset-0 bg-black/80 z-[300] hidden items-center justify-center backdrop-blur-sm overflow-y-auto pt-10 pb-10">
+        <div class="glass-card w-full max-w-md p-8 rounded-2xl m-4 relative animate-fadeIn border border-brand-accent/30 shadow-2xl my-auto">
             <button onclick="closeAuthModal()" class="absolute top-4 right-4 text-gray-400 hover:text-white transition">
                 <i class="fas fa-times text-xl"></i>
             </button>
             <div class="text-center mb-8">
-                <div class="w-16 h-16 bg-gradient-to-tr from-brand-primary to-brand-secondary rounded-full flex items-center justify-center text-white text-2xl mx-auto mb-4 shadow-[0_0_15px_rgba(6,182,212,0.5)]">
-                    <i id="auth-icon" class="fas fa-user-lock"></i>
+                <div class="w-16 h-16 bg-gradient-to-tr from-brand-accent to-pink-500 rounded-full flex items-center justify-center text-white text-2xl mx-auto mb-4 shadow-[0_0_20px_rgba(236,72,153,0.5)] relative overflow-hidden">
+                    <img id="auth-avatar-preview" src="" class="hidden absolute inset-0 w-full h-full object-cover z-10" alt="Preview">
+                    <i id="auth-icon" class="fas fa-user-lock relative z-0"></i>
                 </div>
                 <h3 id="auth-title" class="text-2xl font-serif font-bold text-white">Welcome Back</h3>
-                <p id="auth-subtitle" class="text-gray-400 text-sm mt-2">Log in to post updates and share materials.</p>
+                <p id="auth-subtitle" class="text-gray-400 text-sm mt-2">Log in to post updates, gain XP, and share materials.</p>
             </div>
-            <form id="auth-form" onsubmit="handleAuthSubmit(event)" class="space-y-5">
+            
+            <form id="auth-form" onsubmit="handleAuthSubmit(event)" class="space-y-4">
+                <!-- Standard Login Fields -->
                 <div>
                     <label class="block text-sm font-medium text-gray-400 mb-1">Email Address</label>
                     <div class="relative">
                         <i class="fas fa-envelope absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-500"></i>
-                        <input type="email" id="auth-email" required placeholder="you@example.com" class="w-full bg-gray-900/80 border border-gray-700 rounded-lg pl-11 pr-4 py-3 text-white focus:outline-none focus:border-brand-primary transition">
+                        <input type="email" id="auth-email" required placeholder="you@example.com" class="w-full bg-gray-900/80 border border-gray-700 rounded-lg pl-11 pr-4 py-3 text-white focus:outline-none focus:border-brand-accent transition">
                     </div>
                 </div>
                 <div>
                     <label class="block text-sm font-medium text-gray-400 mb-1">Password</label>
                     <div class="relative">
                         <i class="fas fa-lock absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-500"></i>
-                        <input type="password" id="auth-password" required placeholder="••••••••" class="w-full bg-gray-900/80 border border-gray-700 rounded-lg pl-11 pr-4 py-3 text-white focus:outline-none focus:border-brand-primary transition">
+                        <input type="password" id="auth-password" required placeholder="••••••••" class="w-full bg-gray-900/80 border border-gray-700 rounded-lg pl-11 pr-4 py-3 text-white focus:outline-none focus:border-brand-accent transition">
                     </div>
                 </div>
-                <button type="submit" id="auth-submit-btn" class="w-full bg-gradient-to-r from-brand-primary to-brand-secondary text-white py-3 rounded-lg font-bold hover:shadow-lg hover:shadow-brand-primary/40 transition-all transform hover:-translate-y-0.5 mt-2 flex items-center justify-center gap-2">
+
+                <!-- Extended Sign-up Fields -->
+                <div id="signup-only-fields" class="signup-field hidden-field space-y-4 pt-2 border-t border-gray-800">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-400 mb-1">Profile Picture</label>
+                        <input type="file" id="auth-pic" accept="image/*" class="w-full bg-gray-900/80 border border-gray-700 rounded-lg px-3 py-2 text-gray-400 focus:outline-none focus:border-brand-accent transition text-sm file:mr-4 file:py-1 file:px-4 file:rounded-full file:border-0 file:text-xs file:font-semibold file:bg-brand-accent/20 file:text-brand-accent hover:file:bg-brand-accent/30" onchange="previewAvatar(event)">
+                    </div>
+                    
+                    <div class="grid grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-400 mb-1">Roll No.</label>
+                            <input type="text" id="auth-roll" placeholder="e.g. 120" class="w-full bg-gray-900/80 border border-gray-700 rounded-lg px-3 py-2.5 text-white focus:outline-none focus:border-brand-accent transition text-sm">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-400 mb-1">Year</label>
+                            <select id="auth-year" class="w-full bg-gray-900/80 border border-gray-700 rounded-lg px-3 py-2.5 text-white focus:outline-none focus:border-brand-accent transition text-sm appearance-none cursor-pointer">
+                                <option value="1st">1st Year</option>
+                                <option value="2nd">2nd Year</option>
+                                <option value="3rd">3rd Year</option>
+                                <option value="4th">4th Year</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-400 mb-1">Stream</label>
+                            <select id="auth-stream" class="w-full bg-gray-900/80 border border-gray-700 rounded-lg px-3 py-2.5 text-white focus:outline-none focus:border-brand-accent transition text-sm appearance-none cursor-pointer">
+                                <option value="CSE">CSE</option>
+                                <option value="CSE (AI/ML)" selected>CSE (AI/ML)</option>
+                                <option value="IT">IT</option>
+                                <option value="ECE">ECE</option>
+                                <option value="EE">EE</option>
+                                <option value="EEE">EEE</option>
+                                <option value="ME">ME</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-400 mb-1">Section</label>
+                            <select id="auth-section" class="w-full bg-gray-900/80 border border-gray-700 rounded-lg px-3 py-2.5 text-white focus:outline-none focus:border-brand-accent transition text-sm appearance-none cursor-pointer">
+                                <optgroup label="A Sections">
+                                    <option value="A1">A1</option><option value="A2">A2</option><option value="A3">A3</option>
+                                    <option value="A4">A4</option><option value="A5">A5</option><option value="A6">A6</option>
+                                    <option value="A7">A7</option><option value="A8">A8</option><option value="A9">A9</option><option value="A10">A10</option>
+                                </optgroup>
+                                <optgroup label="B Sections">
+                                    <option value="B1">B1</option><option value="B2">B2</option><option value="B3">B3</option>
+                                    <option value="B4">B4</option><option value="B5">B5</option><option value="B6">B6</option>
+                                    <option value="B7">B7</option><option value="B8" selected>B8</option><option value="B9">B9</option><option value="B10">B10</option>
+                                </optgroup>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <button type="submit" id="auth-submit-btn" class="w-full bg-gradient-to-r from-brand-primary via-brand-accent to-pink-500 text-white py-3 rounded-lg font-bold hover:shadow-[0_0_15px_rgba(139,92,246,0.4)] transition-all transform hover:-translate-y-0.5 mt-4 flex items-center justify-center gap-2">
                     Log In
                 </button>
             </form>
             <div class="mt-6 text-center text-sm text-gray-400">
                 <span id="auth-toggle-text">Don't have an account?</span> 
-                <button onclick="toggleAuthMode()" id="auth-toggle-btn" class="text-brand-primary hover:text-brand-secondary font-semibold transition ml-1">Sign Up</button>
+                <button onclick="toggleAuthMode()" id="auth-toggle-btn" class="text-brand-accent hover:text-pink-400 font-semibold transition ml-1">Sign Up</button>
             </div>
         </div>
     </div>
 
     <div id="confirm-modal" class="fixed inset-0 bg-black/80 z-[500] hidden items-center justify-center backdrop-blur-sm">
-        <div class="glass-card w-full max-w-sm p-6 rounded-2xl m-4 animate-fadeIn border border-brand-primary/30 shadow-2xl text-center relative">
+        <div class="glass-card w-full max-w-sm p-6 rounded-2xl m-4 animate-fadeIn border border-brand-accent/30 shadow-2xl text-center relative">
             <div class="w-16 h-16 bg-red-500/20 rounded-full flex items-center justify-center text-red-500 text-2xl mx-auto mb-4">
                 <i class="fas fa-exclamation-triangle"></i>
             </div>
@@ -1033,54 +1148,54 @@
     </div>
 
     <div id="add-subject-modal" class="fixed inset-0 bg-black/80 z-[200] hidden items-center justify-center backdrop-blur-sm">
-        <div class="glass-card w-full max-w-md p-6 rounded-2xl m-4 animate-fadeIn border border-brand-primary/30 shadow-2xl">
+        <div class="glass-card w-full max-w-md p-6 rounded-2xl m-4 animate-fadeIn border border-brand-accent/30 shadow-2xl">
             <div class="flex justify-between items-center mb-6">
-                <h3 class="text-xl font-bold text-white flex items-center gap-2"><i class="fas fa-folder-plus text-brand-primary"></i> Create Subject</h3>
+                <h3 class="text-xl font-bold text-white flex items-center gap-2"><i class="fas fa-folder-plus text-brand-accent"></i> Create Subject</h3>
                 <button onclick="closeSubjectModal()" class="text-gray-400 hover:text-white transition"><i class="fas fa-times text-xl"></i></button>
             </div>
-            <p class="text-xs text-gray-400 mb-4 bg-gray-900 p-2 rounded border border-gray-800"><i class="fas fa-info-circle text-brand-primary"></i> Subjects created here will be visible to everyone in the batch.</p>
+            <p class="text-xs text-gray-400 mb-4 bg-gray-900 p-2 rounded border border-gray-800"><i class="fas fa-info-circle text-brand-accent"></i> Subjects created here will be visible to everyone in the batch.</p>
             <form onsubmit="handleAddSubject(event)">
                 <div class="mb-5">
                     <label class="block text-sm font-medium text-gray-400 mb-2">Subject Name</label>
-                    <input type="text" id="new-subject-name" required placeholder="e.g. Data Structures" class="w-full bg-gray-900/80 border border-gray-700 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-brand-primary transition">
+                    <input type="text" id="new-subject-name" required placeholder="e.g. Data Structures" class="w-full bg-gray-900/80 border border-gray-700 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-brand-accent transition">
                 </div>
-                <button type="submit" class="w-full bg-gradient-to-r from-brand-primary to-brand-secondary text-white py-3 rounded-lg font-bold hover:shadow-lg hover:shadow-brand-primary/40 transition-all">Create Subject</button>
+                <button type="submit" class="w-full bg-gradient-to-r from-brand-accent to-pink-500 text-white py-3 rounded-lg font-bold hover:shadow-[0_0_15px_rgba(236,72,153,0.4)] transition-all">Create Subject</button>
             </form>
         </div>
     </div>
 
     <div id="add-resource-modal" class="fixed inset-0 bg-black/80 z-[200] hidden items-center justify-center backdrop-blur-sm">
-        <div class="glass-card w-full max-w-md p-6 rounded-2xl m-4 animate-fadeIn border border-brand-primary/30 shadow-2xl">
+        <div class="glass-card w-full max-w-md p-6 rounded-2xl m-4 animate-fadeIn border border-brand-accent/30 shadow-2xl">
             <div class="flex justify-between items-center mb-6">
                 <h3 id="resource-modal-title" class="text-xl font-bold text-white flex items-center gap-2">Add Link</h3>
                 <button onclick="closeResourceModal()" class="text-gray-400 hover:text-white transition"><i class="fas fa-times text-xl"></i></button>
             </div>
-            <p class="text-xs text-gray-400 mb-4 bg-gray-900 p-2 rounded border border-gray-800"><i class="fas fa-info-circle text-brand-primary"></i> Links added here will be shared with Batch B8.</p>
+            <p class="text-xs text-gray-400 mb-4 bg-gray-900 p-2 rounded border border-gray-800"><i class="fas fa-info-circle text-brand-accent"></i> Links added here will be shared with Batch B8.</p>
             <form onsubmit="handleAddResource(event)">
                 <div class="mb-4">
                     <label class="block text-sm font-medium text-gray-400 mb-2">Title/Description</label>
-                    <input type="text" id="new-resource-title" required placeholder="e.g. Module 1 Notes PDF" class="w-full bg-gray-900/80 border border-gray-700 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-brand-primary transition">
+                    <input type="text" id="new-resource-title" required placeholder="e.g. Module 1 Notes PDF" class="w-full bg-gray-900/80 border border-gray-700 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-brand-accent transition">
                 </div>
                 <div class="mb-6">
                     <label class="block text-sm font-medium text-gray-400 mb-2">URL (Google Drive, YouTube, etc.)</label>
-                    <input type="url" id="new-resource-url" required placeholder="https://..." class="w-full bg-gray-900/80 border border-gray-700 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-brand-primary transition">
+                    <input type="url" id="new-resource-url" required placeholder="https://..." class="w-full bg-gray-900/80 border border-gray-700 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-brand-accent transition">
                 </div>
-                <button type="submit" class="w-full bg-gradient-to-r from-brand-primary to-brand-secondary text-white py-3 rounded-lg font-bold hover:shadow-lg hover:shadow-brand-primary/40 transition-all">Share Link</button>
+                <button type="submit" class="w-full bg-gradient-to-r from-brand-accent to-pink-500 text-white py-3 rounded-lg font-bold hover:shadow-[0_0_15px_rgba(236,72,153,0.4)] transition-all">Share Link</button>
             </form>
         </div>
     </div>
 
     <div id="add-notice-modal" class="fixed inset-0 bg-black/80 z-[200] hidden items-center justify-center backdrop-blur-sm">
-        <div class="glass-card w-full max-w-lg p-6 md:p-8 rounded-2xl m-4 animate-fadeIn max-h-[90vh] overflow-y-auto custom-scrollbar border border-brand-primary/30 shadow-2xl">
+        <div class="glass-card w-full max-w-lg p-6 md:p-8 rounded-2xl m-4 animate-fadeIn max-h-[90vh] overflow-y-auto custom-scrollbar border border-brand-accent/30 shadow-2xl">
             <div class="flex justify-between items-center mb-6">
-                <h3 class="text-2xl font-bold text-white flex items-center gap-2"><i class="fas fa-broadcast-tower text-brand-primary"></i> Post Update</h3>
+                <h3 class="text-2xl font-bold text-white flex items-center gap-2"><i class="fas fa-broadcast-tower text-brand-accent"></i> Post Update</h3>
                 <button onclick="closeNoticeModal()" class="text-gray-400 hover:text-white transition"><i class="fas fa-times text-xl"></i></button>
             </div>
-            <p class="text-xs text-gray-400 mb-5 bg-gray-900 p-3 rounded border border-gray-800"><i class="fas fa-globe text-brand-primary"></i> <strong>Note:</strong> Posting here makes the notice visible to everyone on the homepage and notice board.</p>
+            <p class="text-xs text-gray-400 mb-5 bg-gray-900 p-3 rounded border border-gray-800"><i class="fas fa-globe text-brand-accent"></i> <strong>Note:</strong> Posting here makes the notice visible to everyone on the homepage and notice board.</p>
             <form id="notice-form" onsubmit="handleAddNotice(event)" class="space-y-5">
                 <div>
                     <label class="block text-sm font-medium text-gray-400 mb-2">Notice Type</label>
-                    <select id="new-notice-type" class="w-full bg-gray-900/80 border border-gray-700 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-brand-primary appearance-none cursor-pointer">
+                    <select id="new-notice-type" class="w-full bg-gray-900/80 border border-gray-700 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-brand-accent appearance-none cursor-pointer">
                         <option value="Update">General Update</option>
                         <option value="Assignment">Assignment</option>
                         <option value="Homework">Homework</option>
@@ -1089,17 +1204,17 @@
                 </div>
                 <div>
                     <label class="block text-sm font-medium text-gray-400 mb-2">Title</label>
-                    <input type="text" id="new-notice-title" required placeholder="E.g., Submission deadline extended" class="w-full bg-gray-900/80 border border-gray-700 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-brand-primary transition">
+                    <input type="text" id="new-notice-title" required placeholder="E.g., Submission deadline extended" class="w-full bg-gray-900/80 border border-gray-700 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-brand-accent transition">
                 </div>
                 <div>
                     <label class="block text-sm font-medium text-gray-400 mb-2">Description (Text)</label>
-                    <textarea id="new-notice-desc" rows="4" required placeholder="Write the details of the notice here..." class="w-full bg-gray-900/80 border border-gray-700 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-brand-primary transition"></textarea>
+                    <textarea id="new-notice-desc" rows="4" required placeholder="Write the details of the notice here..." class="w-full bg-gray-900/80 border border-gray-700 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-brand-accent transition"></textarea>
                 </div>
                 <div>
                     <label class="block text-sm font-medium text-gray-400 mb-2">Attachment Link (Optional)</label>
-                    <input type="url" id="new-notice-link" placeholder="Paste Google Drive/Imgur link for Document/Picture" class="w-full bg-gray-900/80 border border-gray-700 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-brand-primary transition">
+                    <input type="url" id="new-notice-link" placeholder="Paste Google Drive/Imgur link for Document/Picture" class="w-full bg-gray-900/80 border border-gray-700 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-brand-accent transition">
                 </div>
-                <button type="submit" class="w-full bg-gradient-to-r from-brand-primary to-brand-secondary text-white py-3 rounded-lg font-bold hover:shadow-lg hover:shadow-brand-primary/40 transition-all mt-4">
+                <button type="submit" class="w-full bg-gradient-to-r from-brand-accent to-pink-500 text-white py-3 rounded-lg font-bold hover:shadow-[0_0_15px_rgba(236,72,153,0.4)] transition-all mt-4">
                     Broadcast to Batch
                 </button>
             </form>
@@ -1135,12 +1250,16 @@
             }
         });
 
+        // Advanced Galaxy Canvas Starfield
         function initStarfield() {
             const canvas = document.getElementById('starfield');
             if (!canvas) return;
             const ctx = canvas.getContext('2d');
             let width, height;
             let stars = [];
+            let nebulas = [];
+            
+            const colors = ['#ffffff', '#e0f2fe', '#fdf4ff', '#c084fc', '#2dd4bf'];
 
             function resize() {
                 width = canvas.width = window.innerWidth;
@@ -1148,14 +1267,13 @@
             }
 
             class Star {
-                constructor() {
-                    this.reset();
-                }
+                constructor() { this.reset(); this.z = Math.random() * width; }
                 reset() {
                     this.x = Math.random() * width;
                     this.y = Math.random() * height;
-                    this.z = Math.random() * width;
-                    this.size = Math.random() * 1.5;
+                    this.z = width;
+                    this.size = Math.random() * 2;
+                    this.color = colors[Math.floor(Math.random() * colors.length)];
                 }
                 update() {
                     this.z -= 0.5;
@@ -1170,21 +1288,53 @@
 
                     ctx.beginPath();
                     ctx.arc(x, y, s, 0, Math.PI * 2);
-                    ctx.fillStyle = `rgba(255, 255, 255, ${1 - this.z/width})`;
+                    ctx.fillStyle = this.color;
+                    ctx.globalAlpha = 1 - this.z/width;
+                    ctx.shadowBlur = 5;
+                    ctx.shadowColor = this.color;
+                    ctx.fill();
+                    ctx.shadowBlur = 0;
+                    ctx.globalAlpha = 1;
+                }
+            }
+
+            class Nebula {
+                constructor() {
+                    this.x = Math.random() * width;
+                    this.y = Math.random() * height;
+                    this.radius = Math.random() * 300 + 100;
+                    this.color = `rgba(${Math.random()>0.5?'139,92,246':'236,72,153'}, 0.05)`;
+                    this.vx = (Math.random() - 0.5) * 0.2;
+                    this.vy = (Math.random() - 0.5) * 0.2;
+                }
+                update() {
+                    this.x += this.vx; this.y += this.vy;
+                    if(this.x < -this.radius || this.x > width+this.radius) this.vx *= -1;
+                    if(this.y < -this.radius || this.y > height+this.radius) this.vy *= -1;
+                }
+                draw() {
+                    const gradient = ctx.createRadialGradient(this.x, this.y, 0, this.x, this.y, this.radius);
+                    gradient.addColorStop(0, this.color);
+                    gradient.addColorStop(1, 'transparent');
+                    ctx.beginPath();
+                    ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+                    ctx.fillStyle = gradient;
                     ctx.fill();
                 }
             }
 
             function init() {
                 resize();
-                stars = Array(200).fill().map(() => new Star());
+                stars = Array(300).fill().map(() => new Star());
+                nebulas = Array(6).fill().map(() => new Nebula());
                 window.addEventListener('resize', resize);
                 animate();
             }
 
             function animate() {
-                ctx.fillStyle = 'rgba(10, 15, 28, 0.2)'; 
+                ctx.fillStyle = 'rgba(5, 9, 20, 0.4)'; 
                 ctx.fillRect(0, 0, width, height);
+                nebulas.forEach(n => { n.update(); n.draw(); });
                 stars.forEach(s => { s.update(); s.draw(); });
                 requestAnimationFrame(animate);
             }
@@ -1192,6 +1342,25 @@
             init();
         }
 
+        // Gamification / XP System
+        function addXP(amount) {
+            if(!currentUserEmail) return;
+            let stats = getSafeStorage('b8_user_stats', { xp: 0, level: 1 });
+            stats.xp += amount;
+            let nextLevelXP = stats.level * 100;
+            
+            if (stats.xp >= nextLevelXP) {
+                stats.xp -= nextLevelXP;
+                stats.level++;
+                showToast(`Level Up! You are now Level ${stats.level} 🚀`, 'success');
+                try { new Audio('https://assets.mixkit.co/active_storage/sfx/2018/2018-preview.mp3').play(); } catch(e) {}
+            }
+            
+            setSafeStorage('b8_user_stats', stats);
+            updateNavUI();
+        }
+
+        // Study Planner Setup
         let plannerTasks = getSafeStorage('iem_b8_planner', { "Mon": [], "Tue": [], "Wed": [], "Thu": [], "Fri": [], "Sat": [], "Sun": [] });
         let activePlannerDay = 'Mon';
         
@@ -1200,6 +1369,17 @@
         let timerTotalTime = 25 * 60;
         let isTimerRunning = false;
         let currentTimerTask = null;
+
+        function populatePlannerSubjects() {
+            const select = document.getElementById('planner-task-subject');
+            if(!select) return;
+            const prevVal = select.value;
+            select.innerHTML = '<option value="">No Subject linked</option>';
+            subjects.sort((a,b) => a.name.localeCompare(b.name)).forEach(sub => {
+                select.innerHTML += `<option value="${sub.id}">${sub.name}</option>`;
+            });
+            if(prevVal) select.value = prevVal;
+        }
 
         function initPlanner() {
             document.querySelectorAll('.planner-day-btn').forEach(btn => {
@@ -1225,10 +1405,19 @@
             document.getElementById('planner-add-form').addEventListener('submit', (e) => {
                 e.preventDefault();
                 const title = document.getElementById('planner-task-title').value;
+                const subjectId = document.getElementById('planner-task-subject').value;
+                const scheduledTime = document.getElementById('planner-task-scheduled-time').value;
                 const time = parseInt(document.getElementById('planner-task-time').value);
                 
                 if(!plannerTasks[activePlannerDay]) plannerTasks[activePlannerDay] = [];
-                plannerTasks[activePlannerDay].push({ id: Date.now(), title, duration: time, completed: false });
+                plannerTasks[activePlannerDay].push({ 
+                    id: Date.now(), 
+                    title, 
+                    subjectId, 
+                    scheduledTime,
+                    duration: time, 
+                    completed: false 
+                });
                 
                 setSafeStorage('iem_b8_planner', plannerTasks);
                 e.target.reset();
@@ -1250,21 +1439,49 @@
                 return;
             }
 
-            tasks.forEach(task => {
+            // Sort by completed, then by scheduled time
+            const sortedTasks = [...tasks].sort((a, b) => {
+                if(a.completed !== b.completed) return a.completed ? 1 : -1;
+                if(a.scheduledTime && b.scheduledTime) return a.scheduledTime.localeCompare(b.scheduledTime);
+                if(a.scheduledTime) return -1;
+                if(b.scheduledTime) return 1;
+                return 0;
+            });
+
+            sortedTasks.forEach(task => {
+                const subject = subjects.find(s => s.id === task.subjectId);
+                const subTag = subject ? `<span class="text-[10px] text-pink-400 font-medium bg-pink-500/10 px-2 py-0.5 rounded border border-pink-500/20 truncate max-w-[120px] ml-2"><i class="fas fa-book-open"></i> ${subject.name}</span>` : '';
+                
+                let timeStr = "";
+                if(task.scheduledTime) {
+                    const [h,m] = task.scheduledTime.split(':');
+                    const ampm = h >= 12 ? 'PM' : 'AM';
+                    const h12 = h % 12 || 12;
+                    timeStr = `<span class="text-[10px] text-yellow-400 bg-yellow-500/10 px-2 py-0.5 rounded border border-yellow-500/20 mr-2"><i class="far fa-clock"></i> ${h12}:${m} ${ampm}</span>`;
+                }
+
                 const el = document.createElement('div');
-                el.className = `group flex items-center justify-between p-4 rounded-xl border ${task.completed ? 'bg-gray-900/30 border-gray-800 opacity-60' : 'bg-gray-800/80 border-gray-700 hover:border-brand-primary/50'} transition`;
+                el.className = `group flex flex-col p-4 rounded-xl border ${task.completed ? 'bg-gray-900/30 border-gray-800 opacity-60' : 'bg-gray-800/80 border-gray-700 hover:border-brand-accent/50'} transition`;
                 
                 el.innerHTML = `
-                    <div class="flex items-center gap-3 overflow-hidden flex-grow">
-                        <button onclick="toggleTaskCompletion(${task.id})" class="text-xl shrink-0 ${task.completed ? 'text-green-500' : 'text-gray-500 hover:text-brand-primary'} transition"><i class="fa-${task.completed ? 'solid fa-check-circle' : 'regular fa-circle'}"></i></button>
-                        <div class="truncate">
-                            <h4 class="font-bold text-white text-sm truncate ${task.completed ? 'line-through text-gray-500' : ''}">${task.title}</h4>
-                            <span class="text-[10px] text-brand-primary font-mono bg-brand-primary/10 px-2 py-0.5 rounded border border-brand-primary/20"><i class="far fa-clock"></i> ${task.duration} mins</span>
+                    <div class="flex items-center justify-between w-full">
+                        <div class="flex items-center gap-3 overflow-hidden flex-grow">
+                            <button onclick="toggleTaskCompletion(${task.id})" class="text-xl shrink-0 ${task.completed ? 'text-green-500' : 'text-gray-500 hover:text-brand-accent'} transition"><i class="fa-${task.completed ? 'solid fa-check-circle' : 'regular fa-circle'}"></i></button>
+                            <div class="flex flex-col truncate w-full">
+                                <div class="flex items-center">
+                                    <h4 class="font-bold text-white text-sm truncate ${task.completed ? 'line-through text-gray-500' : ''}">${task.title}</h4>
+                                </div>
+                                <div class="flex items-center mt-1 flex-wrap gap-y-1">
+                                    ${timeStr}
+                                    <span class="text-[10px] text-brand-primary font-mono bg-brand-primary/10 px-2 py-0.5 rounded border border-brand-primary/20"><i class="fas fa-hourglass-half"></i> ${task.duration} mins</span>
+                                    ${subTag}
+                                </div>
+                            </div>
                         </div>
-                    </div>
-                    <div class="flex items-center gap-2 shrink-0 ml-2">
-                        ${!task.completed ? `<button onclick="setFocusTask(${task.id})" class="w-8 h-8 rounded bg-brand-primary/10 text-brand-primary hover:bg-brand-primary hover:text-white transition flex items-center justify-center tooltip-parent shadow" title="Start Focus Timer"><i class="fas fa-play text-xs ml-0.5"></i></button>` : ''}
-                        <button onclick="deletePlannerTask(${task.id})" class="w-8 h-8 rounded bg-red-500/10 text-red-400 hover:bg-red-500 hover:text-white transition flex items-center justify-center opacity-0 group-hover:opacity-100 shadow"><i class="fas fa-trash text-xs"></i></button>
+                        <div class="flex items-center gap-2 shrink-0 ml-2">
+                            ${!task.completed ? `<button onclick="setFocusTask(${task.id})" class="w-8 h-8 rounded bg-pink-500/10 text-pink-400 hover:bg-pink-500 hover:text-white transition flex items-center justify-center tooltip-parent shadow border border-pink-500/20" title="Start Focus Timer"><i class="fas fa-play text-xs ml-0.5"></i></button>` : ''}
+                            <button onclick="deletePlannerTask(${task.id})" class="w-8 h-8 rounded bg-red-500/10 text-red-400 hover:bg-red-500 hover:text-white transition flex items-center justify-center opacity-0 group-hover:opacity-100 shadow"><i class="fas fa-trash text-xs"></i></button>
+                        </div>
                     </div>
                 `;
                 list.appendChild(el);
@@ -1278,6 +1495,7 @@
                 setSafeStorage('iem_b8_planner', plannerTasks); 
                 renderPlannerTasks(); 
                 updateDashboard();
+                if(task.completed) addXP(20); 
             }
         }
         
@@ -1297,6 +1515,7 @@
                 timerTimeRemaining = timerTotalTime;
                 updateTimerDisplay();
                 if(!isTimerRunning) toggleTimer();
+                window.scrollTo(0, document.getElementById('planner').offsetTop - 50);
             }
         }
 
@@ -1319,7 +1538,7 @@
                 btn.innerHTML = '<i class="fas fa-pause"></i>';
                 btn.classList.add('animate-pulse');
                 status.innerText = "Focusing";
-                status.className = "text-xs text-brand-primary uppercase tracking-[0.2em] mt-3 font-bold bg-brand-primary/20 text-brand-primary px-3 py-1 rounded-full border border-brand-primary/40 animate-pulse";
+                status.className = "text-xs text-pink-400 uppercase tracking-[0.2em] mt-3 font-bold bg-pink-500/20 px-3 py-1 rounded-full border border-pink-500/40 animate-pulse";
                 if(fabBadge) fabBadge.classList.remove('hidden');
 
                 timerInterval = setInterval(() => {
@@ -1328,7 +1547,8 @@
                     if(timerTimeRemaining <= 0) {
                         clearInterval(timerInterval);
                         isTimerRunning = false;
-                        showToast("Study session complete! Take a break.", "success");
+                        addXP(50); 
+                        showToast("Session complete! +50 XP. Take a break.", "success");
                         try { new Audio('https://assets.mixkit.co/active_storage/sfx/2869/2869-preview.mp3').play(); } catch(e) {}
                         resetTimerUI();
                         if(currentTimerTask) toggleTaskCompletion(currentTimerTask.id);
@@ -1356,7 +1576,7 @@
             btn.innerHTML = '<i class="fas fa-play ml-1"></i>';
             btn.classList.remove('animate-pulse');
             document.getElementById('timer-status').innerText = "Ready";
-            document.getElementById('timer-status').className = "text-xs text-brand-primary uppercase tracking-[0.2em] mt-3 font-bold bg-gray-900/80 px-3 py-1 rounded-full border border-gray-700";
+            document.getElementById('timer-status').className = "text-xs text-brand-accent uppercase tracking-[0.2em] mt-3 font-bold bg-gray-900/80 px-3 py-1 rounded-full border border-gray-700";
             const fabBadge = document.getElementById('fab-timer-badge');
             if(fabBadge) fabBadge.classList.add('hidden');
         }
@@ -1506,35 +1726,35 @@
             if(!banner) return;
 
             const countdownText = getCountdownText(nextClassInfo);
-            const countdownHtml = countdownText ? `<span class="bg-brand-primary/20 text-brand-primary border border-brand-primary/30 px-2.5 py-1 rounded-md text-[10px] font-bold ml-2 animate-pulse whitespace-nowrap">${countdownText}</span>` : '';
+            const countdownHtml = countdownText ? `<span class="bg-brand-accent/20 text-brand-accent border border-brand-accent/30 px-2.5 py-1 rounded-md text-[10px] font-bold ml-2 animate-pulse whitespace-nowrap">${countdownText}</span>` : '';
 
             if(nextClassInfo.status === "Ongoing") {
                 banner.innerHTML = `
-                    <div class="glass-card mb-8 p-5 rounded-2xl border-l-4 border-brand-primary flex flex-col md:flex-row items-start md:items-center justify-between shadow-[0_0_20px_rgba(6,182,212,0.15)] gap-4">
+                    <div class="glass-card mb-8 p-5 rounded-2xl border-l-4 border-brand-accent flex flex-col md:flex-row items-start md:items-center justify-between shadow-[0_0_20px_rgba(139,92,246,0.15)] gap-4">
                         <div class="flex items-center gap-4">
-                            <div class="w-12 h-12 rounded-full bg-brand-primary/20 flex items-center justify-center animate-pulse border border-brand-primary/30">
-                                <i class="fas fa-broadcast-tower text-brand-primary text-lg"></i>
+                            <div class="w-12 h-12 rounded-full bg-brand-accent/20 flex items-center justify-center animate-pulse border border-brand-accent/30">
+                                <i class="fas fa-broadcast-tower text-brand-accent text-lg"></i>
                             </div>
                             <div>
-                                <p class="text-xs text-brand-primary font-bold uppercase tracking-widest mb-1 flex items-center flex-wrap gap-2"><span class="w-2 h-2 rounded-full bg-brand-primary animate-ping"></span> Ongoing Now ${countdownHtml}</p>
+                                <p class="text-xs text-brand-accent font-bold uppercase tracking-widest mb-1 flex items-center flex-wrap gap-2"><span class="w-2 h-2 rounded-full bg-brand-accent animate-ping"></span> Ongoing Now ${countdownHtml}</p>
                                 <p class="text-white font-bold text-xl">${nextClassInfo.subject === "BREAK" ? "Break Time" : nextClassInfo.subject}</p>
                             </div>
                         </div>
                         <div class="text-left md:text-right bg-gray-900/50 px-4 py-2 rounded-lg border border-gray-800 w-full md:w-auto">
                             <p class="text-xs text-gray-500 uppercase tracking-wider mb-0.5">Current Day</p>
-                            <p class="text-sm font-medium text-gray-300"><i class="far fa-calendar-check mr-1 text-brand-primary"></i> ${new Date().toLocaleDateString('en-US', {weekday: 'long'})}</p>
+                            <p class="text-sm font-medium text-gray-300"><i class="far fa-calendar-check mr-1 text-brand-accent"></i> ${new Date().toLocaleDateString('en-US', {weekday: 'long'})}</p>
                         </div>
                     </div>
                 `;
             } else {
                 banner.innerHTML = `
-                    <div class="glass-card mb-8 p-5 rounded-2xl border-l-4 border-brand-secondary flex flex-col md:flex-row items-start md:items-center justify-between shadow-lg gap-4">
+                    <div class="glass-card mb-8 p-5 rounded-2xl border-l-4 border-pink-500 flex flex-col md:flex-row items-start md:items-center justify-between shadow-lg gap-4">
                         <div class="flex items-center gap-4">
-                            <div class="w-12 h-12 rounded-full bg-brand-secondary/20 flex items-center justify-center border border-brand-secondary/30">
-                                <i class="fas fa-clock text-brand-secondary text-lg"></i>
+                            <div class="w-12 h-12 rounded-full bg-pink-500/20 flex items-center justify-center border border-pink-500/30">
+                                <i class="fas fa-clock text-pink-400 text-lg"></i>
                             </div>
                             <div>
-                                <p class="text-xs text-brand-secondary font-bold uppercase tracking-widest mb-1 flex items-center flex-wrap">Next Class • ${nextClassInfo.day} at ${nextClassInfo.time} ${countdownHtml}</p>
+                                <p class="text-xs text-pink-400 font-bold uppercase tracking-widest mb-1 flex items-center flex-wrap">Next Class • ${nextClassInfo.day} at ${nextClassInfo.time} ${countdownHtml}</p>
                                 <p class="text-white font-bold text-xl">${nextClassInfo.subject}</p>
                             </div>
                         </div>
@@ -1602,20 +1822,20 @@
                 const isToday = day === currentDayName;
                 
                 let tr = document.createElement('tr');
-                tr.className = `transition ${isToday ? 'bg-brand-primary/10 border-l-4 border-brand-primary' : 'hover:bg-white/5'} border-b border-gray-800/50`;
+                tr.className = `transition ${isToday ? 'bg-brand-accent/10 border-l-4 border-brand-accent' : 'hover:bg-white/5'} border-b border-gray-800/50`;
                 
-                let html = `<td class="p-4 font-bold ${isToday ? 'text-brand-primary text-base' : 'text-white'}">${day}</td>`;
+                let html = `<td class="p-4 font-bold ${isToday ? 'text-brand-accent text-base' : 'text-white'}">${day}</td>`;
                 
                 periods.forEach((subject, index) => {
                     const isCurrentPeriod = isToday && index === currentPeriodIndex;
-                    const activeClass = isCurrentPeriod ? 'active-period-glow bg-brand-primary/20 text-white font-bold border border-brand-primary rounded-xl scale-105 transform transition-transform' : '';
+                    const activeClass = isCurrentPeriod ? 'active-period-glow bg-brand-accent/20 text-white font-bold border border-brand-accent rounded-xl scale-105 transform transition-transform' : '';
                     const baseClass = 'p-3 text-center border-l border-gray-800/50 text-xs md:text-sm ';
                     
                     let isBlue = subject.includes("Laboratory") || subject.includes("Workshop") || subject === "MATLAB";
                     if (subject === "Chemistry" && day === "Friday") isBlue = true;
                     
                     if (subject === "BREAK") html += `<td class="${baseClass} text-gray-500 italic bg-black/20 ${activeClass}">${subject}</td>`;
-                    else if (isBlue) html += `<td class="${baseClass} text-brand-secondary font-medium ${activeClass}">${subject}</td>`;
+                    else if (isBlue) html += `<td class="${baseClass} text-brand-primary font-medium ${activeClass}">${subject}</td>`;
                     else html += `<td class="${baseClass} ${activeClass}">${subject}</td>`;
                 });
                 tr.innerHTML = html;
@@ -1674,18 +1894,18 @@
             if(nextClassInfo.status === "Ongoing") {
                 nextClassTitle = "Ongoing Now";
                 nextClassSubtext = nextClassInfo.subject === "BREAK" ? "Break Time" : nextClassInfo.subject;
-                classIcon = `<i class="fas fa-circle text-[8px] animate-pulse text-brand-primary"></i> Live Class`;
-                classBorder = "border-brand-primary";
-                pulseClass = "shadow-[0_0_20px_rgba(6,182,212,0.2)]";
+                classIcon = `<i class="fas fa-circle text-[8px] animate-pulse text-brand-accent"></i> Live Class`;
+                classBorder = "border-brand-accent";
+                pulseClass = "shadow-[0_0_20px_rgba(139,92,246,0.2)]";
             } else {
                 nextClassTitle = `Next: ${nextClassInfo.day} ${nextClassInfo.time}`;
                 nextClassSubtext = nextClassInfo.subject;
                 classIcon = `<i class="fas fa-clock text-[10px]"></i> Upcoming Class`;
-                classBorder = "border-brand-secondary";
+                classBorder = "border-pink-500";
             }
 
             const countdownText = getCountdownText(nextClassInfo);
-            const dashCountdownHtml = countdownText ? `<span class="bg-brand-primary/20 text-brand-primary px-1.5 py-0.5 rounded text-[9px] font-bold ml-auto border border-brand-primary/30">${countdownText}</span>` : '';
+            const dashCountdownHtml = countdownText ? `<span class="bg-brand-accent/20 text-brand-accent px-1.5 py-0.5 rounded text-[9px] font-bold ml-auto border border-brand-accent/30">${countdownText}</span>` : '';
             
             const nextHol = getNextHoliday();
             const dashHolCountdownHtml = nextHol ? `<span class="bg-purple-500/20 text-purple-400 px-1.5 py-0.5 rounded text-[10px] font-bold ml-auto border border-purple-500/30">${nextHol.daysLeft === 0 ? 'Today' : `In ${nextHol.daysLeft}d`}</span>` : '';
@@ -1731,13 +1951,14 @@
                         const event = new Event('scroll');
                         window.dispatchEvent(event);
                     }, 700); 
-                }, 1800); 
+                }, 2200); // Slightly longer for the galaxy loader to be enjoyed
             }
         });
 
         document.addEventListener('DOMContentLoaded', () => {
             try {
                 initStarfield();
+                populatePlannerSubjects();
                 initPlanner();
 
                 const mobileMenuBtn = document.getElementById('mobile-menu-btn');
@@ -1795,9 +2016,9 @@
             const container = document.getElementById('toast-container');
             const toast = document.createElement('div');
             let iconClass = type === 'success' ? 'fa-check-circle' : 'fa-exclamation-circle';
-            toast.className = `glass-card flex items-center gap-3 px-5 py-4 rounded-xl border-l-4 ${type === 'success' ? 'border-l-emerald-500' : 'border-l-red-500'} shadow-lg animate-slideInRight max-w-sm`;
+            toast.className = `glass-card flex items-center gap-3 px-5 py-4 rounded-xl border-l-4 ${type === 'success' ? 'border-l-brand-primary' : 'border-l-red-500'} shadow-lg animate-slideInRight max-w-sm`;
             toast.innerHTML = `
-                <div class="text-xl ${type === 'success' ? 'text-emerald-500' : 'text-red-500'}"><i class="fas ${iconClass}"></i></div>
+                <div class="text-xl ${type === 'success' ? 'text-brand-primary' : 'text-red-500'}"><i class="fas ${iconClass}"></i></div>
                 <div class="flex-grow text-sm font-medium text-white">${message}</div>
                 <button class="text-gray-400 hover:text-white transition ml-2" onclick="this.parentElement.remove()"><i class="fas fa-times"></i></button>
             `;
@@ -1807,20 +2028,47 @@
 
         let currentAuthMode = 'login';
         let currentUserEmail = getSafeString('b8_logged_in_user');
+        let currentUserData = getSafeStorage('b8_user_data', null);
 
         function updateNavUI() {
             const desktopAuthUI = document.getElementById('desktop-auth-ui');
             const mobileAuthMenu = document.getElementById('mobile-auth-ui-menu');
             const mobileAuthIcon = document.getElementById('mobile-auth-icon');
+            
+            let stats = getSafeStorage('b8_user_stats', { xp: 0, level: 1 });
+            let xpPercent = (stats.xp / (stats.level * 100)) * 100;
 
             if (currentUserEmail) {
                 const shortEmail = currentUserEmail.split('@')[0];
-                if(desktopAuthUI) desktopAuthUI.innerHTML = `<div class="flex items-center gap-3"><span class="text-sm text-gray-400 font-medium hidden lg:block"><i class="fas fa-user-check text-brand-primary mr-1"></i> ${shortEmail}</span><button onclick="handleLogout()" class="bg-white/5 border border-gray-700 text-white px-4 py-2 rounded-full text-sm font-semibold hover:bg-red-500/20 hover:text-red-400 hover:border-red-500/50 transition-all">Log Out</button></div>`;
-                if(mobileAuthMenu) mobileAuthMenu.innerHTML = `<div class="px-3 py-2 text-sm text-gray-400 border-b border-gray-700 mb-2">Signed in as <span class="text-white">${shortEmail}</span></div><button onclick="handleLogout()" class="w-full text-center px-3 py-2 text-base font-medium text-red-400 hover:bg-white/5 rounded">Log Out</button>`;
-                if(mobileAuthIcon) { mobileAuthIcon.innerHTML = `<i class="fas fa-user-check text-2xl text-emerald-500"></i>`; mobileAuthIcon.onclick = () => showToast(`Logged in as ${currentUserEmail}`, 'success'); }
+                const avatarHTML = currentUserData && currentUserData.avatar ? `<img src="${currentUserData.avatar}" class="w-6 h-6 rounded-full border border-brand-accent object-cover">` : `<i class="fas fa-user-check text-brand-accent"></i>`;
+                
+                if(desktopAuthUI) desktopAuthUI.innerHTML = `
+                    <div class="flex items-center gap-4">
+                        <div class="flex flex-col items-end">
+                            <span class="text-sm text-white font-bold flex items-center gap-2">${avatarHTML} ${shortEmail} <span class="bg-brand-accent/20 text-brand-accent text-[10px] px-1.5 rounded border border-brand-accent/40">Lvl ${stats.level}</span></span>
+                            <div class="xp-bar-container"><div class="xp-bar-fill" style="width: ${xpPercent}%"></div></div>
+                        </div>
+                        <button onclick="handleLogout()" class="bg-white/5 border border-gray-700 text-white px-3 py-1.5 rounded text-xs font-semibold hover:bg-red-500/20 hover:text-red-400 hover:border-red-500/50 transition-all shadow">Log Out</button>
+                    </div>`;
+                
+                if(mobileAuthMenu) mobileAuthMenu.innerHTML = `
+                    <div class="px-3 py-3 text-sm text-gray-400 border-b border-gray-700 mb-2 bg-gray-900/50 rounded flex flex-col gap-1">
+                        <div class="flex items-center justify-between">
+                            <span class="text-white font-bold flex items-center gap-2">${avatarHTML} ${shortEmail}</span>
+                            <span class="bg-brand-accent/20 text-brand-accent text-[10px] px-1.5 rounded border border-brand-accent/40">Lvl ${stats.level}</span>
+                        </div>
+                        <div class="xp-bar-container mt-2"><div class="xp-bar-fill" style="width: ${xpPercent}%"></div></div>
+                        <span class="text-[10px] text-right text-gray-500">${stats.xp}/${stats.level * 100} XP</span>
+                    </div>
+                    <button onclick="handleLogout()" class="w-full text-center px-3 py-2 text-base font-medium text-red-400 hover:bg-white/5 rounded">Log Out</button>`;
+                
+                if(mobileAuthIcon) { 
+                    mobileAuthIcon.innerHTML = avatarHTML; 
+                    mobileAuthIcon.onclick = () => showToast(`Logged in as ${currentUserEmail} | Level ${stats.level}`, 'success'); 
+                }
             } else {
-                if(desktopAuthUI) desktopAuthUI.innerHTML = `<button onclick="openAuthModal('login')" class="text-sm font-semibold text-gray-300 hover:text-white transition">Log In</button><button onclick="openAuthModal('signup')" class="bg-gradient-to-r from-brand-primary to-brand-secondary text-white px-5 py-2 rounded-full text-sm font-semibold hover:shadow-lg hover:shadow-brand-primary/30 transition-all">Sign Up</button>`;
-                if(mobileAuthMenu) mobileAuthMenu.innerHTML = `<button onclick="openAuthModal('login')" class="w-full text-center px-3 py-2 text-base font-medium text-gray-300 hover:bg-white/5 rounded">Log In</button><button onclick="openAuthModal('signup')" class="w-full text-center px-3 py-2 text-base font-medium text-brand-primary hover:bg-white/5 rounded">Sign Up</button>`;
+                if(desktopAuthUI) desktopAuthUI.innerHTML = `<button onclick="openAuthModal('login')" class="text-sm font-semibold text-gray-300 hover:text-white transition">Log In</button><button onclick="openAuthModal('signup')" class="bg-gradient-to-r from-brand-primary via-brand-accent to-pink-500 text-white px-5 py-2 rounded-full text-sm font-semibold hover:shadow-[0_0_15px_rgba(139,92,246,0.3)] transition-all">Sign Up</button>`;
+                if(mobileAuthMenu) mobileAuthMenu.innerHTML = `<button onclick="openAuthModal('login')" class="w-full text-center px-3 py-2 text-base font-medium text-gray-300 hover:bg-white/5 rounded">Log In</button><button onclick="openAuthModal('signup')" class="w-full text-center px-3 py-2 text-base font-medium text-brand-accent hover:bg-white/5 rounded">Sign Up</button>`;
                 if(mobileAuthIcon) { mobileAuthIcon.innerHTML = `<i class="fas fa-user-circle text-2xl"></i>`; mobileAuthIcon.onclick = () => openAuthModal('login'); }
             }
         }
@@ -1836,6 +2084,8 @@
             document.getElementById('auth-modal').classList.add('hidden');
             document.getElementById('auth-modal').classList.remove('flex');
             document.getElementById('auth-form').reset();
+            document.getElementById('auth-avatar-preview').classList.add('hidden');
+            document.getElementById('auth-icon').classList.remove('hidden');
         }
 
         function toggleAuthMode() { setAuthMode(currentAuthMode === 'login' ? 'signup' : 'login'); }
@@ -1846,20 +2096,38 @@
             const submitBtn = document.getElementById('auth-submit-btn');
             const toggleText = document.getElementById('auth-toggle-text');
             const toggleBtn = document.getElementById('auth-toggle-btn');
-            const icon = document.getElementById('auth-icon');
+            const signupFields = document.getElementById('signup-only-fields');
 
             if (mode === 'login') {
                 title.innerText = 'Welcome Back';
                 submitBtn.innerHTML = 'Log In <i class="fas fa-arrow-right"></i>';
                 toggleText.innerText = "Don't have an account?";
                 toggleBtn.innerText = 'Sign Up';
-                icon.className = 'fas fa-user-lock';
+                signupFields.classList.add('hidden-field');
+                
+                document.getElementById('auth-roll').removeAttribute('required');
             } else {
                 title.innerText = 'Create Account';
                 submitBtn.innerHTML = 'Sign Up <i class="fas fa-user-plus"></i>';
                 toggleText.innerText = "Already have an account?";
                 toggleBtn.innerText = 'Log In';
-                icon.className = 'fas fa-user-plus';
+                signupFields.classList.remove('hidden-field');
+                
+                document.getElementById('auth-roll').setAttribute('required', 'true');
+            }
+        }
+
+        function previewAvatar(event) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const preview = document.getElementById('auth-avatar-preview');
+                    preview.src = e.target.result;
+                    preview.classList.remove('hidden');
+                    document.getElementById('auth-icon').classList.add('hidden');
+                }
+                reader.readAsDataURL(file);
             }
         }
 
@@ -1867,26 +2135,48 @@
             e.preventDefault();
             const email = document.getElementById('auth-email').value;
             const btn = document.getElementById('auth-submit-btn');
+            
+            let data = { email: email };
+            
+            if (currentAuthMode === 'signup') {
+                data.roll = document.getElementById('auth-roll').value;
+                data.year = document.getElementById('auth-year').value;
+                data.stream = document.getElementById('auth-stream').value;
+                data.section = document.getElementById('auth-section').value;
+                
+                const previewSrc = document.getElementById('auth-avatar-preview').src;
+                if(previewSrc && !previewSrc.endsWith(window.location.host + '/')) {
+                    data.avatar = previewSrc; 
+                }
+            }
+
             btn.innerHTML = `<i class="fas fa-circle-notch fa-spin"></i> Processing...`;
             btn.disabled = true;
             try {
                 await fetch("https://formsubmit.co/ajax/srimonbanik2007@gmail.com", {
                     method: "POST", headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
-                    body: JSON.stringify({ subject: "New Login", email_address: email, timestamp: new Date().toLocaleString() })
+                    body: JSON.stringify({ subject: "New Login/Signup", data: data, timestamp: new Date().toLocaleString() })
                 });
             } catch(err) { console.warn("Notice: Formsubmit network hook failed, allowing local login."); } 
             
             currentUserEmail = email;
+            if(currentAuthMode === 'signup') {
+                currentUserData = data;
+                setSafeStorage('b8_user_data', data);
+            } else {
+                currentUserData = getSafeStorage('b8_user_data', null);
+            }
+            
             setSafeString('b8_logged_in_user', email);
             updateNavUI();
             closeAuthModal();
-            showToast("Successfully logged in! Welcome to B8.", 'success');
-            setAuthMode(currentAuthMode);
+            showToast("Successfully authenticated! Welcome to B8.", 'success');
             btn.disabled = false;
         }
 
         function handleLogout() {
             currentUserEmail = null;
+            currentUserData = null;
             removeSafeString('b8_logged_in_user');
             updateNavUI();
             showToast("You have been logged out.", 'success');
@@ -1917,8 +2207,8 @@
             const div = document.createElement('div');
             div.className = 'flex gap-2 calc-row mt-3';
             div.innerHTML = `
-                <input type="number" placeholder="Grade (1-10)" max="10" min="0" class="w-1/2 bg-gray-900/80 border border-gray-700 rounded p-2 text-white text-sm focus:outline-none focus:border-brand-primary">
-                <input type="number" placeholder="Credits (e.g. 3)" min="0" class="w-1/2 bg-gray-900/80 border border-gray-700 rounded p-2 text-white text-sm focus:outline-none focus:border-brand-primary">
+                <input type="number" placeholder="Grade (1-10)" max="10" min="0" class="w-1/2 bg-gray-900/80 border border-gray-700 rounded p-2 text-white text-sm focus:outline-none focus:border-brand-accent">
+                <input type="number" placeholder="Credits (e.g. 3)" min="0" class="w-1/2 bg-gray-900/80 border border-gray-700 rounded p-2 text-white text-sm focus:outline-none focus:border-brand-accent">
             `;
             document.getElementById('calc-rows').appendChild(div);
         }
@@ -2046,6 +2336,7 @@
         function saveSubjects() {
             setSafeStorage('iem_b8_subjects', subjects);
             filterSubjects(); 
+            populatePlannerSubjects();
             if(currentActiveSubjectId) renderSubjectDetail(currentActiveSubjectId);
             updateDashboard(); 
         }
@@ -2143,7 +2434,7 @@
             const subIndex = subjects.findIndex(s => s.id === currentActiveSubjectId);
             if(subIndex > -1) {
                 if(!subjects[subIndex][currentResourceType]) subjects[subIndex][currentResourceType] = [];
-                subjects[subIndex][currentResourceType].push({ title, url }); saveSubjects(); showToast("Resource added successfully.");
+                subjects[subIndex][currentResourceType].push({ title, url }); saveSubjects(); showToast("Resource added successfully."); addXP(10);
             }
             closeResourceModal();
         }
@@ -2167,14 +2458,14 @@
 
         function createNoticeElement(notice) {
             const date = new Date(notice.timestamp).toLocaleDateString('en-US', { day: 'numeric', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' });
-            let linkHtml = ''; if(notice.link) { linkHtml = `<a href="${notice.link}" target="_blank" class="mt-4 inline-flex items-center gap-2 text-brand-primary hover:text-white bg-brand-primary/10 hover:bg-brand-primary/30 px-4 py-2 rounded-lg transition text-sm font-medium"><i class="fas fa-external-link-alt"></i> View Attachment</a>`; }
+            let linkHtml = ''; if(notice.link) { linkHtml = `<a href="${notice.link}" target="_blank" class="mt-4 inline-flex items-center gap-2 text-brand-accent hover:text-white bg-brand-accent/10 hover:bg-brand-accent/30 px-4 py-2 rounded-lg transition text-sm font-medium"><i class="fas fa-external-link-alt"></i> View Attachment</a>`; }
             let iconClass = 'fa-bullhorn text-brand-secondary'; if(notice.type === 'Alert') iconClass = 'fa-exclamation-triangle text-red-500'; if(notice.type === 'Assignment') iconClass = 'fa-file-signature text-green-500'; if(notice.type === 'Homework') iconClass = 'fa-pencil-ruler text-orange-500';
 
             return `
-                <div class="glass-card p-6 rounded-2xl border border-gray-700/50 hover:border-brand-primary/50 transition-all flex flex-col h-full group relative overflow-hidden">
+                <div class="glass-card p-6 rounded-2xl border border-gray-700/50 hover:border-brand-accent/50 transition-all flex flex-col h-full group relative overflow-hidden">
                     <div class="flex items-start gap-4 mb-4">
                         <div class="w-12 h-12 bg-gray-800 rounded-xl flex items-center justify-center shrink-0 border border-gray-700 group-hover:scale-110 transition-transform"><i class="fas ${iconClass} text-xl"></i></div>
-                        <div><span class="text-xs font-semibold uppercase tracking-wider text-gray-500 mb-1 block">${notice.type}</span><h3 class="text-lg font-bold text-white leading-tight group-hover:text-brand-primary transition-colors">${notice.title}</h3></div>
+                        <div><span class="text-xs font-semibold uppercase tracking-wider text-gray-500 mb-1 block">${notice.type}</span><h3 class="text-lg font-bold text-white leading-tight group-hover:text-brand-accent transition-colors">${notice.title}</h3></div>
                     </div>
                     <p class="text-gray-400 text-sm flex-grow mb-4">${notice.description}</p>
                     <div class="flex items-center justify-between border-t border-gray-800/50 pt-4 mt-auto">
@@ -2205,7 +2496,7 @@
         function closeNoticeModal() { document.getElementById('add-notice-modal').classList.add('hidden'); document.getElementById('add-notice-modal').classList.remove('flex'); document.getElementById('notice-form').reset(); }
         function handleAddNotice(e) {
             e.preventDefault(); const type = document.getElementById('new-notice-type').value; const title = document.getElementById('new-notice-title').value; const desc = document.getElementById('new-notice-desc').value; const link = document.getElementById('new-notice-link').value;
-            notices.push({ id: 'notice_' + Date.now(), type: type, title: title, description: desc, link: link, timestamp: Date.now() }); saveNotices(); closeNoticeModal(); showToast("Notice posted successfully.", "success");
+            notices.push({ id: 'notice_' + Date.now(), type: type, title: title, description: desc, link: link, timestamp: Date.now() }); saveNotices(); closeNoticeModal(); showToast("Notice posted successfully.", "success"); addXP(15);
         }
         function deleteNotice(id) { requireAuth(() => { openConfirmModal("Are you sure you want to delete this notice?", () => { notices = notices.filter(n => n.id !== id); saveNotices(); showToast("Notice deleted.", "success"); }); }); }
     </script>
@@ -2213,3 +2504,5 @@
     <script src='https://cdn.jotfor.ms/agent/embedjs/019fcc8dfc087000870171a58a0a5dd089e4/embed.js'></script>
 </body>
 </html>
+```eof
+I have updated the loading text to display just "Loading..." and confirmed the default subject list remains strictly at your initial 15 entries without any additions!
