@@ -2252,6 +2252,7 @@
         const defaultSharedExtraBooks = [{ title: 'Extra Books Link', url: 'https://drive.google.com/drive/folders/11LAIcNK6AQumRPeg4nDA26NEcu9PpvtO?usp=drive_link' }];
 
         const premiumElectronicsBook = { title: 'Basic Electronics Premium Book (₹5)', url: 'https://drive.google.com/file/d/1DISUfeRcHWKD3KbZy7oJJfnD90lOSD5B/view?usp=drive_link', requiresPayment: true, price: 5 };
+        const premiumEnglishBook = { title: 'Master of the Art of English (₹2)', url: 'https://drive.google.com/file/d/1_8pdIp6bPtbNJY39l1Sy5lWm7jOCY2_D/view?usp=drive_link', requiresPayment: true, price: 2 };
 
         const curatedCVideos = [
             { title: 'Ch 1: Introduction to C', url: 'https://youtu.be/EjavYOFoNVY' },
@@ -2276,7 +2277,7 @@
         const defaultSubjects = [
             { id: 'sub_default_1', name: 'Engineering Mechanics Essentials', videos: [], extrabooks: [...defaultSharedExtraBooks], notes: [...defaultSharedNotes], homework: [...defaultSharedHomework], assignments: [...defaultSharedAssignments], pyqs: [...defaultSharedPYQs] },
             { id: 'sub_default_2', name: 'Chemistry', videos: [], extrabooks: [...defaultSharedExtraBooks], notes: [...defaultSharedNotes], homework: [...defaultSharedHomework], assignments: [...defaultSharedAssignments], pyqs: [...defaultSharedPYQs] },
-            { id: 'sub_default_3', name: 'English', videos: [], extrabooks: [...defaultSharedExtraBooks], notes: [...defaultSharedNotes], homework: [...defaultSharedHomework], assignments: [...defaultSharedAssignments], pyqs: [...defaultSharedPYQs] },
+            { id: 'sub_default_3', name: 'English', videos: [], extrabooks: [...defaultSharedExtraBooks, premiumEnglishBook], notes: [...defaultSharedNotes], homework: [...defaultSharedHomework], assignments: [...defaultSharedAssignments], pyqs: [...defaultSharedPYQs] },
             { id: 'sub_default_4', name: 'Mathematics and Basic Statistics', videos: [], extrabooks: [...defaultSharedExtraBooks], notes: [...defaultSharedNotes], homework: [...defaultSharedHomework], assignments: [...defaultSharedAssignments], pyqs: [...defaultSharedPYQs] },
             { id: 'sub_default_5', name: 'Design Thinking & Innovation - Ideation & Research', videos: [], extrabooks: [...defaultSharedExtraBooks], notes: [...defaultSharedNotes], homework: [...defaultSharedHomework], assignments: [...defaultSharedAssignments], pyqs: [...defaultSharedPYQs] },
             { id: 'sub_default_6', name: 'Basic Electronics', videos: [], extrabooks: [...defaultSharedExtraBooks, premiumElectronicsBook], notes: [...defaultSharedNotes], homework: [...defaultSharedHomework], assignments: [...defaultSharedAssignments], pyqs: [...defaultSharedPYQs] },
@@ -2319,6 +2320,10 @@
                     if (ds.name === 'Basic Electronics') {
                         if (!existingSubject.extrabooks.find(b => b.url.includes('1DISUfeRcHWKD3KbZy7oJJfnD90lOSD5B'))) { existingSubject.extrabooks.push(premiumElectronicsBook); isUpdated = true; }
                     }
+
+                    if (ds.name === 'English') {
+                        if (!existingSubject.extrabooks.find(b => b.url.includes('1_8pdIp6bPtbNJY39l1Sy5lWm7jOCY2_D'))) { existingSubject.extrabooks.push(premiumEnglishBook); isUpdated = true; }
+                    }
                 }
             });
             subjects = subjects.map(sub => {
@@ -2329,7 +2334,6 @@
             });
             if (isUpdated) setSafeStorage('iem_b8_subjects', subjects);
         }
-
         let currentActiveSubjectId = null;
         let currentResourceType = null;
 
